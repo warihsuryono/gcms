@@ -1,0 +1,84 @@
+<?php
+
+namespace App\Filament\Resources;
+
+use Filament\Forms;
+use App\Models\Item;
+use Filament\Tables;
+use Filament\Forms\Form;
+use Filament\Tables\Table;
+use Filament\Resources\Resource;
+use App\Traits\FilamentListActions;
+use Filament\Tables\Filters\SelectFilter;
+use Illuminate\Database\Eloquent\Builder;
+use Filament\Tables\Enums\ActionsPosition;
+use App\Filament\Resources\ItemResource\Pages;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Filament\Resources\ItemResource\RelationManagers;
+
+class ItemResource extends Resource
+{
+    use FilamentListActions;
+    protected static ?string $model = Item::class;
+    protected static ?string $routename = 'items';
+
+
+    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+
+    public static function form(Form $form): Form
+    {
+        return $form
+            ->schema([
+                Forms\Components\Select::make('item_specification_id')->relationship('item_specification', 'name')->searchable()->preload()->default(0),
+                Forms\Components\Select::make('item_category_id')->relationship('item_category', 'name')->searchable()->preload()->default(0),
+                Forms\Components\Select::make('item_type_id')->relationship('item_type', 'name')->searchable()->preload()->default(0),
+                Forms\Components\Select::make('item_brand_id')->relationship('item_brand', 'name')->searchable()->preload()->default(0),
+                Forms\Components\TextInput::make('name')->maxLength(255),
+                Forms\Components\Select::make('unit_id')->relationship('unit', 'name')->searchable()->preload()->default(0),
+                Forms\Components\Textarea::make('description')->columnSpanFull(),
+                Forms\Components\TextInput::make('minimum_stock')->numeric()->default(0),
+                Forms\Components\TextInput::make('maximum_stock')->numeric()->default(0),
+                Forms\Components\TextInput::make('lifetime')->numeric()->default(0),
+            ]);
+    }
+
+    public static function table(Table $table): Table
+    {
+        return $table
+            ->columns([
+                Tables\Columns\TextColumn::make('item_specification.name'),
+                Tables\Columns\TextColumn::make('item_category.name'),
+                Tables\Columns\TextColumn::make('item_type.name'),
+                Tables\Columns\TextColumn::make('item_brand.name'),
+                Tables\Columns\TextColumn::make('name')->searchable(),
+                Tables\Columns\TextColumn::make('unit.name'),
+                Tables\Columns\TextColumn::make('minimum_stock')->numeric(),
+                Tables\Columns\TextColumn::make('maximum_stock')->numeric(),
+                Tables\Columns\TextColumn::make('lifetime')->numeric(),
+            ])
+            ->filters([
+                SelectFilter::make('item_specification')->relationship('item_specification', 'name')->searchable()->preload(),
+                SelectFilter::make('item_category')->relationship('item_category', 'name')->searchable()->preload(),
+                SelectFilter::make('item_type')->relationship('item_type', 'name')->searchable()->preload(),
+                SelectFilter::make('item_brand')->relationship('item_brand', 'name')->searchable()->preload(),
+            ])
+            ->filtersFormColumns(2)
+            ->actions(self::actions(self::$routename), ActionsPosition::BeforeColumns);
+    }
+
+    public static function getRelations(): array
+    {
+        return [
+            //
+        ];
+    }
+
+    public static function getPages(): array
+    {
+        return [
+            'index' => Pages\ListItems::route('/'),
+            'create' => Pages\CreateItem::route('/create'),
+            'edit' => Pages\EditItem::route('/{record}/edit'),
+        ];
+    }
+}

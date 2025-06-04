@@ -2,20 +2,25 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\WorkOrderResource\Pages;
-use App\Filament\Resources\WorkOrderResource\RelationManagers;
-use App\Models\WorkOrder;
 use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Forms\Form;
+use App\Models\WorkOrder;
 use Filament\Tables\Table;
+use Filament\Resources\Resource;
+use App\Traits\FilamentListActions;
 use Illuminate\Database\Eloquent\Builder;
+use Filament\Tables\Enums\ActionsPosition;
+use App\Filament\Resources\WorkOrderResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Filament\Resources\WorkOrderResource\RelationManagers;
+use App\Models\Field;
 
 class WorkOrderResource extends Resource
 {
+    use FilamentListActions;
     protected static ?string $model = WorkOrder::class;
+    protected static ?string $routename = 'work-orders';
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
@@ -23,26 +28,12 @@ class WorkOrderResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\DateTimePicker::make('work_start'),
+                Forms\Components\DateTimePicker::make('work_start')->required(),
                 Forms\Components\DateTimePicker::make('work_end'),
-                Forms\Components\Select::make('division_id')
-                    ->relationship('division', 'name')
-                    ->default(0),
-                Forms\Components\Textarea::make('field_ids')
-                    ->columnSpanFull(),
-                Forms\Components\TextInput::make('work')
-                    ->maxLength(255),
-                Forms\Components\Textarea::make('description')
-                    ->columnSpanFull(),
-                Forms\Components\TextInput::make('deleted_by')
-                    ->numeric()
-                    ->default(0),
-                Forms\Components\TextInput::make('created_by')
-                    ->numeric()
-                    ->default(0),
-                Forms\Components\TextInput::make('updated_by')
-                    ->numeric()
-                    ->default(0),
+                Forms\Components\Select::make('division_id')->relationship('division', 'name')->searchable()->preload()->required(),
+                Forms\Components\Select::make('field_ids')->label('Fields')->options(Field::all()->pluck('name', 'id'))->searchable()->preload()->multiple(),
+                Forms\Components\TextInput::make('work')->maxLength(255)->required(),
+                Forms\Components\Textarea::make('description')->columnSpanFull(),
             ]);
     }
 
@@ -50,50 +41,24 @@ class WorkOrderResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('work_start')
-                    ->dateTime()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('work_end')
-                    ->dateTime()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('division.name')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('work')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('deleted_by')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('created_by')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('updated_by')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('deleted_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('work_start')->dateTime(),
+                Tables\Columns\TextColumn::make('work_end')->dateTime(),
+                Tables\Columns\TextColumn::make('division.name'),
+                Tables\Columns\TextColumn::make('field_ids')->label('Fields')->formatStateUsing(function ($state, $record) {
+                    $field_ids = json_decode($record->field_ids);
+                    $fields = "";
+                    foreach ($field_ids as $field_id) {
+                        $fields .= Field::find($field_id)->name . "<br>";
+                    }
+                    return $fields;
+                })->html(),
+                Tables\Columns\TextColumn::make('work')->searchable(),
+                Tables\Columns\TextColumn::make('description')->toggleable(isToggledHiddenByDefault: true)->searchable(),
             ])
             ->filters([
                 //
             ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
-            ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
-            ]);
+            ->actions(self::actions(self::$routename), ActionsPosition::BeforeColumns);
     }
 
     public static function getRelations(): array

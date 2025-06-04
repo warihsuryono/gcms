@@ -29,12 +29,12 @@ class ItemResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('item_specification_id')->relationship('item_specification', 'name')->searchable()->preload()->default(0),
-                Forms\Components\Select::make('item_category_id')->relationship('item_category', 'name')->searchable()->preload()->default(0),
-                Forms\Components\Select::make('item_type_id')->relationship('item_type', 'name')->searchable()->preload()->default(0),
-                Forms\Components\Select::make('item_brand_id')->relationship('item_brand', 'name')->searchable()->preload()->default(0),
+                Forms\Components\Select::make('item_specification_id')->relationship('item_specification', 'name')->searchable()->preload()->label('Specification'),
+                Forms\Components\Select::make('item_category_id')->relationship('item_category', 'name')->searchable()->preload()->label('Category'),
+                Forms\Components\Select::make('item_type_id')->relationship('item_type', 'name')->searchable()->preload()->label('Type'),
+                Forms\Components\Select::make('item_brand_id')->relationship('item_brand', 'name')->searchable()->preload()->label('Brand'),
                 Forms\Components\TextInput::make('name')->maxLength(255),
-                Forms\Components\Select::make('unit_id')->relationship('unit', 'name')->searchable()->preload()->default(0),
+                Forms\Components\Select::make('unit_id')->relationship('unit', 'name')->searchable()->preload(),
                 Forms\Components\Textarea::make('description')->columnSpanFull(),
                 Forms\Components\TextInput::make('minimum_stock')->numeric()->default(0),
                 Forms\Components\TextInput::make('maximum_stock')->numeric()->default(0),
@@ -46,10 +46,10 @@ class ItemResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('item_specification.name'),
-                Tables\Columns\TextColumn::make('item_category.name'),
-                Tables\Columns\TextColumn::make('item_type.name'),
-                Tables\Columns\TextColumn::make('item_brand.name'),
+                Tables\Columns\TextColumn::make('item_specification.name')->label('Specification'),
+                Tables\Columns\TextColumn::make('item_category.name')->label('Category'),
+                Tables\Columns\TextColumn::make('item_type.name')->label('Type'),
+                Tables\Columns\TextColumn::make('item_brand.name')->label('Brand'),
                 Tables\Columns\TextColumn::make('name')->searchable(),
                 Tables\Columns\TextColumn::make('unit.name'),
                 Tables\Columns\TextColumn::make('minimum_stock')->numeric(),
@@ -57,10 +57,10 @@ class ItemResource extends Resource
                 Tables\Columns\TextColumn::make('lifetime')->numeric(),
             ])
             ->filters([
-                SelectFilter::make('item_specification')->relationship('item_specification', 'name')->searchable()->preload(),
-                SelectFilter::make('item_category')->relationship('item_category', 'name')->searchable()->preload(),
-                SelectFilter::make('item_type')->relationship('item_type', 'name')->searchable()->preload(),
-                SelectFilter::make('item_brand')->relationship('item_brand', 'name')->searchable()->preload(),
+                SelectFilter::make('item_specification')->relationship('item_specification', 'name')->searchable()->preload()->label('Specification'),
+                SelectFilter::make('item_category')->relationship('item_category', 'name')->searchable()->preload()->label('Category'),
+                SelectFilter::make('item_type')->relationship('item_type', 'name')->searchable()->preload()->label('Type'),
+                SelectFilter::make('item_brand')->relationship('item_brand', 'name')->searchable()->preload()->label('Brand'),
             ])
             ->filtersFormColumns(2)
             ->actions(self::actions(self::$routename), ActionsPosition::BeforeColumns);

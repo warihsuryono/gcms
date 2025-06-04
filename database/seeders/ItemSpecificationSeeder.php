@@ -13,7 +13,7 @@ class ItemSpecificationSeeder extends Seeder
      */
     public function run(): void
     {
-        ItemSpecification::create(['name' => 'Barang']);
-        ItemSpecification::create(['name' => 'Jasa']);
+        ItemSpecification::create(['name' => 'Goods']);
+        ItemSpecification::create(['name' => 'Services']);
     }
 }

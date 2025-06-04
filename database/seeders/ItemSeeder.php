@@ -13,6 +13,7 @@ class ItemSeeder extends Seeder
      */
     public function run(): void
     {
-        Item::create(['item_specification_id' => 1, 'item_category_id' => 1, 'item_type_id' => 1, 'item_brand_id' => 3, 'name' => 'Boardmarker Blue BG-12', 'unit_id' => 1, 'description' => 'Spidol white board warna biru', 'minimum_stock' => 1, 'maximum_stock' => 5, 'lifetime' => '999']);
+        Item::create(['item_specification_id' => 1, 'item_category_id' => 1, 'item_type_id' => 1, 'item_brand_id' => 1, 'name' => 'Gasoline', 'unit_id' => 4, 'description' => 'Gasoline for vehicle operational', 'minimum_stock' => 100, 'maximum_stock' => 500, 'lifetime' => '999']);
+        Item::create(['item_specification_id' => 1, 'item_category_id' => 1, 'item_type_id' => 2, 'item_brand_id' => 1, 'name' => 'Diesel', 'unit_id' => 4, 'description' => 'Diesel for diesel engine operational', 'minimum_stock' => 100, 'maximum_stock' => 500, 'lifetime' => '999']);
     }
 }

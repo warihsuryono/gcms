@@ -13,6 +13,11 @@ class ItemBrandSeeder extends Seeder
      */
     public function run(): void
     {
+        ItemBrand::create(['name' => 'Pertamina']);
+        ItemBrand::create(['name' => 'Shell']);
+        ItemBrand::create(['name' => 'British Petroleum (BP)']);
+        ItemBrand::create(['name' => 'Total']);
+        ItemBrand::create(['name' => 'Vivo']);
         ItemBrand::create(['name' => 'Krisbow']);
         ItemBrand::create(['name' => 'Faber Castell']);
         ItemBrand::create(['name' => 'Snowmann']);

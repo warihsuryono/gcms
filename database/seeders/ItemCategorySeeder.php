@@ -13,10 +13,12 @@ class ItemCategorySeeder extends Seeder
      */
     public function run(): void
     {
-        ItemCategory::create(['name' => 'Perlengkapan Kantor']);
+        ItemCategory::create(['name' => 'Fuels']);
+        ItemCategory::create(['name' => 'Office supplies']);
+        ItemCategory::create(['name' => 'Furniture']);
         ItemCategory::create(['name' => 'Spareparts']);
         ItemCategory::create(['name' => 'Tools']);
-        ItemCategory::create(['name' => 'Tenaga Ahli']);
-        ItemCategory::create(['name' => 'Pemeliharaan']);
+        ItemCategory::create(['name' => 'Experts']);
+        ItemCategory::create(['name' => 'Maintenance']);
     }
 }

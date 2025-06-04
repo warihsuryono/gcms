@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Division;
 use App\Models\LeaveType;
 use Illuminate\Database\Seeder;
 
@@ -33,6 +34,8 @@ class DatabaseSeeder extends Seeder
             ItemBrandSeeder::class,
             ItemSeeder::class,
             LeaveTypeSeeder::class,
+            DivisionSeeder::class,
+            FieldSeeder::class,
         ]);
     }
 }

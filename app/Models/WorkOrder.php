@@ -16,9 +16,4 @@ class WorkOrder extends Model
     {
         return $this->belongsTo(Division::class, 'division_id');
     }
-
-    public function field(): BelongsTo
-    {
-        return $this->belongsTo(Field::class, 'field_id');
-    }
 }

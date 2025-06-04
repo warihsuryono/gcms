@@ -16,7 +16,7 @@ return new class extends Migration
             $table->dateTime('work_start')->nullable();
             $table->dateTime('work_end')->nullable();
             $table->unsignedBigInteger('division_id')->default(0)->nullable();
-            $table->unsignedBigInteger('field_id')->default(0)->nullable();
+            $table->text('field_ids')->nullable();
             $table->string('work')->nullable()->default('');
             $table->text('description')->nullable();
             $table->unsignedBigInteger('deleted_by')->default(0)->nullable();

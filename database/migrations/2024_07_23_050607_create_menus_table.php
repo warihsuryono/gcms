@@ -59,7 +59,7 @@ return new class extends Migration
             ['id' => 24, 'seqno' => 18, 'parent_id' => 2, 'name' => 'Item Types', 'url' => 'item-types', 'icon' => '', 'route' => '', 'middleware' => 'auth'],
             ['id' => 25, 'seqno' => 20, 'parent_id' => 2, 'name' => 'Item Brands', 'url' => 'item-brands', 'icon' => '', 'route' => '', 'middleware' => 'auth'],
             ['id' => 26, 'seqno' => 21, 'parent_id' => 2, 'name' => 'Fields', 'url' => 'fields', 'icon' => '', 'route' => '', 'middleware' => 'auth'],
-            ['id' => 27, 'seqno' => 22, 'parent_id' => 2, 'name' => 'Dashboard', 'url' => 'dashboard', 'icon' => '', 'route' => '', 'middleware' => 'auth'],
+            ['id' => 27, 'seqno' => 22, 'parent_id' => 2, 'name' => 'Dashboard', 'url' => 'dashboards', 'icon' => '', 'route' => '', 'middleware' => 'auth'],
         ]);
 
         DB::table('menus')->insert([

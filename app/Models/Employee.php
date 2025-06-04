@@ -33,6 +33,11 @@ class Employee extends Model
         return $this->belongsTo(EmployeeStatus::class);
     }
 
+    public function division(): BelongsTo
+    {
+        return $this->belongsTo(Division::class);
+    }
+
     public function marriage_status(): BelongsTo
     {
         return $this->belongsTo(MarriageStatus::class);

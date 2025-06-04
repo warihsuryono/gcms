@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained(table: 'users', indexName: 'employee_user_id')->default(1);
             $table->unsignedBigInteger('leader_user_id')->default(0)->nullable();
+            $table->unsignedBigInteger('division_id')->default(0)->nullable();
             $table->string('name')->nullable()->default('');
             $table->string('nik', 50)->nullable()->default('');
             $table->string('nip', 20)->nullable()->default('');
@@ -30,9 +31,9 @@ return new class extends Migration
             $table->date('birth_at')->nullable();
             $table->string('address')->nullable()->default('');
             $table->string('domicile_address')->nullable()->default('');
-            $table->foreignId('employee_status_id')->constrained(table: 'employee_statuses', indexName: 'employee_status_id')->default(1);
-            $table->foreignId('marriage_status_id')->constrained(table: 'marriage_statuses', indexName: 'marriage_status_id')->default(1);
-            $table->foreignId('degree_id')->constrained(table: 'degrees', indexName: 'degree_id')->default(1);
+            $table->foreignId('employee_status_id')->constrained(table: 'employee_statuses', indexName: 'employee_status_id')->default(0);
+            $table->foreignId('marriage_status_id')->constrained(table: 'marriage_statuses', indexName: 'marriage_status_id')->default(0);
+            $table->foreignId('degree_id')->constrained(table: 'degrees', indexName: 'degree_id')->default(0);
             $table->string('major', 100)->nullable()->default('')->index('major');
             $table->string('level_title', 100)->nullable()->default('');
             $table->unsignedBigInteger('deleted_by')->default(0)->nullable();

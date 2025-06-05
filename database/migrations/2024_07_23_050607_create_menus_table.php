@@ -82,6 +82,8 @@ return new class extends Migration
             ['id' => 38, 'seqno' => 2, 'parent_id' => 5, 'name' => 'Business Trips', 'url' => 'business-trips', 'icon' => '', 'route' => '', 'middleware' => ''],
             ['id' => 39, 'seqno' => 3, 'parent_id' => 5, 'name' => 'Leaves', 'url' => 'leaves', 'icon' => '', 'route' => '', 'middleware' => ''],
             ['id' => 40, 'seqno' => 4, 'parent_id' => 5, 'name' => 'Reimbursements', 'url' => 'reimbursements', 'icon' => '', 'route' => '', 'middleware' => ''],
+            ['id' => 41, 'seqno' => 5, 'parent_id' => 5, 'name' => 'Presence Schedules', 'url' => 'presence-schedules', 'icon' => '', 'route' => '', 'middleware' => ''],
+            ['id' => 42, 'seqno' => 6, 'parent_id' => 5, 'name' => 'Attendances', 'url' => 'attendances', 'icon' => '', 'route' => '', 'middleware' => ''],
         ]);
     }
 

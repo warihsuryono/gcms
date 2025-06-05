@@ -83,6 +83,7 @@ class DashboardResource extends Resource
         return [
             'index' => Pages\ListDashboards::route('/'),
             'edit' => Pages\EditDashboard::route('/{record}/edit'),
+            'show' => Pages\ShowDashboard::route('/show'),
         ];
     }
 }

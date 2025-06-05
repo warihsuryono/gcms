@@ -58,6 +58,12 @@ class WorkOrderResource extends Resource
             ->filters([
                 //
             ])
+            ->paginated([
+                25,
+                50,
+                100,
+                'all',
+            ])
             ->actions(self::actions(self::$routename), ActionsPosition::BeforeColumns);
     }
 

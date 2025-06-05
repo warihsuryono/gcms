@@ -2,20 +2,27 @@
 
 namespace App\Filament\Resources;
 
+use Filament\Forms;
+use Filament\Tables;
+use Filament\Forms\Form;
+use Filament\Tables\Table;
+use App\Models\FuelConsumption;
+use Filament\Resources\Resource;
+use App\Traits\FilamentListActions;
+use Filament\Tables\Filters\Filter;
+use Filament\Forms\Components\DatePicker;
+use Illuminate\Database\Eloquent\Builder;
+use Filament\Tables\Enums\ActionsPosition;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\FuelConsumptionResource\Pages;
 use App\Filament\Resources\FuelConsumptionResource\RelationManagers;
-use App\Models\FuelConsumption;
-use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
-use Filament\Tables;
-use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Filament\Tables\Filters\SelectFilter;
 
 class FuelConsumptionResource extends Resource
 {
+    use FilamentListActions;
     protected static ?string $model = FuelConsumption::class;
+    protected static ?string $routename = 'fuel-consumptions';
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
@@ -24,24 +31,8 @@ class FuelConsumptionResource extends Resource
         return $form
             ->schema([
                 Forms\Components\DatePicker::make('consumption_at'),
-                Forms\Components\Select::make('item_type_id')
-                    ->relationship('item_type', 'name')
-                    ->default(0),
-                Forms\Components\TextInput::make('quantity')
-                    ->numeric()
-                    ->default(0),
-                Forms\Components\Select::make('unit_id')
-                    ->relationship('unit', 'name')
-                    ->default(0),
-                Forms\Components\TextInput::make('deleted_by')
-                    ->numeric()
-                    ->default(0),
-                Forms\Components\TextInput::make('created_by')
-                    ->numeric()
-                    ->default(0),
-                Forms\Components\TextInput::make('updated_by')
-                    ->numeric()
-                    ->default(0),
+                Forms\Components\Select::make('item_type_id')->relationship('item_type', 'name', fn(Builder $query) => $query->where('id', '<', 3))->required()->default(1)->label('Fuel Type'),
+                Forms\Components\TextInput::make('quantity')->numeric()->default(0)->suffix('liters'),
             ]);
     }
 
@@ -49,51 +40,27 @@ class FuelConsumptionResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('consumption_at')
-                    ->date()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('item_type.name')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('quantity')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('unit.name')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('deleted_by')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('created_by')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('updated_by')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('deleted_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('consumption_at')->date()->sortable(),
+                Tables\Columns\TextColumn::make('item_type.name')->label('Fuel Type'),
+                Tables\Columns\TextColumn::make('quantity')->numeric()->sortable()->label('Quantity (Liters)')->alignRight(),
             ])
             ->filters([
-                //
+                Filter::make('consumption_at')
+                    ->form([DatePicker::make('created_from'), DatePicker::make('created_until')])
+                    ->query(function (Builder $query, array $data): Builder {
+                        return $query
+                            ->when($data['created_from'], fn(Builder $query, $date): Builder => $query->whereDate('consumption_at', '>=', $date))
+                            ->when($data['created_until'], fn(Builder $query, $date): Builder => $query->whereDate('consumption_at', '<=', $date));
+                    }),
+                SelectFilter::make('item_type_id')->label('Fuel Type')->relationship('item_type', 'name', fn(Builder $query) => $query->where('id', '<', 3))->multiple()->preload()
             ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
+            ->paginated([
+                25,
+                50,
+                100,
+                'all',
             ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
-            ]);
+            ->actions(self::actions(self::$routename), ActionsPosition::BeforeColumns);
     }
 
     public static function getRelations(): array

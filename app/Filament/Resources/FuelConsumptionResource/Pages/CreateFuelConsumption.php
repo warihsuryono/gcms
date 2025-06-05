@@ -3,10 +3,17 @@
 namespace App\Filament\Resources\FuelConsumptionResource\Pages;
 
 use App\Filament\Resources\FuelConsumptionResource;
-use Filament\Actions;
+use App\Traits\FilamentCreateFunctions;
 use Filament\Resources\Pages\CreateRecord;
 
 class CreateFuelConsumption extends CreateRecord
 {
+    protected $routename = 'fuel-consumptions';
+    use FilamentCreateFunctions;
     protected static string $resource = FuelConsumptionResource::class;
+
+    protected function getRedirectUrl(): string
+    {
+        return route('filament.room.resources.fuel-consumptions.index', $this->record->id);
+    }
 }

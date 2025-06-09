@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\DashboardResource\Pages;
 
 use App\Filament\Resources\DashboardResource;
+use App\Models\Dashboard;
 use Filament\Facades\Filament;
 use Filament\Resources\Pages\Page;
 
@@ -15,5 +16,12 @@ class ShowDashboard extends Page
     {
         Filament::getCurrentPanel()->navigation(false);
         return '';
+    }
+
+    public function getViewData(): array
+    {
+        return [
+            'dashboard' => Dashboard::find(1),
+        ];
     }
 }

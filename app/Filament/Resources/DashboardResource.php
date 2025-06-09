@@ -9,6 +9,7 @@ use App\Models\Dashboard;
 use Filament\Tables\Table;
 use Filament\Resources\Resource;
 use App\Traits\FilamentListActions;
+use Filament\Forms\Components\Section;
 use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Forms\Components\FileUpload;
@@ -27,22 +28,34 @@ class DashboardResource extends Resource
     {
         return $form
             ->schema([
-                FileUpload::make('logo')->directory('dashboard_images')->image()->imageEditor(),
-                Forms\Components\TextInput::make('tagline')->maxLength(255),
-                Forms\Components\TextInput::make('running_text_1')->maxLength(255),
-                Forms\Components\TextInput::make('running_text_2')->maxLength(255),
-                Forms\Components\TextInput::make('running_text_3')->maxLength(255),
-                Forms\Components\TextInput::make('running_text_4')->maxLength(255),
-                FileUpload::make('background')->directory('dashboard_images')->image()->imageEditor(),
-                FileUpload::make('widget_1')->directory('dashboard_images')->image()->imageEditor(),
-                Forms\Components\TextInput::make('widget_1_top')->numeric()->default(0),
-                Forms\Components\TextInput::make('widget_1_left')->numeric()->default(0),
-                FileUpload::make('widget_2')->directory('dashboard_images')->image()->imageEditor(),
-                Forms\Components\TextInput::make('widget_2_top')->numeric()->default(0),
-                Forms\Components\TextInput::make('widget_2_left')->numeric()->default(0),
-                FileUpload::make('widget_3')->directory('dashboard_images')->image()->imageEditor(),
-                Forms\Components\TextInput::make('widget_3_top')->numeric()->default(0),
-                Forms\Components\TextInput::make('widget_3_left')->numeric()->default(0),
+                Section::make('Main')->schema([
+                    FileUpload::make('logo')->directory('dashboard_images')->image()->imageEditor(),
+                    Forms\Components\TextInput::make('tagline')->maxLength(255),
+                    FileUpload::make('background')->directory('dashboard_images')->image()->imageEditor(),
+                ]),
+                Section::make('Running Text')->schema([
+                    Forms\Components\TextInput::make('running_text_1')->maxLength(255),
+                    Forms\Components\TextInput::make('running_text_2')->maxLength(255),
+                    Forms\Components\TextInput::make('running_text_3')->maxLength(255),
+                    Forms\Components\TextInput::make('running_text_4')->maxLength(255),
+                ]),
+                Section::make('Widgets')->schema([
+                    FileUpload::make('widget_1')->directory('dashboard_images')->image()->imageEditor(),
+                    Section::make('Position (px)')->schema([
+                        Forms\Components\TextInput::make('widget_1_top')->numeric()->default(0)->label('Top'),
+                        Forms\Components\TextInput::make('widget_1_left')->numeric()->default(0)->label('Left'),
+                    ])->columns(2),
+                    FileUpload::make('widget_2')->directory('dashboard_images')->image()->imageEditor(),
+                    Section::make('Position (px)')->schema([
+                        Forms\Components\TextInput::make('widget_2_top')->numeric()->default(0)->label('Top'),
+                        Forms\Components\TextInput::make('widget_2_left')->numeric()->default(0)->label('Left'),
+                    ])->columns(2),
+                    FileUpload::make('widget_3')->directory('dashboard_images')->image()->imageEditor(),
+                    Section::make('Position (px)')->schema([
+                        Forms\Components\TextInput::make('widget_3_top')->numeric()->default(0)->label('Top'),
+                        Forms\Components\TextInput::make('widget_3_left')->numeric()->default(0)->label('Left'),
+                    ])->columns(2),
+                ]),
             ]);
     }
 

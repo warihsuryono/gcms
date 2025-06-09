@@ -29,12 +29,11 @@ return new class extends Migration
         });
 
         DB::table('menus')->insert([
-            ['id' => 1, 'seqno' => 1, 'parent_id' => 0, 'name' => 'Dashboard', 'url' => '/', 'icon' => 'heroicon-o-home', 'route' => 'App\Http\Controllers\Home::class', 'middleware' => 'auth'],
+            ['id' => 1, 'seqno' => 1, 'parent_id' => 0, 'name' => 'Home', 'url' => '/', 'icon' => 'heroicon-o-home', 'route' => 'App\Http\Controllers\Home::class', 'middleware' => 'auth'],
             ['id' => 2, 'seqno' => 2, 'parent_id' => 0, 'name' => 'Master', 'url' => '#', 'icon' => 'heroicon-o-circle-stack', 'route' => '', 'middleware' => ''],
             ['id' => 3, 'seqno' => 3, 'parent_id' => 0, 'name' => 'Activity', 'url' => '#', 'icon' => 'heroicon-o-wrench-screwdriver', 'route' => '', 'middleware' => ''],
             ['id' => 4, 'seqno' => 4, 'parent_id' => 0, 'name' => 'Procurement', 'url' => '#', 'icon' => 'heroicon-o-shopping-cart', 'route' => '', 'middleware' => ''],
             ['id' => 5, 'seqno' => 5, 'parent_id' => 0, 'name' => 'General', 'url' => '#', 'icon' => 'heroicon-o-wrench-screwdriver', 'route' => '', 'middleware' => ''],
-
         ]);
 
         DB::table('menus')->insert([
@@ -84,6 +83,10 @@ return new class extends Migration
             ['id' => 40, 'seqno' => 4, 'parent_id' => 5, 'name' => 'Reimbursements', 'url' => 'reimbursements', 'icon' => '', 'route' => '', 'middleware' => ''],
             ['id' => 41, 'seqno' => 5, 'parent_id' => 5, 'name' => 'Presence Schedules', 'url' => 'presence-schedules', 'icon' => '', 'route' => '', 'middleware' => ''],
             ['id' => 42, 'seqno' => 6, 'parent_id' => 5, 'name' => 'Attendances', 'url' => 'attendances', 'icon' => '', 'route' => '', 'middleware' => ''],
+        ]);
+
+        DB::table('menus')->insert([
+            ['id' => 43, 'seqno' => 6, 'parent_id' => 0, 'name' => 'Dashboard', 'url' => 'dashboards/show', 'icon' => 'heroicon-o-table-cells', 'route' => 'filament.room.resources.dashboards.show', 'middleware' => 'auth'],
         ]);
     }
 

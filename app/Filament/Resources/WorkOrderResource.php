@@ -15,6 +15,7 @@ use App\Filament\Resources\WorkOrderResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\WorkOrderResource\RelationManagers;
 use App\Models\Field;
+use Filament\Forms\Components\RichEditor;
 
 class WorkOrderResource extends Resource
 {
@@ -32,8 +33,8 @@ class WorkOrderResource extends Resource
                 Forms\Components\DateTimePicker::make('work_end'),
                 Forms\Components\Select::make('division_id')->relationship('division', 'name')->searchable()->preload()->required(),
                 Forms\Components\Select::make('field_ids')->label('Fields')->options(Field::all()->pluck('name', 'id'))->searchable()->preload()->multiple(),
-                Forms\Components\TextInput::make('work')->maxLength(255)->required(),
-                Forms\Components\Textarea::make('description')->columnSpanFull(),
+                RichEditor::make('works')->columnSpanFull()->required()->toolbarButtons(['bold', 'italic', 'underline', 'link', 'bulletList', 'numberedList', 'blockquote', 'codeBlock', 'undo', 'redo'])
+                    ->helperText('Describe the work to be done.'),
             ]);
     }
 
@@ -52,8 +53,7 @@ class WorkOrderResource extends Resource
                     }
                     return $fields;
                 })->html(),
-                Tables\Columns\TextColumn::make('work')->searchable(),
-                Tables\Columns\TextColumn::make('description')->toggleable(isToggledHiddenByDefault: true)->searchable(),
+                Tables\Columns\TextColumn::make('works')->searchable()->html(),
             ])
             ->filters([
                 //

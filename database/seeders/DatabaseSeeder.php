@@ -4,7 +4,9 @@ namespace Database\Seeders;
 
 use App\Models\Dashboard;
 use App\Models\Division;
+use App\Models\FuelConsumption;
 use App\Models\LeaveType;
+use App\Models\WorkOrder;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -38,6 +40,8 @@ class DatabaseSeeder extends Seeder
             DivisionSeeder::class,
             FieldSeeder::class,
             DashboardSeeder::class,
+            FuelConsumptionSeeder::class,
+            WorkOrderSeeder::class,
         ]);
     }
 }

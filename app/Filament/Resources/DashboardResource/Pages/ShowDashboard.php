@@ -23,7 +23,7 @@ class ShowDashboard extends Page
     {
         return [
             'dashboard' => Dashboard::find(1),
-            'work_orders' => WorkOrder::where('work_start', '>=', date("Y-m-d") . ' 00:00:00')->where('work_start', '<=', date("Y-m-d") . ' 23:59:59')->orderBy('work_start', 'desc')->get(),
+            'work_orders' => WorkOrder::where('work_start', '>=', date("Y-m-d") . ' 00:00:00')->where('work_start', '<=', date("Y-m-d") . ' 23:59:59')->orderBy('work_start')->get(),
         ];
     }
 }

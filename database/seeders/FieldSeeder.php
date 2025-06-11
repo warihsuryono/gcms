@@ -32,7 +32,7 @@ class FieldSeeder extends Seeder
         Field::create(['name' => 'Hole 18']);
         Field::create(['name' => 'Hole 19']);
         Field::create(['name' => 'Hole 20']);
-        Field::create(['name' => 'All Holes']);
+        Field::create(['name' => 'All Fields']);
         Field::create(['name' => 'Nursery']);
         Field::create(['name' => 'Club House']);
         Field::create(['name' => 'Putting Green']);

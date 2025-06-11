@@ -9,12 +9,11 @@
     <div class="p-2">
         <img src="/storage/{{ $dashboard->logo }}" style="position:relative;width:120px;top:-30px;" alt="Logo">
         <h3 class="text-xl font-bold" style="position:relative;top:-30px;">{{ $dashboard->tagline }}</h3>
-
         <div class="flex items-center justify-between">
-            <h1 class="text-2xl font-bold">Work Orders</h1>
+            <h1 class="font-bold">Work Orders</h1>
         </div>
         <div id="scrollable-table-container"
-            class="relative shadow-md sm:rounded-lg h-full overflow-y-auto overflow-x-auto" style="max-height: 350px">
+            class="relative shadow-md sm:rounded-lg h-full overflow-y-auto overflow-x-auto" style="max-height: 340px">
             <table
                 class="table table-auto scroll-smooth text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                 <thead
@@ -32,9 +31,14 @@
                     @foreach ($work_orders as $work_order)
                         @php
                             $fields = '';
-                            foreach (json_decode($work_order->field_ids) as $field_id) {
-                                $fields .= Field::find($field_id)->name . '<br>';
+                            foreach (json_decode($work_order->field_ids) as $key => $field_id) {
+                                $fields .= Field::find($field_id)->name . ', ';
+                                if ($key % 2 == 0 && $key > 0) {
+                                    $fields .= '<br>';
+                                }
                             }
+
+                            $fields = rtrim($fields, ', ');
                         @endphp
                         <tr class="odd:bg-white even:bg-gray-50 border-b border-gray-200">
                             <td class="px-6 py-4">{{ $loop->iteration }}</td>
@@ -60,9 +64,17 @@
                 </tbody>
             </table>
         </div>
-    </div>
-    <div style="position:absolute;bottom:800px;">
-        <marquee direction="left" scrollamount="5" behavior="slide">Teks bergerak ke kanan dan berhenti</marquee>
+        <div class="mt-1 text-center text-gray-600 bg-lime-500 pt-1 pb-1 rounded-lg shadow-md flex items-center">
+            <div class="text-white font-bold text-lg w-96 mr-2 ml-2 bg-blue-600">
+                <span>{{ date('l') . ', ' . date('d F Y') }}</span>
+            </div>
+            <div class="w-full font-bold pt-1">
+                <marquee direction="left" scrollamount="5" behavior="scroll">{{ $dashboard->running_text_1 }}</marquee>
+            </div>
+            <div class="text-white font-bold text-lg w-32 mr-2 ml-2 bg-blue-600" wire:poll.500ms>
+                <span>{{ date('H:i:s') }}</span>
+            </div>
+        </div>
     </div>
 </x-filament-panels::page>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
@@ -81,8 +93,6 @@
 
             setTimeout(animateScroll, delay);
         }
-        @if (count($work_orders) > 9)
-            animateScroll();
-        @endif
+        animateScroll();
     });
 </script>

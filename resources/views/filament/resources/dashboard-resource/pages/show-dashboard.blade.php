@@ -1,7 +1,13 @@
 @php
     use App\Models\Field;
 @endphp
-
+<script>
+    function openModal() {
+        @this.dispatch('open-modal', {
+            id: 'modal-division-filter'
+        });
+    }
+</script>
 <x-filament-panels::page style="background-image:url('/storage/{{ $dashboard->background }}');" class="bg-cover">
     <img src="/storage/{{ $dashboard->widget_1 }}"
         style="position:absolute;width:160px;top:{{ $dashboard->widget_1_top }}px;left:{{ $dashboard->widget_1_left }}px"
@@ -20,7 +26,8 @@
                     class="sticky top-0 text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr>
                         <th scope="col" class="px-6 py-3">No</th>
-                        <th scope="col" class="px-6 py-3">Division</th>
+                        <th scope="col" class="px-6 py-3 flex" nowrap>Division <x-heroicon-o-funnel
+                                class="w-4 h-4 text-gray-500" onclick="openModal()" /></th>
                         <th scope="col" class="px-6 py-3">Date</th>
                         <th scope="col" class="px-6 py-3">Time</th>
                         <th scope="col" class="px-6 py-3">Field</th>
@@ -42,9 +49,9 @@
                         @endphp
                         <tr class="odd:bg-white even:bg-gray-50 border-b border-gray-200">
                             <td class="px-6 py-4">{{ $loop->iteration }}</td>
-                            <td class="px-6 py-4">{{ $work_order->division->name }}</td>
-                            <td class="px-6 py-4">{{ date('d M Y', strtotime($work_order->work_start)) }}</td>
-                            <td class="px-6 py-4">{{ date('H:i', strtotime($work_order->work_start)) }} -
+                            <td nowrap class="px-6 py-4">{{ $work_order->division->name }}</td>
+                            <td nowrap class="px-6 py-4">{{ date('d M Y', strtotime($work_order->work_start)) }}</td>
+                            <td nowrap class="px-6 py-4">{{ date('H:i', strtotime($work_order->work_start)) }} -
                                 {{ $work_order->work_end > $work_order->work_start ? date('H:i', strtotime($work_order->work_end)) : 'Done' }}
                             </td>
                             <td class="px-6 py-4">{!! $fields !!}</td>
@@ -76,19 +83,55 @@
             </div>
         </div>
     </div>
+
+    <x-filament::modal id="modal-division-filter">
+        <form class="block mt-1">
+            <x-filament::fieldset>
+                <x-slot name="label">
+                    Division
+                </x-slot>
+                <div class="gap-4 grid grid-cols-1 md:grid-cols-2">
+                    <div>
+
+                        <div class="flex items-center">
+                            <input id="division-radio-1" type="radio" value="0" name="division-radio" checked
+                                class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500"
+                                onchange="window.location.href = '{{ request()->url() }}?division_id=0';">
+                            <label for="division-radio-1" class="ms-2 text-sm font-medium text-gray-900">All
+                                Division</label>
+                        </div>
+
+                        @foreach ($divisions as $division)
+                            <div class="flex items-center">
+                                <input id="division-radio-2" type="radio" value="{{ $division->name }}"
+                                    {{ request()->get('division_id') == $division->id ? 'checked' : '' }}
+                                    name="division-radio"
+                                    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500"
+                                    onchange="window.location.href = '{{ request()->url() }}?division_id={{ $division->id }}';">
+                                <label for="division-radio-2"
+                                    class="ms-2 text-sm font-medium text-gray-900">{{ $division->name }}</label>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+            </x-filament::fieldset>
+        </form>
+    </x-filament::modal>
 </x-filament-panels::page>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script>
     $(document).ready(function() {
-        var $scroll = -1;
+        var scrolling = false;
+        var scroll = -1;
         var delay = 50;
 
         function animateScroll() {
-            if ($scroll >= $('#work-order-list').height() - ($('#scrollable-table-container').height() / 2))
-                $scroll = -1;
-            $('#scrollable-table-container').scrollTop($scroll);
-            $scroll++;
-            if ($scroll == 0) delay = 3000;
+            if (scroll >= $('#work-order-list').height() - ($('#scrollable-table-container').height() / 2))
+                scroll = -1;
+            $('#scrollable-table-container').scrollTop(scroll);
+            scroll++;
+            if (scroll == 0) delay = 3000;
             else delay = 50;
 
             setTimeout(animateScroll, delay);

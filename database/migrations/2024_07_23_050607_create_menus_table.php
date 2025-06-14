@@ -46,40 +46,42 @@ return new class extends Migration
             ['id' => 12, 'seqno' => 6, 'parent_id' => 3, 'name' => 'Divisions', 'url' => 'divisions', 'icon' => '', 'route' => '', 'middleware' => 'auth'],
             ['id' => 13, 'seqno' => 7, 'parent_id' => 3, 'name' => 'Units', 'url' => 'units', 'icon' => '', 'route' => '', 'middleware' => 'auth'],
             ['id' => 14, 'seqno' => 8, 'parent_id' => 3, 'name' => 'Payment Types', 'url' => 'payment-types', 'icon' => '', 'route' => '', 'middleware' => 'auth'],
-            ['id' => 15, 'seqno' => 9, 'parent_id' => 3, 'name' => 'Work Order Statuses', 'url' => 'work-order-statuses', 'icon' => '', 'route' => '', 'middleware' => 'auth'],
-            ['id' => 16, 'seqno' => 10, 'parent_id' => 3, 'name' => 'Provinces', 'url' => 'provinces', 'icon' => '', 'route' => '', 'middleware' => 'auth'],
-            ['id' => 17, 'seqno' => 11, 'parent_id' => 3, 'name' => 'Cities', 'url' => 'cities', 'icon' => '', 'route' => '', 'middleware' => 'auth'],
-            ['id' => 18, 'seqno' => 12, 'parent_id' => 3, 'name' => 'Fields', 'url' => 'fields', 'icon' => '', 'route' => '', 'middleware' => 'auth'],
-            ['id' => 19, 'seqno' => 13, 'parent_id' => 3, 'name' => 'Warehouses', 'url' => 'warehouses', 'icon' => '', 'route' => '', 'middleware' => 'auth'],
-            ['id' => 20, 'seqno' => 14, 'parent_id' => 3, 'name' => 'Suppliers', 'url' => 'suppliers', 'icon' => '', 'route' => '', 'middleware' => 'auth'],
-            ['id' => 21, 'seqno' => 15, 'parent_id' => 3, 'name' => 'Item Specifications', 'url' => 'item-specifications', 'icon' => '', 'route' => '', 'middleware' => 'auth'],
-            ['id' => 22, 'seqno' => 16, 'parent_id' => 3, 'name' => 'Item Categories', 'url' => 'item-categories', 'icon' => '', 'route' => '', 'middleware' => 'auth'],
-            ['id' => 23, 'seqno' => 17, 'parent_id' => 3, 'name' => 'Item Types', 'url' => 'item-types', 'icon' => '', 'route' => '', 'middleware' => 'auth'],
-            ['id' => 24, 'seqno' => 18, 'parent_id' => 3, 'name' => 'Item Brands', 'url' => 'item-brands', 'icon' => '', 'route' => '', 'middleware' => 'auth'],
-            ['id' => 25, 'seqno' => 19, 'parent_id' => 3, 'name' => 'Items', 'url' => 'items', 'icon' => '', 'route' => '', 'middleware' => 'auth'],
+            ['id' => 15, 'seqno' => 9, 'parent_id' => 3, 'name' => 'Item Movement Type', 'url' => 'item-movement-types', 'icon' => '', 'route' => '', 'middleware' => 'auth'],
+            ['id' => 16, 'seqno' => 10, 'parent_id' => 3, 'name' => 'Item RequestType', 'url' => 'item-request-types', 'icon' => '', 'route' => '', 'middleware' => 'auth'],
+            ['id' => 17, 'seqno' => 11, 'parent_id' => 3, 'name' => 'Work Order Statuses', 'url' => 'work-order-statuses', 'icon' => '', 'route' => '', 'middleware' => 'auth'],
+            ['id' => 18, 'seqno' => 12, 'parent_id' => 3, 'name' => 'Provinces', 'url' => 'provinces', 'icon' => '', 'route' => '', 'middleware' => 'auth'],
+            ['id' => 19, 'seqno' => 13, 'parent_id' => 3, 'name' => 'Cities', 'url' => 'cities', 'icon' => '', 'route' => '', 'middleware' => 'auth'],
+            ['id' => 20, 'seqno' => 14, 'parent_id' => 3, 'name' => 'Fields', 'url' => 'fields', 'icon' => '', 'route' => '', 'middleware' => 'auth'],
+            ['id' => 21, 'seqno' => 15, 'parent_id' => 3, 'name' => 'Warehouses', 'url' => 'warehouses', 'icon' => '', 'route' => '', 'middleware' => 'auth'],
+            ['id' => 22, 'seqno' => 16, 'parent_id' => 3, 'name' => 'Suppliers', 'url' => 'suppliers', 'icon' => '', 'route' => '', 'middleware' => 'auth'],
+            ['id' => 23, 'seqno' => 17, 'parent_id' => 3, 'name' => 'Item Specifications', 'url' => 'item-specifications', 'icon' => '', 'route' => '', 'middleware' => 'auth'],
+            ['id' => 24, 'seqno' => 18, 'parent_id' => 3, 'name' => 'Item Categories', 'url' => 'item-categories', 'icon' => '', 'route' => '', 'middleware' => 'auth'],
+            ['id' => 25, 'seqno' => 19, 'parent_id' => 3, 'name' => 'Item Types', 'url' => 'item-types', 'icon' => '', 'route' => '', 'middleware' => 'auth'],
+            ['id' => 26, 'seqno' => 20, 'parent_id' => 3, 'name' => 'Item Brands', 'url' => 'item-brands', 'icon' => '', 'route' => '', 'middleware' => 'auth'],
+            ['id' => 27, 'seqno' => 21, 'parent_id' => 3, 'name' => 'Items', 'url' => 'items', 'icon' => '', 'route' => '', 'middleware' => 'auth'],
 
         ]);
 
         DB::table('menus')->insert([
-            ['id' => 26, 'seqno' => 1, 'parent_id' => 4, 'name' => 'Fuel Consumptions', 'url' => 'fuel-consumptions', 'icon' => '', 'route' => '', 'middleware' => ''],
-            ['id' => 27, 'seqno' => 2, 'parent_id' => 4, 'name' => 'Work Orders', 'url' => 'work-orders', 'icon' => '', 'route' => '', 'middleware' => ''],
+            ['id' => 28, 'seqno' => 1, 'parent_id' => 4, 'name' => 'Fuel Consumptions', 'url' => 'fuel-consumptions', 'icon' => '', 'route' => '', 'middleware' => ''],
+            ['id' => 29, 'seqno' => 2, 'parent_id' => 4, 'name' => 'Work Orders', 'url' => 'work-orders', 'icon' => '', 'route' => '', 'middleware' => ''],
         ]);
 
         DB::table('menus')->insert([
-            ['id' => 28, 'seqno' => 1, 'parent_id' => 5, 'name' => 'Purchase Requests', 'url' => 'purchase-requests', 'icon' => '', 'route' => '', 'middleware' => ''],
-            ['id' => 29, 'seqno' => 2, 'parent_id' => 5, 'name' => 'Purchase Orders', 'url' => 'purchase-orders', 'icon' => '', 'route' => '', 'middleware' => ''],
-            ['id' => 30, 'seqno' => 3, 'parent_id' => 5, 'name' => 'Item Requests', 'url' => 'item-requests', 'icon' => '', 'route' => '', 'middleware' => ''],
-            ['id' => 31, 'seqno' => 4, 'parent_id' => 5, 'name' => 'Item Receipts', 'url' => 'item-receipts', 'icon' => '', 'route' => '', 'middleware' => ''],
-            ['id' => 32, 'seqno' => 5, 'parent_id' => 5, 'name' => 'Item Controls', 'url' => 'item-controls', 'icon' => '', 'route' => '', 'middleware' => ''],
+            ['id' => 30, 'seqno' => 1, 'parent_id' => 5, 'name' => 'Purchase Requests', 'url' => 'purchase-requests', 'icon' => '', 'route' => '', 'middleware' => ''],
+            ['id' => 31, 'seqno' => 2, 'parent_id' => 5, 'name' => 'Purchase Orders', 'url' => 'purchase-orders', 'icon' => '', 'route' => '', 'middleware' => ''],
+            ['id' => 32, 'seqno' => 3, 'parent_id' => 5, 'name' => 'Item Requests', 'url' => 'item-requests', 'icon' => '', 'route' => '', 'middleware' => ''],
+            ['id' => 33, 'seqno' => 4, 'parent_id' => 5, 'name' => 'Item Receipts', 'url' => 'item-receipts', 'icon' => '', 'route' => '', 'middleware' => ''],
+            ['id' => 34, 'seqno' => 5, 'parent_id' => 5, 'name' => 'Item Controls', 'url' => 'item-controls', 'icon' => '', 'route' => '', 'middleware' => ''],
         ]);
 
         DB::table('menus')->insert([
-            ['id' => 33, 'seqno' => 1, 'parent_id' => 6, 'name' => 'Fuel Consumptions', 'url' => 'fuel-consumption-reports', 'icon' => '', 'route' => '', 'middleware' => ''],
-            ['id' => 34, 'seqno' => 2, 'parent_id' => 6, 'name' => 'Work Orders', 'url' => 'work-order-reports', 'icon' => '', 'route' => '', 'middleware' => ''],
-            ['id' => 35, 'seqno' => 3, 'parent_id' => 6, 'name' => 'Purchase Requests', 'url' => 'purchase-request-reports', 'icon' => '', 'route' => '', 'middleware' => ''],
-            ['id' => 36, 'seqno' => 4, 'parent_id' => 6, 'name' => 'Purchase Orders', 'url' => 'purchase-order-reports', 'icon' => '', 'route' => '', 'middleware' => ''],
-            ['id' => 37, 'seqno' => 5, 'parent_id' => 6, 'name' => 'Item Stocks', 'url' => 'item-stock-reports', 'icon' => '', 'route' => '', 'middleware' => ''],
-            ['id' => 38, 'seqno' => 6, 'parent_id' => 6, 'name' => 'Item Movements', 'url' => 'item-movement-reports', 'icon' => '', 'route' => '', 'middleware' => ''],
+            ['id' => 35, 'seqno' => 1, 'parent_id' => 6, 'name' => 'Fuel Consumptions', 'url' => 'fuel-consumption-reports', 'icon' => '', 'route' => '', 'middleware' => ''],
+            ['id' => 36, 'seqno' => 2, 'parent_id' => 6, 'name' => 'Work Orders', 'url' => 'work-order-reports', 'icon' => '', 'route' => '', 'middleware' => ''],
+            ['id' => 37, 'seqno' => 3, 'parent_id' => 6, 'name' => 'Purchase Requests', 'url' => 'purchase-request-reports', 'icon' => '', 'route' => '', 'middleware' => ''],
+            ['id' => 38, 'seqno' => 4, 'parent_id' => 6, 'name' => 'Purchase Orders', 'url' => 'purchase-order-reports', 'icon' => '', 'route' => '', 'middleware' => ''],
+            ['id' => 39, 'seqno' => 5, 'parent_id' => 6, 'name' => 'Item Stocks', 'url' => 'item-stock-reports', 'icon' => '', 'route' => '', 'middleware' => ''],
+            ['id' => 40, 'seqno' => 6, 'parent_id' => 6, 'name' => 'Item Movements', 'url' => 'item-movement-reports', 'icon' => '', 'route' => '', 'middleware' => ''],
         ]);
     }
 

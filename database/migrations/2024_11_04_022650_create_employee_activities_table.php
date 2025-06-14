@@ -21,10 +21,6 @@ return new class extends Migration
             $table->softDeletes();
             $table->timestamps();
         });
-
-        DB::table('menus')->insert([
-            ['seqno' => 22, 'parent_id' => 2, 'name' => 'Employee Activities', 'url' => 'employee-activities', 'middleware' => 'auth']
-        ]);
     }
 
     /**

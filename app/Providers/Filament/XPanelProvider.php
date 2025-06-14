@@ -34,7 +34,7 @@ use Filament\Http\Middleware\DispatchServingFilamentEvent;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 
-class RoomPanelProvider extends PanelProvider
+class XPanelProvider extends PanelProvider
 {
     public function panel(Panel $panel): Panel
     {
@@ -55,7 +55,7 @@ class RoomPanelProvider extends PanelProvider
                     try {
                         $builder->items([
                             NavigationItem::make($mainmenu->name)
-                                ->url(App::make('url')->to("room" . '/' . $mainmenu->url))
+                                ->url(App::make('url')->to(env('PANEL_PATH') . '/' . $mainmenu->url))
                                 ->icon($mainmenu->icon)
                         ]);
                     } catch (Exception $e) {
@@ -65,7 +65,7 @@ class RoomPanelProvider extends PanelProvider
                         array_push(
                             $navigations,
                             NavigationItem::make($childmenu->name)
-                                ->url(App::make('url')->to("room" . "/" . $childmenu->url))
+                                ->url(App::make('url')->to(env('PANEL_PATH') . "/" . $childmenu->url))
                                 ->group($mainmenu->name)
                         );
                     }
@@ -86,13 +86,13 @@ class RoomPanelProvider extends PanelProvider
 
         $panel
             ->default()
-            ->id('room')
-            ->path("room")
+            ->id(env('PANEL_PATH'))
+            ->path(env('PANEL_PATH'))
             ->favicon(request()->segment(0) . '/img/favicon.png')
             ->brandLogo(request()->segment(0) . '/img/logo.png')
             ->brandLogoHeight('50px')
             ->userMenuItems([
-                'profile' => MenuItem::make()->url(App::make('url')->to("room" . '/profiles')),
+                'profile' => MenuItem::make()->url(App::make('url')->to(env('PANEL_PATH') . '/profiles')),
             ])
             ->databaseNotifications()
             ->login()

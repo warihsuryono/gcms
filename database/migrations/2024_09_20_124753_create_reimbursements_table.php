@@ -20,13 +20,13 @@ return new class extends Migration
             $table->string('notes')->nullable()->default('');
             $table->double('total')->nullable()->default(0);
             $table->smallInteger('status_payment')->nullable()->default(0);
-            $table->smallInteger('is_paid')->nullable()->default(0);
+            $table->smallInteger('is_paid')->nullable()->default(0)->index();
             $table->string('paid_notes')->nullable()->default('');
-            $table->smallInteger('is_approved')->nullable()->default(0);
+            $table->smallInteger('is_approved')->nullable()->default(0)->index();
             $table->dateTime('approved_at')->nullable();
             $table->unsignedBigInteger('approved_by')->default(0)->nullable();
             $table->string('approved_notes')->nullable()->default('');
-            $table->smallInteger('is_acknowledge')->nullable()->default(0);
+            $table->smallInteger('is_acknowledge')->nullable()->default(0)->index();
             $table->dateTime('acknowledge_at')->nullable();
             $table->unsignedBigInteger('acknowledge_by')->default(0)->nullable();
             $table->string('acknowledge_notes')->nullable()->default('');

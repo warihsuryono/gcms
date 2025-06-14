@@ -14,6 +14,6 @@ class CreateProvince extends CreateRecord
     protected static bool $canCreateAnother = false;
     protected function getRedirectUrl(): string
     {
-        return route('filament.room.resources.provinces.index', $this->record->id);
+        return route('filament.' . env('PANEL_PATH') . '.resources.provinces.index', $this->record->id);
     }
 }

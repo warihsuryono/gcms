@@ -27,17 +27,17 @@ class ProfileWidget extends Widget
 
     public function goToProfile()
     {
-        if (Auth::user()->employee || Auth::user()->customer) return redirect()->route('filament.room.resources.profiles.edit', Auth::user()->id);
+        if (Auth::user()->employee || Auth::user()->customer) return redirect()->route('filament.' . env('PANEL_PATH') . '.resources.profiles.edit', Auth::user()->id);
         Notification::make()->title('Warning!')->body('Please contact your Admin')->icon('heroicon-o-exclamation-triangle')->danger()->send();
     }
 
     public function goToTapAttendance()
     {
-        return redirect()->route('filament.room.resources.attendances.tap');
+        return redirect()->route('filament.' . env('PANEL_PATH') . '.resources.attendances.tap');
     }
 
     public function goToPresenceSchedules()
     {
-        return redirect()->route('filament.room.resources.presence-schedules.index');
+        return redirect()->route('filament.' . env('PANEL_PATH') . '.resources.presence-schedules.index');
     }
 }

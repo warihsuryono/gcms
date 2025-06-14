@@ -23,7 +23,7 @@ class CreatePurchaseOrder extends CreateRecord
 
     protected function getRedirectUrl(): string
     {
-        return route('filament.room.resources.purchase-orders.edit', $this->record->id);
+        return route('filament.' . env('PANEL_PATH') . '.resources.purchase-orders.edit', $this->record->id);
     }
 
     protected function mutateFormDataBeforeCreate(array $data): array

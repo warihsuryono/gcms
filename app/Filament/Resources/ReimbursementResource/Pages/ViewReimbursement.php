@@ -55,7 +55,7 @@ class ViewReimbursement extends ViewRecord
         ]);
         // Create Notification to user
         $actionNotifications = [
-            Action::make('View Details')->url(route('filament.room.resources.reimbursements.view', $this->record->id)),
+            Action::make('View Details')->url(route('filament.' . env('PANEL_PATH') . '.resources.reimbursements.view', $this->record->id)),
             Actions\DeleteAction::make(),
         ];
         $acknowlegedUsers = FollowupOfficer::where('action', 'reimbursement-acknowledge')->pluck('user_id')->toArray();
@@ -67,7 +67,7 @@ class ViewReimbursement extends ViewRecord
         // Sent Notification to user acknowledged
         Notification::make()
             ->title('Reimbursement has been approved!')
-            ->body(Auth::user()->name." has approved ".$this->record->user->name." reimbursement request. Please check it out.")
+            ->body(Auth::user()->name . " has approved " . $this->record->user->name . " reimbursement request. Please check it out.")
             ->success()
             ->actions($actionNotifications)
             ->sendToDatabase($acknowlegedUsers, true);
@@ -75,7 +75,7 @@ class ViewReimbursement extends ViewRecord
         // Sent Notification to user who create reimbursement
         Notification::make()
             ->title('Reimbursement has been approved!')
-            ->body(Auth::user()->name." has approved your reimbursement request. Please check it out.")
+            ->body(Auth::user()->name . " has approved your reimbursement request. Please check it out.")
             ->success()
             ->actions($actionNotifications)
             ->sendToDatabase([$this->record->user], true);
@@ -96,10 +96,10 @@ class ViewReimbursement extends ViewRecord
         // Sent Popup Notification to user who create reimbursement
         Notification::make()
             ->title('Acknowledged')
-            ->body(Auth::user()->name." has acknowledged your reimbursement request. Please check it out.")
+            ->body(Auth::user()->name . " has acknowledged your reimbursement request. Please check it out.")
             ->success()
             ->actions([
-                Action::make('View Details')->url(route('filament.room.resources.reimbursements.view', $this->record->id)),
+                Action::make('View Details')->url(route('filament.' . env('PANEL_PATH') . '.resources.reimbursements.view', $this->record->id)),
                 Actions\DeleteAction::make(),
             ])
             ->sendToDatabase([$this->record->user], true);

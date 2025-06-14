@@ -14,6 +14,6 @@ class CreateAttendanceTarget extends CreateRecord
     protected static bool $canCreateAnother = false;
     protected function getRedirectUrl(): string
     {
-        return route('filament.room.resources.attendance-targets.index', $this->record->id);
+        return route('filament.' . env('PANEL_PATH') . '.resources.attendance-targets.index', $this->record->id);
     }
 }

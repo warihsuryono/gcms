@@ -17,8 +17,8 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id')->default(0)->nullable()->index('attendances_user_id');
             $table->string('photo_in')->nullable()->default('');
             $table->string('photo_out')->nullable()->default('');
-            $table->dateTime('tap_in')->nullable();
-            $table->dateTime('tap_out')->nullable();
+            $table->dateTime('tap_in')->nullable()->index();
+            $table->dateTime('tap_out')->nullable()->index();
             $table->string('lat_in')->nullable()->default('');
             $table->string('lon_in')->nullable()->default('');
             $table->string('lat_out')->nullable()->default('');

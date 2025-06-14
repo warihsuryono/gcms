@@ -13,6 +13,6 @@ class CreateEmployeeStatus extends CreateRecord
     protected static bool $canCreateAnother = false;
     protected function getRedirectUrl(): string
     {
-        return route('filament.room.resources.employee-statuses.index', $this->record->id);
+        return route('filament.' . env('PANEL_PATH') . '.resources.employee-statuses.index', $this->record->id);
     }
 }

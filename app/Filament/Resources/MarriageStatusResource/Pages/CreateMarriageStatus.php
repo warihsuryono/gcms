@@ -14,6 +14,6 @@ class CreateMarriageStatus extends CreateRecord
     protected static bool $canCreateAnother = false;
     protected function getRedirectUrl(): string
     {
-        return route('filament.room.resources.marriage-statuses.index', $this->record->id);
+        return route('filament.' . env('PANEL_PATH') . '.resources.marriage-statuses.index', $this->record->id);
     }
 }

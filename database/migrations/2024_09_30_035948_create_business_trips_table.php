@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('business_trips', function (Blueprint $table) {
             $table->id();
-            $table->string('doc_no')->nullable()->default('');
+            $table->string('doc_no')->nullable()->default('')->index();
             $table->foreignId('province_id')->constrained(table: 'provinces', indexName: 'business_trip_province_id')->default(1);
             $table->foreignId('city_id')->constrained(table: 'cities', indexName: 'business_trip_city_id')->default(1);
             $table->string('destination', 100)->nullable()->default('');
@@ -32,10 +32,10 @@ return new class extends Migration
             $table->string('bank_account_no')->nullable()->default('');
             $table->double('total')->nullable()->default(0);
             $table->smallInteger('status_payment')->nullable()->default(0);
-            $table->smallInteger('is_approved')->nullable()->default(0);
+            $table->smallInteger('is_approved')->nullable()->default(0)->index();
             $table->dateTime('approved_at')->nullable();
             $table->unsignedBigInteger('approved_by')->default(0)->nullable();
-            $table->smallInteger('is_acknowledge')->nullable()->default(0);
+            $table->smallInteger('is_acknowledge')->nullable()->default(0)->index();
             $table->dateTime('acknowledge_at')->nullable();
             $table->unsignedBigInteger('acknowledge_by')->default(0)->nullable();
             $table->unsignedBigInteger('deleted_by')->default(0)->nullable();

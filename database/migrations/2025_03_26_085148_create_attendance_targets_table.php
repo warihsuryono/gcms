@@ -23,15 +23,6 @@ return new class extends Migration
             $table->softDeletes();
             $table->timestamps();
         });
-
-        if (!DB::table("menus")->where("url", "attendance-targets")->exists()) {
-            DB::table("menus")->insert([
-                "parent_id" => 2,
-                "name" => "Attendance Targets",
-                "url" => "attendance-targets",
-                "seqno" => DB::table("menus")->where("parent_id", 2)->max("seqno") + 1
-            ]);
-        }
     }
 
     /**

@@ -14,6 +14,6 @@ class CreateUser extends CreateRecord
     protected static bool $canCreateAnother = false;
     protected function getRedirectUrl(): string
     {
-        return route('filament.room.resources.users.index', $this->record->id);
+        return route('filament.' . env('PANEL_PATH') . '.resources.users.index', $this->record->id);
     }
 }

@@ -14,6 +14,6 @@ class CreateFuelConsumption extends CreateRecord
 
     protected function getRedirectUrl(): string
     {
-        return route('filament.room.resources.fuel-consumptions.index', $this->record->id);
+        return route('filament.' . env('PANEL_PATH') . '.resources.fuel-consumptions.index', $this->record->id);
     }
 }

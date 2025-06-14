@@ -14,6 +14,6 @@ class CreateDegree extends CreateRecord
     protected static bool $canCreateAnother = false;
     protected function getRedirectUrl(): string
     {
-        return route('filament.room.resources.degrees.index', $this->record->id);
+        return route('filament.' . env('PANEL_PATH') . '.resources.degrees.index', $this->record->id);
     }
 }

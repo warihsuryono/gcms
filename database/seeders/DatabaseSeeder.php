@@ -23,9 +23,6 @@ class DatabaseSeeder extends Seeder
             icons::class,
             BankSeeder::class,
             CurrencySeeder::class,
-            DegreeSeeder::class,
-            MarriageStatusSeeder::class,
-            EmployeeStatusSeeder::class,
             FollowupOfficerSeeder::class,
             ProvinceSeeder::class,
             CitySeeder::class,
@@ -37,13 +34,16 @@ class DatabaseSeeder extends Seeder
             ItemTypeSeeder::class,
             ItemBrandSeeder::class,
             ItemSeeder::class,
-            LeaveTypeSeeder::class,
             DivisionSeeder::class,
             FieldSeeder::class,
             DashboardSeeder::class,
             FuelConsumptionSeeder::class,
             WorkOrderSeeder::class,
-            EmployeeSeeder::class,
+            // DegreeSeeder::class,
+            // MarriageStatusSeeder::class,
+            // EmployeeStatusSeeder::class,
+            // EmployeeSeeder::class,
+            // LeaveTypeSeeder::class,
         ]);
     }
 }

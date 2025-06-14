@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('reimbursement_details', function (Blueprint $table) {
             $table->id();
             $table->foreignId('reimbursement_id')->constrained(table: 'reimbursements', indexName: 'reimbursement_details_id')->default(1);
-            $table->date('transaction_at')->nullable();
+            $table->date('transaction_at')->nullable()->index();
             $table->string('description')->nullable()->default('');
             $table->double('nominal')->nullable()->default(0);
             $table->string('attachment')->unique()->nullable();

@@ -13,14 +13,14 @@ return new class extends Migration
     {
         Schema::create('suppliers', function (Blueprint $table) {
             $table->id();
-            $table->enum('import_domestic', ['import', 'domestic', 'both']);
+            $table->enum('import_domestic', ['import', 'domestic', 'both'])->index();
             $table->string('name', 100)->nullable()->default('');
             $table->string('pic', 50)->nullable()->default('');
             $table->string('pic_phone', 30)->nullable()->default('');
             $table->string('email', 100)->nullable()->default('');
             $table->string('address')->nullable()->default('');
-            $table->unsignedBigInteger('city_id')->default(0)->nullable();
-            $table->unsignedBigInteger('province_id')->default(0)->nullable();
+            $table->unsignedBigInteger('city_id')->default(0)->nullable()->index();
+            $table->unsignedBigInteger('province_id')->default(0)->nullable()->index();
             $table->string('country', 100)->nullable()->default('');
             $table->string('zipcode', 10)->nullable()->default('');
             $table->string('fax', 30)->nullable()->default('');

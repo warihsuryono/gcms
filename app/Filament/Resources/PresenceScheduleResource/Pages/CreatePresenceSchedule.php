@@ -15,7 +15,7 @@ class CreatePresenceSchedule extends CreateRecord
     protected static bool $canCreateAnother = false;
     protected function getRedirectUrl(): string
     {
-        return route('filament.room.resources.presence-schedules.index', $this->record->id);
+        return route('filament.' . env('PANEL_PATH') . '.resources.presence-schedules.index', $this->record->id);
     }
 
     protected function mutateFormDataBeforeCreate(array $data): array

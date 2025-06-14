@@ -20,7 +20,7 @@ class CreateReimbursement extends CreateRecord
     protected static bool $canCreateAnother = false;
     protected function getRedirectUrl(): string
     {
-        return route('filament.room.resources.reimbursements.edit', $this->record->id);
+        return route('filament.' . env('PANEL_PATH') . '.resources.reimbursements.edit', $this->record->id);
     }
 
     protected function mutateFormDataBeforeCreate(array $data): array
@@ -32,7 +32,7 @@ class CreateReimbursement extends CreateRecord
     protected function afterCreate(): void
     {
         // Select User Id from Followup Officer who have action = 'reimbursement-approve'
-        $userIds = FollowupOfficer::where('action','reimbursement-approve')->get()->pluck('user_id')->toArray(); //returning Array
+        $userIds = FollowupOfficer::where('action', 'reimbursement-approve')->get()->pluck('user_id')->toArray(); //returning Array
         // Select Users 
         $users = User::whereIn('id', $userIds)->get();
         $me = Auth::user();
@@ -41,9 +41,8 @@ class CreateReimbursement extends CreateRecord
             ->title('Reimbursement has been created!')
             ->body("{$me->name} has created a new reimbursement. Please check it out.")
             ->actions([
-                ActionsAction::make('View Details')->url(route('filament.room.resources.reimbursements.view', $this->record->id)),
+                ActionsAction::make('View Details')->url(route('filament.' . env('PANEL_PATH') . '.resources.reimbursements.view', $this->record->id)),
             ])
             ->sendToDatabase($users, true);
-
     }
 }

@@ -44,12 +44,12 @@ class DashboardWidget extends BaseWidget
             $weekattendanceCount += floor(abs(strtotime($now) - strtotime($tap_in)) / 60);
             $diff_today = strtotime($now) - strtotime($tap_in);
             $remain_today = (8 * 3600) - $diff_today;
-            if(date("H") > 13){
+            if (date("H") > 13) {
                 $diff_today = $diff_today - 3600;
                 $remain_today = $remain_today + 3600;
                 $weekattendanceCount -= 60;
             }
-                        
+
             $today_h = intdiv($diff_today, 3600);
             $today_m = intdiv(($diff_today - ($today_h * 3600)), 60);
             $today_s = ($diff_today - ($today_h * 3600)) % 60;
@@ -105,21 +105,21 @@ class DashboardWidget extends BaseWidget
 
     public function goToAttendance()
     {
-        return redirect()->route('filament.room.resources.attendances.tap');
+        return redirect()->route('filament.' . env('PANEL_PATH') . '.resources.attendances.tap');
     }
 
     public function goToReimbursements()
     {
-        return redirect()->route('filament.room.resources.reimbursements.index');
+        return redirect()->route('filament.' . env('PANEL_PATH') . '.resources.reimbursements.index');
     }
 
     public function goToBusinessTrip()
     {
-        return redirect()->route('filament.room.resources.business-trips.index');
+        return redirect()->route('filament.' . env('PANEL_PATH') . '.resources.business-trips.index');
     }
 
     public function goToLeaves()
     {
-        return redirect()->route('filament.room.resources.leaves.index');
+        return redirect()->route('filament.' . env('PANEL_PATH') . '.resources.leaves.index');
     }
 }

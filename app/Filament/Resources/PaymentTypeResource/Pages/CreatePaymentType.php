@@ -14,6 +14,6 @@ class CreatePaymentType extends CreateRecord
     protected static bool $canCreateAnother = false;
     protected function getRedirectUrl(): string
     {
-        return route('filament.room.resources.payment-types.index', $this->record->id);
+        return route('filament.' . env('PANEL_PATH') . '.resources.payment-types.index', $this->record->id);
     }
 }

@@ -14,6 +14,6 @@ class CreateDivision extends CreateRecord
     protected static bool $canCreateAnother = false;
     protected function getRedirectUrl(): string
     {
-        return route('filament.room.resources.divisions.index', $this->record->id);
+        return route('filament.' . env('PANEL_PATH') . '.resources.divisions.index', $this->record->id);
     }
 }

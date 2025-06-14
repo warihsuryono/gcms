@@ -14,6 +14,6 @@ class CreateCity extends CreateRecord
     protected static bool $canCreateAnother = false;
     protected function getRedirectUrl(): string
     {
-        return route('filament.room.resources.cities.index', $this->record->id);
+        return route('filament.' . env('PANEL_PATH') . '.resources.cities.index', $this->record->id);
     }
 }

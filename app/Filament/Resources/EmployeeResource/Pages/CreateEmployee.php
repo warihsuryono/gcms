@@ -14,6 +14,6 @@ class CreateEmployee extends CreateRecord
     protected static bool $canCreateAnother = false;
     protected function getRedirectUrl(): string
     {
-        return route('filament.room.resources.employees.index', $this->record->id);
+        return route('filament.' . env('PANEL_PATH') . '.resources.employees.index', $this->record->id);
     }
 }

@@ -20,6 +20,6 @@ class CreateWorkOrder extends CreateRecord
 
     protected function getRedirectUrl(): string
     {
-        return route('filament.room.resources.work-orders.index', $this->record->id);
+        return route('filament.' . env('PANEL_PATH') . '.resources.work-orders.index', $this->record->id);
     }
 }

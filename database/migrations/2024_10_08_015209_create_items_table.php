@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('items', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('item_specification_id')->default(0)->nullable();
-            $table->unsignedBigInteger('item_category_id')->default(0)->nullable();
-            $table->unsignedBigInteger('item_type_id')->default(0)->nullable();
-            $table->unsignedBigInteger('item_brand_id')->default(0)->nullable();
+            $table->unsignedBigInteger('item_specification_id')->default(0)->nullable()->index();
+            $table->unsignedBigInteger('item_category_id')->default(0)->nullable()->index();
+            $table->unsignedBigInteger('item_type_id')->default(0)->nullable()->index();
+            $table->unsignedBigInteger('item_brand_id')->default(0)->nullable()->index();
             $table->string('name')->nullable()->default('');
             $table->unsignedBigInteger('unit_id')->default(0)->nullable();
             $table->text('description')->nullable();

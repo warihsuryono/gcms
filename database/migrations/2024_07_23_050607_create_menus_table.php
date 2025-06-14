@@ -35,7 +35,6 @@ return new class extends Migration
             ['id' => 4, 'seqno' => 4, 'parent_id' => 0, 'name' => 'Activity', 'url' => '#', 'icon' => 'heroicon-o-wrench-screwdriver', 'route' => '', 'middleware' => ''],
             ['id' => 5, 'seqno' => 5, 'parent_id' => 0, 'name' => 'Procurement', 'url' => '#', 'icon' => 'heroicon-o-shopping-cart', 'route' => '', 'middleware' => ''],
             ['id' => 6, 'seqno' => 6, 'parent_id' => 0, 'name' => 'Report', 'url' => '#', 'icon' => 'heroicon-o-wrench-screwdriver', 'route' => '', 'middleware' => ''],
-
         ]);
 
         DB::table('menus')->insert([

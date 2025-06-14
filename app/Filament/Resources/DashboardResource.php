@@ -34,26 +34,13 @@ class DashboardResource extends Resource
                     FileUpload::make('background')->directory('dashboard_images')->image()->imageEditor(),
                 ]),
                 Section::make('Running Text')->schema([
-                    Forms\Components\TextInput::make('running_text_1')->maxLength(255),
-                    Forms\Components\TextInput::make('running_text_2')->maxLength(255),
-                    Forms\Components\TextInput::make('running_text_3')->maxLength(255),
-                    Forms\Components\TextInput::make('running_text_4')->maxLength(255),
+                    Forms\Components\TextInput::make('running_text_1')->maxLength(255)->label('Running Text'),
                 ]),
                 Section::make('Widgets')->schema([
-                    FileUpload::make('widget_1')->directory('dashboard_images')->image()->imageEditor(),
+                    FileUpload::make('widget_1')->directory('dashboard_images')->image()->imageEditor()->label('Widget '),
                     Section::make('Position (px)')->schema([
                         Forms\Components\TextInput::make('widget_1_top')->numeric()->default(0)->label('Top'),
                         Forms\Components\TextInput::make('widget_1_left')->numeric()->default(0)->label('Left'),
-                    ])->columns(2),
-                    FileUpload::make('widget_2')->directory('dashboard_images')->image()->imageEditor(),
-                    Section::make('Position (px)')->schema([
-                        Forms\Components\TextInput::make('widget_2_top')->numeric()->default(0)->label('Top'),
-                        Forms\Components\TextInput::make('widget_2_left')->numeric()->default(0)->label('Left'),
-                    ])->columns(2),
-                    FileUpload::make('widget_3')->directory('dashboard_images')->image()->imageEditor(),
-                    Section::make('Position (px)')->schema([
-                        Forms\Components\TextInput::make('widget_3_top')->numeric()->default(0)->label('Top'),
-                        Forms\Components\TextInput::make('widget_3_left')->numeric()->default(0)->label('Left'),
                     ])->columns(2),
                 ]),
             ]);
@@ -65,20 +52,11 @@ class DashboardResource extends Resource
             ->columns([
                 ImageColumn::make('logo'),
                 Tables\Columns\TextColumn::make('tagline'),
-                Tables\Columns\TextColumn::make('running_text_1'),
-                Tables\Columns\TextColumn::make('running_text_2'),
-                Tables\Columns\TextColumn::make('running_text_3')->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('running_text_4')->toggleable(isToggledHiddenByDefault: true),
-                ImageColumn::make('background')->toggleable(isToggledHiddenByDefault: true),
-                ImageColumn::make('widget_1')->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('widget_1_top')->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('widget_1_left')->toggleable(isToggledHiddenByDefault: true),
-                ImageColumn::make('widget_2')->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('widget_2_top')->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('widget_2_left')->toggleable(isToggledHiddenByDefault: true),
-                ImageColumn::make('widget_3')->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('widget_3_top')->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('widget_3_left')->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('running_text_1')->label('Running Text'),
+                ImageColumn::make('background'),
+                ImageColumn::make('widget_1')->label('Widget'),
+                Tables\Columns\TextColumn::make('widget_1_top')->label('Widget Top (px)')->alignRight(),
+                Tables\Columns\TextColumn::make('widget_1_left')->label('Widget Left (px)')->alignRight(),
             ])
             ->paginated(false)
             ->actions([EditAction::make()->iconButton()], ActionsPosition::BeforeColumns);

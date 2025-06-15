@@ -33,8 +33,8 @@ class ItemRequest extends Model
         return $this->belongsTo(User::class, 'issued_by');
     }
 
-    public function receiveBy(): BelongsTo
+    public function receivedBy(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'receive_by');
+        return $this->belongsTo(User::class, 'received_by');
     }
 }

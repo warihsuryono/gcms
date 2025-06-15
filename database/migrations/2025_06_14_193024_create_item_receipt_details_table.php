@@ -36,6 +36,7 @@ return new class extends Migration
         Schema::create('item_receipt_details', function (Blueprint $table) {
             $table->id();
             $table->foreignId('item_receipt_id')->constrained(table: 'item_receipts', indexName: 'item_receipt_details_id')->default(1);
+            $table->integer('seqno')->nullable()->default(0);
             $table->unsignedBigInteger('purchase_order_detail_id')->default(0)->nullable()->index();
             $table->unsignedBigInteger('item_id')->nullable()->index();
             $table->unsignedBigInteger('unit_id')->nullable();

@@ -22,8 +22,8 @@ return new class extends Migration
             $table->date('issued_at')->nullable();
             $table->unsignedBigInteger('issued_by')->nullable();
             $table->smallInteger('is_received')->default(0);
-            $table->dateTime('receive_at')->nullable();
-            $table->unsignedBigInteger('receive_by')->nullable();
+            $table->dateTime('received_at')->nullable();
+            $table->unsignedBigInteger('received_by')->nullable();
             $table->unsignedBigInteger('deleted_by')->default(0)->nullable();
             $table->unsignedBigInteger('created_by')->default(0)->nullable();
             $table->unsignedBigInteger('updated_by')->default(0)->nullable();
@@ -34,6 +34,7 @@ return new class extends Migration
         Schema::create('item_request_details', function (Blueprint $table) {
             $table->id();
             $table->foreignId('item_request_id')->constrained(table: 'item_requests', indexName: 'item_request_details_id')->default(1);
+            $table->integer('seqno')->nullable()->default(0);
             $table->unsignedBigInteger('item_request_type_id')->nullable()->index();
             $table->unsignedBigInteger('item_id')->nullable()->index();
             $table->unsignedBigInteger('unit_id')->nullable();

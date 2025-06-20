@@ -17,6 +17,7 @@ class ListWorkOrders extends ListRecords
     // use FilamentListFunctions;
     protected static string $resource = WorkOrderResource::class;
 
+
     protected function actions(): array
     {
         $routename = $this->routename;

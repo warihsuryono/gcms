@@ -9,9 +9,13 @@ use App\Models\Field;
 use Filament\Forms\Form;
 use App\Models\WorkOrder;
 use Filament\Tables\Table;
+use App\Models\WorkOrderStatus;
 use Filament\Resources\Resource;
 use App\Traits\FilamentListActions;
+use Filament\Tables\Actions\Action;
 use Filament\Forms\Components\Tabs\Tab;
+use Illuminate\Support\Facades\Request;
+use Filament\Tables\Actions\ActionGroup;
 use Filament\Forms\Components\RichEditor;
 use Filament\Tables\Columns\SelectColumn;
 use Filament\Tables\Filters\SelectFilter;
@@ -20,9 +24,6 @@ use Filament\Tables\Enums\ActionsPosition;
 use App\Filament\Resources\WorkOrderResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\WorkOrderResource\RelationManagers;
-use App\Models\WorkOrderStatus;
-use Filament\Tables\Actions\Action;
-use Illuminate\Support\Facades\Request;
 
 class WorkOrderResource extends Resource
 {
@@ -52,13 +53,13 @@ class WorkOrderResource extends Resource
 
     public static function table(Table $table): Table
     {
-        $actions = self::actions(self::$routename);
+        $actions = [];
         array_push(
             $actions,
             Action::make('Create Next Work Order')
                 ->icon('heroicon-o-document-plus')
                 ->color('primary')
-                ->visible(fn($record) => $record->is_next_work_order == 1)
+                ->visible(fn($record) => $record->is_next_work_order == 1 && @$record->next_work_order->id == 0)
                 ->action(function ($record) {
                     redirect()->route('filament.' . env('PANEL_PATH') . '.resources.work-orders.create', ['work_order_id' => $record->id]);
                 })->iconButton()
@@ -83,11 +84,12 @@ class WorkOrderResource extends Resource
                     redirect()->route('filament.' . env('PANEL_PATH') . '.resources.work-orders.view', @$record->next_work_order->id);
                 })->iconButton()
         );
+        array_push($actions, ActionGroup::make(self::actions(self::$routename)));
 
         $table->actions($actions, ActionsPosition::BeforeColumns);
         return $table
             ->columns([
-                SelectColumn::make('work_order_status_id')->options(WorkOrderStatus::all()->pluck('name', 'id'))->label('Status'),
+                SelectColumn::make('work_order_status_id')->options(WorkOrderStatus::all()->pluck('name', 'id'))->label('Status')->extraAttributes(['style' => 'width:180px;']),
                 Tables\Columns\TextColumn::make('work_start')->dateTime(),
                 Tables\Columns\TextColumn::make('work_end')->dateTime(),
                 Tables\Columns\TextColumn::make('division.name'),

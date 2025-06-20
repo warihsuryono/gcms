@@ -56,6 +56,15 @@ class WorkOrderResource extends Resource
         $actions = self::actions(self::$routename);
         array_push(
             $actions,
+            Action::make('Create Item Request')
+                ->icon('heroicon-o-archive-box-arrow-down')
+                ->color('primary')
+                ->action(function ($record) {
+                    redirect()->route('filament.' . env('PANEL_PATH') . '.resources.item-requests.create', ['work_order_id' => $record->id]);
+                })->iconButton()
+        );
+        array_push(
+            $actions,
             Action::make('Create Next Work Order')
                 ->icon('heroicon-o-document-plus')
                 ->color('primary')

@@ -20,6 +20,9 @@ use Filament\Forms\Components\DatePicker;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Enums\ActionsPosition;
 use Filament\Tables\Filters\TernaryFilter;
+use Illuminate\Support\Facades\Request;
+use Filament\Tables\Actions\ActionGroup;
+use Filament\Tables\Actions\Action;
 
 
 class ItemRequestResource extends Resource
@@ -37,19 +40,32 @@ class ItemRequestResource extends Resource
                 Forms\Components\TextInput::make('item_request_no')->readOnly()->visibleOn('edit'),
                 Forms\Components\DatePicker::make('item_request_at')->default(now())->required()->label('Request At'),
                 Forms\Components\TextInput::make('user_id')->default(Auth::user()->name)->disabled()->label('Requested By'),
-                // Forms\Components\Select::make('work_order_id')->relationship('work_order', 'id'),
                 Forms\Components\Textarea::make('description')->columnSpanFull(),
+                Forms\Components\Hidden::make('work_order_id')->default(fn() => Request::get('work_order_id') > 0 ? Request::get('work_order_id') : 0),
+
             ]);
     }
 
     public static function table(Table $table): Table
     {
+        $actions = self::actions(self::$routename);
+        array_push(
+            $actions,
+            Action::make('View Work Order')
+                ->icon('heroicon-o-document-magnifying-glass')
+                ->color('primary')
+                ->visible(fn($record) => $record->work_order_id > 0)
+                ->action(function ($record) {
+                    redirect()->route('filament.' . env('PANEL_PATH') . '.resources.work-orders.view', $record->work_order_id);
+                })->iconButton()
+        );
+
+        $table->actions($actions, ActionsPosition::BeforeColumns);
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('item_request_no')->searchable()->label('Request No'),
                 Tables\Columns\TextColumn::make('item_request_at'),
                 Tables\Columns\TextColumn::make('user.name'),
-                // Tables\Columns\TextColumn::make('work_order.id'),
                 Tables\Columns\TextColumn::make('issuedBy.name')->label('Issued By'),
                 Tables\Columns\TextColumn::make('receivedBy.name')->label('Received By'),
             ])
@@ -76,8 +92,7 @@ class ItemRequestResource extends Resource
                     return $query;
                 }
             })
-            ->filtersFormColumns(3)
-            ->actions(self::actions(self::$routename), ActionsPosition::BeforeColumns);
+            ->filtersFormColumns(3);
     }
 
     public static function getRelations(): array
@@ -93,6 +108,7 @@ class ItemRequestResource extends Resource
             'index' => Pages\ListItemRequests::route('/'),
             'create' => Pages\CreateItemRequest::route('/create'),
             'edit' => Pages\EditItemRequest::route('/{record}/edit'),
+            'view' => Pages\ViewItemRequest::route('/{record}')
         ];
     }
 }

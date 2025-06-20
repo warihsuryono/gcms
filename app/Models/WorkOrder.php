@@ -32,4 +32,9 @@ class WorkOrder extends Model
     {
         return $this->hasOne(WorkOrder::class, 'prev_work_order_id');
     }
+
+    public function item_request(): HasOne
+    {
+        return $this->hasOne(ItemRequest::class, 'work_order_id');
+    }
 }

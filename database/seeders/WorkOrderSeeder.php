@@ -32,8 +32,8 @@ class WorkOrderSeeder extends Seeder
         ']);
 
         WorkOrder::create(['work_start' => date("Y-m-d") . ' 02:00:00', 'division_id' => 2, 'field_ids' => '["10"]', 'works' => '
-        • Lanjut bongkar kanstin dan pasang kembali kanstin
-        • di naikan kanstin rata - rata 0,4 cm di pinggir carpath
+        • Lanjut bongkar kanstin dan pasang kembali kanstin<br>
+        • di naikan kanstin rata - rata 0,4 cm di pinggir carpath<br>
         • di samping Ferway kalo dari tee box sebelah kanan
         ']);
 

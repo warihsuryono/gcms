@@ -53,7 +53,7 @@ class WorkOrderResource extends Resource
 
     public static function table(Table $table): Table
     {
-        $actions = [];
+        $actions = self::actions(self::$routename);
         array_push(
             $actions,
             Action::make('Create Next Work Order')
@@ -84,8 +84,6 @@ class WorkOrderResource extends Resource
                     redirect()->route('filament.' . env('PANEL_PATH') . '.resources.work-orders.view', @$record->next_work_order->id);
                 })->iconButton()
         );
-        array_push($actions, ActionGroup::make(self::actions(self::$routename)));
-
         $table->actions($actions, ActionsPosition::BeforeColumns);
         return $table
             ->columns([

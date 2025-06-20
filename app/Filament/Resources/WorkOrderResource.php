@@ -52,16 +52,38 @@ class WorkOrderResource extends Resource
 
     public static function table(Table $table): Table
     {
-        $additional_action =
-            Action::make('Create Next Work Order')
-            ->icon('heroicon-o-document-plus')
-            ->color('success')
-            ->visible(fn($record) => $record->is_next_work_order == 1)
-            ->action(function ($record) {
-                redirect()->route('filament.' . env('PANEL_PATH') . '.resources.work-orders.create', ['work_order_id' => $record->id]);
-            })->iconButton();
         $actions = self::actions(self::$routename);
-        array_push($actions, $additional_action);
+        array_push(
+            $actions,
+            Action::make('Create Next Work Order')
+                ->icon('heroicon-o-document-plus')
+                ->color('primary')
+                ->visible(fn($record) => $record->is_next_work_order == 1)
+                ->action(function ($record) {
+                    redirect()->route('filament.' . env('PANEL_PATH') . '.resources.work-orders.create', ['work_order_id' => $record->id]);
+                })->iconButton()
+        );
+        array_push(
+            $actions,
+            Action::make('Previous Work Order')
+                ->icon('heroicon-o-chevron-double-left')
+                ->color('warning')
+                ->visible(fn($record) => $record->prev_work_order_id > 0)
+                ->action(function ($record) {
+                    redirect()->route('filament.' . env('PANEL_PATH') . '.resources.work-orders.view', $record->prev_work_order_id);
+                })->iconButton(),
+        );
+        array_push(
+            $actions,
+            Action::make('Next Work Order')
+                ->icon('heroicon-o-chevron-double-right')
+                ->color('success')
+                ->visible(fn($record) => @$record->next_work_order->id > 0)
+                ->action(function ($record) {
+                    redirect()->route('filament.' . env('PANEL_PATH') . '.resources.work-orders.view', @$record->next_work_order->id);
+                })->iconButton()
+        );
+
         $table->actions($actions, ActionsPosition::BeforeColumns);
         return $table
             ->columns([
@@ -103,6 +125,7 @@ class WorkOrderResource extends Resource
             'index' => Pages\ListWorkOrders::route('/'),
             'create' => Pages\CreateWorkOrder::route('/create'),
             // 'edit' => Pages\EditWorkOrder::route('/{record}/edit'),
+            'view' => Pages\ViewWorkOrder::route('/{record}'),
         ];
     }
 }

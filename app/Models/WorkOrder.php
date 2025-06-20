@@ -5,9 +5,9 @@ namespace App\Models;
 use App\Traits\crudBy;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class WorkOrder extends Model
 {
@@ -28,8 +28,8 @@ class WorkOrder extends Model
         return $this->belongsTo(WorkOrder::class, 'prev_work_order_id');
     }
 
-    public function next_work_order(): HasMany
+    public function next_work_order(): HasOne
     {
-        return $this->hasMany(WorkOrder::class, 'prev_work_order_id');
+        return $this->hasOne(WorkOrder::class, 'prev_work_order_id');
     }
 }

@@ -96,7 +96,7 @@ class WorkOrderResource extends Resource
         $table->actions($actions, ActionsPosition::BeforeColumns);
         return $table
             ->columns([
-                SelectColumn::make('work_order_status_id')->options(WorkOrderStatus::all()->pluck('name', 'id'))->label('Status')->extraAttributes(['style' => 'width:180px;']),
+                SelectColumn::make('work_order_status_id')->options(WorkOrderStatus::all()->pluck('name', 'id'))->label('Status')->extraAttributes(['style' => 'width:160px;']),
                 Tables\Columns\TextColumn::make('work_start')->dateTime(),
                 Tables\Columns\TextColumn::make('work_end')->dateTime(),
                 Tables\Columns\TextColumn::make('division.name'),

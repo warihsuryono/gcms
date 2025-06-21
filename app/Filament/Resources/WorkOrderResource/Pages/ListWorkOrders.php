@@ -4,7 +4,6 @@ namespace App\Filament\Resources\WorkOrderResource\Pages;
 
 use App\Filament\Resources\WorkOrderResource;
 // use App\Traits\FilamentListFunctions;
-use Illuminate\Support\Facades\Route;
 use App\Models\menu;
 use Filament\Actions\CreateAction;
 use App\Http\Controllers\PrivilegeController;
@@ -14,9 +13,9 @@ use Filament\Resources\Pages\ListRecords;
 class ListWorkOrders extends ListRecords
 {
     protected $routename = 'work-orders';
+    protected static string $view = 'workorders.list';
     // use FilamentListFunctions;
     protected static string $resource = WorkOrderResource::class;
-
 
     protected function actions(): array
     {

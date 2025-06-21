@@ -107,7 +107,7 @@ class WorkOrderResource extends Resource
                         $fields .= Field::find($field_id)->name . "<br>";
                     }
                     return $fields;
-                })->html()->toggleable(isToggledHiddenByDefault: true),
+                })->html(),
                 Tables\Columns\TextColumn::make('works')->searchable()->html(),
             ])
             ->filters([

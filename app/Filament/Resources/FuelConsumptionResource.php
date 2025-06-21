@@ -32,6 +32,11 @@ class FuelConsumptionResource extends Resource
             ->schema([
                 Forms\Components\DatePicker::make('consumption_at'),
                 Forms\Components\Select::make('item_type_id')->relationship('item_type', 'name', fn(Builder $query) => $query->where('id', '<', 3))->required()->default(1)->label('Fuel Type'),
+                Forms\Components\Select::make('fuelpowered_equipment_id')->relationship('fuelpowered_equipment', 'name')->label('Fuel Powered Equipment')->searchable()->preload()
+                    ->createOptionForm([
+                        Forms\Components\Select::make('item_type_id')->relationship('item_type', 'name', fn(Builder $query) => $query->where('id', '<', 3))->required()->default(1)->label('Fuel Type'),
+                        Forms\Components\TextInput::make('name')->required()->maxLength(255),
+                    ]),
                 Forms\Components\TextInput::make('quantity')->numeric()->default(0)->suffix('liters'),
             ]);
     }
@@ -42,6 +47,7 @@ class FuelConsumptionResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('consumption_at')->date()->sortable(),
                 Tables\Columns\TextColumn::make('item_type.name')->label('Fuel Type'),
+                Tables\Columns\TextColumn::make('fuelpowered_equipment.name')->label('Fuel Powered Equipment'),
                 Tables\Columns\TextColumn::make('quantity')->numeric()->sortable()->label('Quantity (Liters)')->alignRight(),
             ])
             ->filters([

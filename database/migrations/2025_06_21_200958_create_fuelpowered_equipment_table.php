@@ -11,13 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('fuel_consumptions', function (Blueprint $table) {
+        Schema::create('fuelpowered_equipment', function (Blueprint $table) {
             $table->id();
-            $table->date('consumption_at')->nullable();
             $table->unsignedBigInteger('item_type_id')->default(0)->nullable();
-            $table->unsignedBigInteger('fuelpowered_equipment_id')->default(0)->nullable();
-            $table->double('quantity')->default(0)->nullable();
-            $table->unsignedBigInteger('unit_id')->default(0)->nullable();
+            $table->string('name')->unique();
             $table->unsignedBigInteger('deleted_by')->default(0)->nullable();
             $table->unsignedBigInteger('created_by')->default(0)->nullable();
             $table->unsignedBigInteger('updated_by')->default(0)->nullable();
@@ -31,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('fuel_consumptions');
+        Schema::dropIfExists('fuelpowered_equipment');
     }
 };

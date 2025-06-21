@@ -2,13 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\Models\Dashboard;
-use App\Models\Division;
-use App\Models\Employee;
-use App\Models\FuelConsumption;
-use App\Models\LeaveType;
-use App\Models\Warehouse;
-use App\Models\WorkOrder;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -44,6 +37,7 @@ class DatabaseSeeder extends Seeder
             ItemRequestTypeSeeder::class,
             WorkOrderStatusSeeder::class,
             WarehouseSeeder::class,
+            FuelpoweredEquipmentSeeder::class,
             // DegreeSeeder::class,
             // MarriageStatusSeeder::class,
             // EmployeeStatusSeeder::class,

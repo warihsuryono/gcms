@@ -22,6 +22,7 @@ class UnitSeeder extends Seeder
         Unit::create(['name' => 'm2']);
         Unit::create(['name' => 'Dozen']);
         Unit::create(['name' => 'Box']);
+        Unit::create(['name' => 'Bag']);
         Unit::create(['name' => 'Roll']);
         Unit::create(['name' => 'Pack']);
         Unit::create(['name' => 'Sheet']);

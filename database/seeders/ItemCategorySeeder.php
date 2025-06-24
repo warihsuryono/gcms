@@ -18,7 +18,7 @@ class ItemCategorySeeder extends Seeder
         ItemCategory::create(['name' => 'Furniture']);
         ItemCategory::create(['name' => 'Spareparts']);
         ItemCategory::create(['name' => 'Tools']);
-        ItemCategory::create(['name' => 'Experts']);
         ItemCategory::create(['name' => 'Maintenance']);
+        ItemCategory::create(['name' => 'Experts']);
     }
 }

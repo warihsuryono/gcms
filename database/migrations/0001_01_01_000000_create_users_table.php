@@ -1,8 +1,9 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
 return new class extends Migration
 {
@@ -55,6 +56,15 @@ return new class extends Migration
             $table->longText('payload');
             $table->integer('last_activity')->index();
         });
+
+        DB::table('sessions')->insert([
+            'id' => 'weBwdbGHODp0V6sjZTEPW5PPTJ8QnOs5LaPd9gPG',
+            'user_id' => 1,
+            'ip_address' => '127.0.0.1',
+            'user_agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36',
+            'payload' => 'YTo2OntzOjY6Il90b2tlbiI7czo0MDoiUU5rbTF6MUxCWktNVzJ2aWc0Vkg0MG5UeG5OY21rbHJ2S2ZJZ2NGUCI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MjY6Imh0dHA6Ly9nY21zLnRlc3Qvd29ya3NwYWNlIjt9czozOiJ1cmwiO2E6MDp7fXM6NTA6ImxvZ2luX3dlYl8zZGM3YTkxM2VmNWZkNGI4OTBlY2FiZTM0ODcwODU1NzNlMTZjZjgyIjtpOjE7czoxNzoicGFzc3dvcmRfaGFzaF93ZWIiO3M6NjA6IiQyeSQxMiQubEs5NzhMZVZxOWxSV253V0lNSUxlUWoyL1hoNDNuQi45WGRhOTRuZ3RLNEhEQXN0ZU9qNiI7fQ==',
+            'last_activity' => (new DateTime())->getTimestamp()
+        ]);
     }
 
     /**

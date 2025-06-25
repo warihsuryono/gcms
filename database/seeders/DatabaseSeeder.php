@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\ItemRequest;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -39,6 +40,7 @@ class DatabaseSeeder extends Seeder
             WarehouseSeeder::class,
             FuelpoweredEquipmentSeeder::class,
             StockSeeder::class,
+            ItemRequestSeeder::class,
             // DegreeSeeder::class,
             // MarriageStatusSeeder::class,
             // EmployeeStatusSeeder::class,

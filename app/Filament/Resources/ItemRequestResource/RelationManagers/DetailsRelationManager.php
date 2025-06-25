@@ -31,7 +31,7 @@ class DetailsRelationManager extends RelationManager
     {
         return $form
             ->schema([
-                Select::make('item_request_type_id')->relationship('item_request_type', 'name')->required()->searchable()->preload()->default(1),
+                Select::make('item_request_type_id')->relationship('item_request_type', 'name')->required()->default(1)->label('Request Type'),
                 Select::make('item_id')
                     ->searchable()->preload()->required()->live()
                     ->options(function () {
@@ -62,7 +62,7 @@ class DetailsRelationManager extends RelationManager
         return $table
             ->recordTitleAttribute('item_id')
             ->columns([
-                Tables\Columns\TextColumn::make('item_request_type.name'),
+                Tables\Columns\TextColumn::make('item_request_type.name')->label('Request Type'),
                 Tables\Columns\TextColumn::make('item.name'),
                 Tables\Columns\TextColumn::make('qty'),
                 Tables\Columns\TextColumn::make('unit.name'),

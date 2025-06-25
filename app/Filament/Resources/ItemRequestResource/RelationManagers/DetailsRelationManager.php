@@ -4,13 +4,16 @@ namespace App\Filament\Resources\ItemRequestResource\RelationManagers;
 
 use Filament\Forms;
 use App\Models\Item;
-use App\Models\ItemRequestDetail;
 use App\Models\Unit;
 use Filament\Tables;
+use Filament\Forms\Get;
+use Filament\Forms\Set;
+use Livewire\Component;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
+use App\Models\WarehouseDetail;
+use App\Models\ItemRequestDetail;
 use Filament\Forms\Components\Select;
-use Livewire\Component;
 use App\Tables\Columns\SelectCheckbox;
 use Filament\Forms\Components\TextInput;
 use Illuminate\Database\Eloquent\Builder;
@@ -26,8 +29,14 @@ class DetailsRelationManager extends RelationManager
     {
         return $form
             ->schema([
-                Select::make('item_request_type_id')->relationship('item_request_type', 'name')->searchable()->preload(),
-                Select::make('item_id')->options(Item::all()->pluck('name', 'id'))->relationship('item', 'name')->searchable()->preload()
+                Select::make('item_request_type_id')->relationship('item_request_type', 'name')->required()->searchable()->preload()->default(1),
+                Select::make('item_id')
+                    ->searchable()->preload()->required()->live()
+                    ->options(function () {
+                        return Item::all()->mapWithKeys(function ($item) {
+                            return [$item->id => "[{$item->code}] -- {$item->name}"];
+                        });
+                    })
                     ->createOptionForm([
                         Select::make('item_specification_id')->relationship('item_specification', 'name')->searchable()->preload(),
                         Select::make('item_category_id')->relationship('item_category', 'name')->searchable()->preload(),
@@ -36,14 +45,13 @@ class DetailsRelationManager extends RelationManager
                         TextInput::make('name')->maxLength(255),
                         Select::make('unit_id')->relationship('unit', 'name')->searchable()->preload(),
                         TextInput::make('description')->maxLength(255),
-                        TextInput::make('minimum_stock')->numeric(),
-                        TextInput::make('maximum_stock')->numeric(),
-                        TextInput::make('lifetime')->numeric()->default(0),
-                    ]),
-                TextInput::make('qty')->stripCharacters(',')->numeric(),
-                Select::make('unit_id')->options(Unit::all()->pluck('name', 'id'))->relationship('unit', 'name')->searchable()->preload()
-                    ->createOptionForm([TextInput::make('name')->maxLength(50)]),
-                TextInput::make('notes')->required()->maxLength(255),
+                    ])
+                    ->afterStateUpdated(function (Get $get, Set $set) {
+                        $set('unit_id', Item::find($get('item_id'))->unit_id);
+                    }),
+                TextInput::make('qty')->stripCharacters(',')->numeric()->required(),
+                Select::make('unit_id')->options(Unit::all()->pluck('name', 'id'))->relationship('unit', 'name')->disabled(),
+                TextInput::make('notes')->maxLength(255),
             ]);
     }
 
@@ -64,7 +72,10 @@ class DetailsRelationManager extends RelationManager
             ->headerActions([
                 Tables\Actions\CreateAction::make()
                     ->after(function (ItemRequestDetail $detail, Component $livewire) {
-                        $detail->update(['seqno' => $this->getOwnerRecord()->details()->max('seqno') + 1]);
+                        $detail->update([
+                            'seqno' => $this->getOwnerRecord()->details()->max('seqno') + 1,
+                            'unit_id' => $detail->item->unit_id
+                        ]);
                         $livewire->dispatch('refreshItemRequest');
                     }),
             ])

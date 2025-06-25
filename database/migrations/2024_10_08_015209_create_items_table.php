@@ -17,7 +17,8 @@ return new class extends Migration
             $table->unsignedBigInteger('item_category_id')->default(0)->nullable()->index();
             $table->unsignedBigInteger('item_type_id')->default(0)->nullable()->index();
             $table->unsignedBigInteger('item_brand_id')->default(0)->nullable()->index();
-            $table->string('name')->nullable()->default('');
+            $table->string('code')->unique();
+            $table->string('name')->unique();
             $table->unsignedBigInteger('unit_id')->default(0)->nullable();
             $table->text('description')->nullable();
             $table->double('minimum_stock')->nullable()->default(0);

@@ -30,7 +30,7 @@ class WarehouseResource extends Resource
                 Forms\Components\TextInput::make('name')->required()->maxLength(255),
                 Forms\Components\TextInput::make('location')->maxLength(255),
                 Forms\Components\TextInput::make('description')->maxLength(255),
-                Forms\Components\TextInput::make('capacity')->numeric()->default(0)->prefix('m²'),
+                Forms\Components\TextInput::make('capacity')->numeric()->default(0)->suffix('m²'),
                 Forms\Components\Select::make('pic')->relationship('pic_', 'name')->searchable()->preload()->required(),
             ]);
     }

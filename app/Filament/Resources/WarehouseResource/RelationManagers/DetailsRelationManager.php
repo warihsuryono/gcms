@@ -15,6 +15,23 @@ class DetailsRelationManager extends RelationManager
 {
     protected static string $relationship = 'details';
 
+    protected static ?string $title = 'Storage Locations';
+
+    public static function getCreateFormTitle(): string
+    {
+        return 'Tambah Pemesanan Baru';
+    }
+
+    public function getEditFormTitle(): string
+    {
+        return 'Edit Pemesanan';
+    }
+
+    public function getViewFormTitle(): string
+    {
+        return 'Detail Pemesanan';
+    }
+
     public function form(Form $form): Form
     {
         return $form
@@ -43,8 +60,8 @@ class DetailsRelationManager extends RelationManager
             ->filters([
                 //
             ])
-            ->headerActions([Tables\Actions\CreateAction::make()])
-            ->actions([Tables\Actions\EditAction::make()->iconButton(), Tables\Actions\DeleteAction::make()->iconButton()], ActionsPosition::BeforeColumns)
+            ->headerActions([Tables\Actions\CreateAction::make()->label('New Storage Location')->modalHeading('New Storage Location')])
+            ->actions([Tables\Actions\EditAction::make()->iconButton()->modalHeading('Delete Storage Location'), Tables\Actions\DeleteAction::make()->iconButton()->modalHeading('Delete Storage Location')], ActionsPosition::BeforeColumns)
             ->paginated(false);
     }
 }

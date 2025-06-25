@@ -3,19 +3,12 @@
 namespace App\Filament\Resources\ItemResource\Pages;
 
 use App\Filament\Resources\ItemResource;
-use App\Traits\FilamentEditFunctions;
-use Filament\Resources\Pages\EditRecord;
+use Filament\Actions;
+use Filament\Resources\Pages\ViewRecord;
 
-class EditItem extends EditRecord
+class ViewItem extends ViewRecord
 {
-    protected $routename = 'items';
-    use FilamentEditFunctions;
     protected static string $resource = ItemResource::class;
-
-    protected function getHeaderActions(): array
-    {
-        return [];
-    }
 
     public function mutateFormDataBeforeFill(array $data): array
     {

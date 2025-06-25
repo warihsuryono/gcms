@@ -15,6 +15,7 @@ use Filament\Tables\Enums\ActionsPosition;
 use App\Filament\Resources\ItemResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\ItemResource\RelationManagers;
+use App\Models\WarehouseDetail;
 
 class ItemResource extends Resource
 {
@@ -39,6 +40,7 @@ class ItemResource extends Resource
                 Forms\Components\TextInput::make('minimum_stock')->numeric()->default(0),
                 Forms\Components\TextInput::make('maximum_stock')->numeric()->default(0),
                 Forms\Components\TextInput::make('lifetime')->numeric()->default(0),
+                Forms\Components\Select::make('warehouse_detail_ids')->label('Storage Locations')->options(WarehouseDetail::all()->pluck('code', 'id'))->searchable()->multiple(),
             ]);
     }
 
@@ -55,6 +57,14 @@ class ItemResource extends Resource
                 Tables\Columns\TextColumn::make('minimum_stock')->numeric(),
                 Tables\Columns\TextColumn::make('maximum_stock')->numeric(),
                 Tables\Columns\TextColumn::make('lifetime')->numeric(),
+                Tables\Columns\TextColumn::make('warehouse_detail_ids')->label('Storage Locations')->formatStateUsing(function ($state, $record) {
+                    $warehouse_detail_ids = json_decode($record->warehouse_detail_ids);
+                    $warehouse_details = "";
+                    foreach ($warehouse_detail_ids as $warehouse_detail_id) {
+                        $warehouse_details .= WarehouseDetail::find($warehouse_detail_id)->code . ", ";
+                    }
+                    return substr($warehouse_details, 0, -2);
+                })->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 SelectFilter::make('item_specification')->relationship('item_specification', 'name')->searchable()->preload()->label('Specification'),
@@ -79,6 +89,7 @@ class ItemResource extends Resource
             'index' => Pages\ListItems::route('/'),
             'create' => Pages\CreateItem::route('/create'),
             'edit' => Pages\EditItem::route('/{record}/edit'),
+            'view' => Pages\ViewItem::route('/{record}'),
         ];
     }
 }

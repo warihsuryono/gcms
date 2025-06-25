@@ -23,6 +23,7 @@ return new class extends Migration
             $table->double('minimum_stock')->nullable()->default(0);
             $table->double('maximum_stock')->nullable()->default(0);
             $table->integer('lifetime')->nullable()->default(0);
+            $table->text('warehouse_detail_ids')->default('');
             $table->unsignedBigInteger('deleted_by')->default(0)->nullable();
             $table->unsignedBigInteger('created_by')->default(0)->nullable();
             $table->unsignedBigInteger('updated_by')->default(0)->nullable();

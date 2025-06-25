@@ -38,6 +38,7 @@ class DatabaseSeeder extends Seeder
             WorkOrderStatusSeeder::class,
             WarehouseSeeder::class,
             FuelpoweredEquipmentSeeder::class,
+            StockSeeder::class,
             // DegreeSeeder::class,
             // MarriageStatusSeeder::class,
             // EmployeeStatusSeeder::class,

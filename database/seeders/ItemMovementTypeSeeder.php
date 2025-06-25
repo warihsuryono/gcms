@@ -15,5 +15,6 @@ class ItemMovementTypeSeeder extends Seeder
         ItemMovementType::create(['name' => 'Purchase']);
         ItemMovementType::create(['name' => 'Consumable']);
         ItemMovementType::create(['name' => 'Loan']);
+        ItemMovementType::create(['name' => 'Stock Opname']);
     }
 }

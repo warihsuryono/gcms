@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('item_stocks', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('item_id')->default(0)->nullable()->index();
-            $table->unsignedBigInteger('warehouse_detail_id')->default(0)->nullable()->index();
+            $table->text('warehouse_detail_ids')->default('');
             $table->double('qty')->default(0);
             $table->unsignedBigInteger('deleted_by')->default(0)->nullable();
             $table->unsignedBigInteger('created_by')->default(0)->nullable();

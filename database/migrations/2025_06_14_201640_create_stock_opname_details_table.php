@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->date('stock_opname_at')->nullable();
             $table->unsignedBigInteger('warehouse_id')->default(0)->nullable()->index();
+            $table->text('notes')->nullable();
             $table->smallInteger('is_approved')->default(0);
             $table->dateTime('approved_at')->nullable();
             $table->unsignedBigInteger('approved_by')->default(0)->nullable();

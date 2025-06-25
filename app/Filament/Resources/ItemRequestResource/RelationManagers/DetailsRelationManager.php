@@ -25,6 +25,8 @@ class DetailsRelationManager extends RelationManager
 {
     protected static string $relationship = 'details';
 
+    protected static ?string $title = 'Items';
+
     public function form(Form $form): Form
     {
         return $form

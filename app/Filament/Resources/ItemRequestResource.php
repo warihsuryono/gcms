@@ -14,6 +14,7 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Models\FollowupOfficer;
+use App\Models\User;
 use App\Models\WorkOrder;
 use Filament\Tables\Filters\Filter;
 use Illuminate\Support\Facades\Auth;
@@ -40,7 +41,7 @@ class ItemRequestResource extends Resource
             ->schema([
                 Forms\Components\TextInput::make('item_request_no')->readOnly()->visibleOn('edit'),
                 Forms\Components\DatePicker::make('item_request_at')->default(now())->required()->label('Request At'),
-                Forms\Components\TextInput::make('user_id')->default(Auth::user()->name)->disabled()->label('Requested By'),
+                Forms\Components\Select::make('user_id')->options(User::all()->pluck('name', 'id'))->relationship('user', 'name')->default(Auth::user()->id)->disabled(),
                 Forms\Components\RichEditor::make('description')->columnSpanFull()->default(fn() => Request::get('work_order_id') > 0 ? WorkOrder::find(Request::get('work_order_id'))->works : '')
                     ->toolbarButtons(['bold', 'italic', 'underline', 'link', 'bulletList', 'numberedList', 'blockquote', 'codeBlock', 'undo', 'redo']),
                 Forms\Components\Hidden::make('work_order_id')->default(fn() => Request::get('work_order_id') > 0 ? Request::get('work_order_id') : 0),

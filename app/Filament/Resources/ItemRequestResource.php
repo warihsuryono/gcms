@@ -82,7 +82,7 @@ class ItemRequestResource extends Resource
                     }),
                 SelectFilter::make('user')->relationship('user', 'name')->searchable()->preload(),
                 SelectFilter::make('created_by')->relationship('createdBy', 'name')->searchable()->preload(),
-                TernaryFilter::make('is_issued'),
+                TernaryFilter::make('is_issued')->default(fn() => Request::get('is_open') ? 0 : ''),
                 TernaryFilter::make('is_received'),
             ])
             ->modifyQueryUsing(function (Builder $query) {

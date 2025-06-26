@@ -35,7 +35,6 @@ class DatabaseSeeder extends Seeder
             FuelConsumptionSeeder::class,
             WorkOrderSeeder::class,
             ItemMovementTypeSeeder::class,
-            ItemRequestTypeSeeder::class,
             WorkOrderStatusSeeder::class,
             WarehouseSeeder::class,
             FuelpoweredEquipmentSeeder::class,

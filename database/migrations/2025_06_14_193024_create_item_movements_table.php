@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('item_movements', function (Blueprint $table) {
             $table->id();
             $table->dateTime('movement_at')->nullable();
+            $table->enum('in_out', ['in', 'out'])->index();
             $table->unsignedBigInteger('item_movement_type_id')->nullable()->index();
             $table->string('doc_no')->nullable()->index();
             $table->unsignedBigInteger('item_request_detail_id')->nullable()->index();

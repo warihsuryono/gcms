@@ -34,7 +34,7 @@ class DetailsRelationManager extends RelationManager
     {
         return $form
             ->schema([
-                Select::make('item_request_type_id')->relationship('item_request_type', 'name')->required()->default(1)->label('Request Type'),
+                Select::make('item_movement_type_id')->relationship('item_movement_type', 'name', fn($query) => $query->where('id', '<', '3'))->required()->default(1)->label('Request Type'),
                 Select::make('item_id')
                     ->searchable()->preload()->required()->live()
                     ->options(function () {
@@ -70,7 +70,7 @@ class DetailsRelationManager extends RelationManager
         return $table
             ->recordTitleAttribute('item_id')
             ->columns([
-                Tables\Columns\TextColumn::make('item_request_type.name')->label('Request Type'),
+                Tables\Columns\TextColumn::make('item_movement_type.name')->label('Request Type'),
                 Tables\Columns\TextColumn::make('item_id')->label('Item')
                     ->formatStateUsing(fn($state) => "[" . Item::find($state)->code . "] -- " . Item::find($state)->name),
                 Tables\Columns\TextColumn::make('qty')->alignRight(),

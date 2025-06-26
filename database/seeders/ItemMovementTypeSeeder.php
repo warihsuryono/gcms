@@ -12,9 +12,9 @@ class ItemMovementTypeSeeder extends Seeder
      */
     public function run(): void
     {
-        ItemMovementType::create(['name' => 'Purchase']);
         ItemMovementType::create(['name' => 'Consumable']);
         ItemMovementType::create(['name' => 'Loan']);
+        ItemMovementType::create(['name' => 'Purchase']);
         ItemMovementType::create(['name' => 'Stock Opname']);
     }
 }

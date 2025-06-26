@@ -2,9 +2,12 @@
 
 namespace App\Filament\Resources\ItemRequestResource\Pages;
 
-use Filament\Actions;
+use App\Models\ItemStock;
+use App\Models\ItemMovement;
 use App\Models\FollowupOfficer;
 use Illuminate\Support\Facades\Auth;
+use Livewire\Attributes\On;
+use Filament\Notifications\Notification;
 use Filament\Resources\Pages\ViewRecord;
 use App\Filament\Resources\ItemRequestResource;
 
@@ -31,4 +34,20 @@ class ViewItemRequest extends ViewRecord
     {
         redirect()->route('filament.' . env('PANEL_PATH') . '.resources.purchase-orders.create', ['item_request_id' => $this->record->id]);
     }
+
+    public function item_request_issued()
+    {
+        $nowdatetime = now();
+        foreach ($this->record->details as $item_request_detail) {
+            $item_stock = ItemStock::where('item_id', $item_request_detail->item_id)->first();
+            $item_stock->update(['qty' => $item_stock->qty - $item_request_detail->qty]);
+            ItemMovement::create(['movement_at' => $nowdatetime, 'in_out' => 'out', 'item_movement_type_id' => $item_request_detail->item_movement_type_id, 'item_id' => $item_request_detail->item_id, 'qty' => $item_request_detail->qty, 'unit_id' => $item_request_detail->unit_id, 'notes' => $item_request_detail->notes]);
+        }
+        $this->record->update(['is_issued' => 1, 'issued_at' => $nowdatetime, 'issued_by' => Auth::user()->id]);
+        Notification::make()->title('Item Request Issued!')->success()->send();
+        $this->dispatch('refreshPage');
+    }
+
+    #[On('refreshPage')]
+    public function refresh(): void {}
 }

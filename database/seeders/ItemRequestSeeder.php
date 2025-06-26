@@ -19,8 +19,8 @@ class ItemRequestSeeder extends Seeder
         • bahan : ditnahe m 45<br>
         • alat : SDI<br>
         ']);
-        ItemRequestDetail::create(['item_request_id' => 1, 'seqno' => 1, 'item_request_type_id' => 1, 'item_id' => 13, 'unit_id' => 10, 'qty' => 6]);
-        ItemRequestDetail::create(['item_request_id' => 1, 'seqno' => 2, 'item_request_type_id' => 1, 'item_id' => 12, 'unit_id' => 10, 'qty' => 2]);
-        ItemRequestDetail::create(['item_request_id' => 1, 'seqno' => 3, 'item_request_type_id' => 1, 'item_id' => 2, 'unit_id' => 4, 'qty' => 2]);
+        ItemRequestDetail::create(['item_request_id' => 1, 'seqno' => 1, 'item_movement_type_id' => 1, 'item_id' => 13, 'unit_id' => 10, 'qty' => 6]);
+        ItemRequestDetail::create(['item_request_id' => 1, 'seqno' => 2, 'item_movement_type_id' => 1, 'item_id' => 12, 'unit_id' => 10, 'qty' => 2]);
+        ItemRequestDetail::create(['item_request_id' => 1, 'seqno' => 3, 'item_movement_type_id' => 1, 'item_id' => 2, 'unit_id' => 4, 'qty' => 2]);
     }
 }

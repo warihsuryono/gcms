@@ -35,7 +35,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('item_request_id')->constrained(table: 'item_requests', indexName: 'item_request_details_id')->default(1);
             $table->integer('seqno')->nullable()->default(0);
-            $table->unsignedBigInteger('item_request_type_id')->nullable()->index();
+            $table->unsignedBigInteger('item_movement_type_id')->nullable()->index();
             $table->unsignedBigInteger('item_id')->nullable()->index();
             $table->unsignedBigInteger('unit_id')->nullable();
             $table->double('qty')->default(0);

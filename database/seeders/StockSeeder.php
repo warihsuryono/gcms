@@ -40,18 +40,18 @@ class StockSeeder extends Seeder
         StockOpnameDetail::create(['stock_opname_id' => 1, 'item_id' => 12, 'unit_id' => 10, 'qty' => 1, 'actual_qty' => 0, 'notes' => Item::find(12)->name . ' initial stock']);
         StockOpnameDetail::create(['stock_opname_id' => 1, 'item_id' => 13, 'unit_id' => 10, 'qty' => 2, 'actual_qty' => 0, 'notes' => Item::find(13)->name . ' initial stock']);
 
-        ItemMovement::create(['movement_at' => NOW(), 'item_movement_type_id' => 4, 'item_id' => 1, 'qty' => 100, 'unit_id' => 4, 'notes' => Item::find(1)->name . ' initial stock']);
-        ItemMovement::create(['movement_at' => NOW(), 'item_movement_type_id' => 4, 'item_id' => 2, 'qty' => 90, 'unit_id' => 4, 'notes' => Item::find(2)->name . ' initial stock']);
-        ItemMovement::create(['movement_at' => NOW(), 'item_movement_type_id' => 4, 'item_id' => 3, 'qty' => 10, 'unit_id' => 10, 'notes' => Item::find(3)->name . ' initial stock']);
-        ItemMovement::create(['movement_at' => NOW(), 'item_movement_type_id' => 4, 'item_id' => 4, 'qty' => 20, 'unit_id' => 10, 'notes' => Item::find(4)->name . ' initial stock']);
-        ItemMovement::create(['movement_at' => NOW(), 'item_movement_type_id' => 4, 'item_id' => 5, 'qty' => 30, 'unit_id' => 10, 'notes' => Item::find(5)->name . ' initial stock']);
-        ItemMovement::create(['movement_at' => NOW(), 'item_movement_type_id' => 4, 'item_id' => 6, 'qty' => 25, 'unit_id' => 10, 'notes' => Item::find(6)->name . ' initial stock']);
-        ItemMovement::create(['movement_at' => NOW(), 'item_movement_type_id' => 4, 'item_id' => 7, 'qty' => 20, 'unit_id' => 10, 'notes' => Item::find(7)->name . ' initial stock']);
-        ItemMovement::create(['movement_at' => NOW(), 'item_movement_type_id' => 4, 'item_id' => 8, 'qty' => 15, 'unit_id' => 10, 'notes' => Item::find(8)->name . ' initial stock']);
-        ItemMovement::create(['movement_at' => NOW(), 'item_movement_type_id' => 4, 'item_id' => 9, 'qty' => 10, 'unit_id' => 10, 'notes' => Item::find(9)->name . ' initial stock']);
-        ItemMovement::create(['movement_at' => NOW(), 'item_movement_type_id' => 4, 'item_id' => 10, 'qty' => 5, 'unit_id' => 10, 'notes' => Item::find(10)->name . ' initial stock']);
-        ItemMovement::create(['movement_at' => NOW(), 'item_movement_type_id' => 4, 'item_id' => 12, 'qty' => 1, 'unit_id' => 10, 'notes' => Item::find(12)->name . ' initial stock']);
-        ItemMovement::create(['movement_at' => NOW(), 'item_movement_type_id' => 4, 'item_id' => 13, 'qty' => 2, 'unit_id' => 10, 'notes' => Item::find(13)->name . ' initial stock']);
+        ItemMovement::create(['movement_at' => NOW(), 'in_out' => 'in', 'item_movement_type_id' => 4, 'item_id' => 1, 'qty' => 100, 'unit_id' => 4, 'notes' => Item::find(1)->name . ' initial stock']);
+        ItemMovement::create(['movement_at' => NOW(), 'in_out' => 'in', 'item_movement_type_id' => 4, 'item_id' => 2, 'qty' => 90, 'unit_id' => 4, 'notes' => Item::find(2)->name . ' initial stock']);
+        ItemMovement::create(['movement_at' => NOW(), 'in_out' => 'in', 'item_movement_type_id' => 4, 'item_id' => 3, 'qty' => 10, 'unit_id' => 10, 'notes' => Item::find(3)->name . ' initial stock']);
+        ItemMovement::create(['movement_at' => NOW(), 'in_out' => 'in', 'item_movement_type_id' => 4, 'item_id' => 4, 'qty' => 20, 'unit_id' => 10, 'notes' => Item::find(4)->name . ' initial stock']);
+        ItemMovement::create(['movement_at' => NOW(), 'in_out' => 'in', 'item_movement_type_id' => 4, 'item_id' => 5, 'qty' => 30, 'unit_id' => 10, 'notes' => Item::find(5)->name . ' initial stock']);
+        ItemMovement::create(['movement_at' => NOW(), 'in_out' => 'in', 'item_movement_type_id' => 4, 'item_id' => 6, 'qty' => 25, 'unit_id' => 10, 'notes' => Item::find(6)->name . ' initial stock']);
+        ItemMovement::create(['movement_at' => NOW(), 'in_out' => 'in', 'item_movement_type_id' => 4, 'item_id' => 7, 'qty' => 20, 'unit_id' => 10, 'notes' => Item::find(7)->name . ' initial stock']);
+        ItemMovement::create(['movement_at' => NOW(), 'in_out' => 'in', 'item_movement_type_id' => 4, 'item_id' => 8, 'qty' => 15, 'unit_id' => 10, 'notes' => Item::find(8)->name . ' initial stock']);
+        ItemMovement::create(['movement_at' => NOW(), 'in_out' => 'in', 'item_movement_type_id' => 4, 'item_id' => 9, 'qty' => 10, 'unit_id' => 10, 'notes' => Item::find(9)->name . ' initial stock']);
+        ItemMovement::create(['movement_at' => NOW(), 'in_out' => 'in', 'item_movement_type_id' => 4, 'item_id' => 10, 'qty' => 5, 'unit_id' => 10, 'notes' => Item::find(10)->name . ' initial stock']);
+        ItemMovement::create(['movement_at' => NOW(), 'in_out' => 'in', 'item_movement_type_id' => 4, 'item_id' => 12, 'qty' => 1, 'unit_id' => 10, 'notes' => Item::find(12)->name . ' initial stock']);
+        ItemMovement::create(['movement_at' => NOW(), 'in_out' => 'in', 'item_movement_type_id' => 4, 'item_id' => 13, 'qty' => 2, 'unit_id' => 10, 'notes' => Item::find(13)->name . ' initial stock']);
 
         ItemStock::create(['item_id' => 1, 'warehouse_detail_ids' => Item::find(1)->warehouse_detail_ids, 'qty' => 100]);
         ItemStock::create(['item_id' => 2, 'warehouse_detail_ids' => Item::find(2)->warehouse_detail_ids, 'qty' => 90]);

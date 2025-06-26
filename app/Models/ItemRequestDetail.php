@@ -17,9 +17,9 @@ class ItemRequestDetail extends Model
         return $this->belongsTo(ItemRequest::class);
     }
 
-    public function item_request_type(): BelongsTo
+    public function item_movement_type(): BelongsTo
     {
-        return $this->belongsTo(ItemRequestType::class, 'item_request_type_id');
+        return $this->belongsTo(ItemMovementType::class, 'item_movement_type_id');
     }
 
     public function item(): BelongsTo

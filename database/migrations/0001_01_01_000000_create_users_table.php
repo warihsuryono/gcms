@@ -58,11 +58,11 @@ return new class extends Migration
         });
 
         DB::table('sessions')->insert([
-            'id' => 'btdt3mOARty9Z9sSHMOarJKGSxEZL3SfV88v60dc',
+            'id' => 'ospVKwGLuGq6WXll9iVXmpfsy9FXRNKKvm5cpUEQ',
             'user_id' => 1,
             'ip_address' => '127.0.0.1',
             'user_agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36',
-            'payload' => 'YTo1OntzOjY6Il90b2tlbiI7czo0MDoibUVkZ2FSWXBZa2NiZVhINTg4SXFqTG5QWW9tZjZJQmJIaEUxeHNteCI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6NDI6Imh0dHA6Ly9nY21zLnRlc3Qvd29ya3NwYWNlL2l0ZW0tcmVxdWVzdHMvMSI7fXM6NTA6ImxvZ2luX3dlYl8zZGM3YTkxM2VmNWZkNGI4OTBlY2FiZTM0ODcwODU1NzNlMTZjZjgyIjtpOjE7czoxNzoicGFzc3dvcmRfaGFzaF93ZWIiO3M6NjA6IiQyeSQxMiQubEs5NzhMZVZxOWxSV253V0lNSUxlUWoyL1hoNDNuQi45WGRhOTRuZ3RLNEhEQXN0ZU9qNiI7fQ==',
+            'payload' => 'YTo2OntzOjY6Il90b2tlbiI7czo0MDoiZEhtbjVqWmplNTk2Z3NsRWVtY2tPSzZjb1d0U3BtS1A1WjNTa1ZnRSI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czozOiJ1cmwiO2E6MDp7fXM6OToiX3ByZXZpb3VzIjthOjE6e3M6MzoidXJsIjtzOjQyOiJodHRwOi8vZ2Ntcy50ZXN0L3dvcmtzcGFjZS9pdGVtLXJlcXVlc3RzLzEiO31zOjUwOiJsb2dpbl93ZWJfM2RjN2E5MTNlZjVmZDRiODkwZWNhYmUzNDg3MDg1NTczZTE2Y2Y4MiI7aToxO3M6MTc6InBhc3N3b3JkX2hhc2hfd2ViIjtzOjYwOiIkMnkkMTIkLmxLOTc4TGVWcTlsUldud1dJTUlMZVFqMi9YaDQzbkIuOVhkYTk0bmd0SzRIREFzdGVPajYiO30=',
             'last_activity' => (new DateTime())->getTimestamp()
         ]);
     }

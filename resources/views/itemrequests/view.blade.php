@@ -12,16 +12,19 @@
 
     <div class="flex justify-between">
         <div></div>
+
         @if ($is_stock_visible)
             <x-filament::button class='h-10' wire:click="create_purchase_order()" color="success">
                 Create Purchase Order
             </x-filament::button>
         @endif
+
         @if (@$this->getRecord()->work_order_id > 0)
             <x-filament::button class='h-10' wire:click="work_order()" color="primary">
                 Show Work Order
             </x-filament::button>
         @endif
+
         @if ($is_stock_visible && $record->is_issued == 0)
             <x-filament::button class='h-10' wire:click="item_request_issued()" color="success">
                 Item Request Issued
@@ -31,9 +34,23 @@
             <div>
                 <div>Issued By,</div>
                 <br><br>
-                <div>{{ $this->getRecord()->issuedBy->name }}</div>
+                <div>{{ @$this->getRecord()->issuedBy->name }}</div>
             </div>
         @endif
+
+        @if ($is_can_received && $record->is_received == 0)
+            <x-filament::button class='h-10' wire:click="item_request_received()" color="success">
+                Item Request Received
+            </x-filament::button>
+        @endif
+        @if ($record->is_received)
+            <div>
+                <div>Received By,</div>
+                <br><br>
+                <div>{{ @$this->getRecord()->receivedBy->name }}</div>
+            </div>
+        @endif
+
         <div></div>
     </div>
 </x-filament-panels::page>

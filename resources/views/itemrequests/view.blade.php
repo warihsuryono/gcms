@@ -12,6 +12,11 @@
 
     <div class="flex justify-between">
         <div></div>
+        @if ($is_stock_visible)
+            <x-filament::button class='h-10' wire:click="create_purchase_order()" color="success">
+                Create Purchase Order
+            </x-filament::button>
+        @endif
         @if (@$this->getRecord()->work_order_id > 0)
             <x-filament::button class='h-10' wire:click="work_order()" color="primary">
                 Show Work Order

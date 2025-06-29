@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Item extends Model
 {
@@ -35,5 +36,17 @@ class Item extends Model
     public function unit(): BelongsTo
     {
         return $this->belongsTo(Unit::class, 'unit_id');
+    }
+
+    public function item_stock(): HasOne
+    {
+        return $this->hasOne(ItemStock::class, 'item_id');
+    }
+
+    public static function understock_items()
+    {
+        return Item::join('item_stocks', 'items.id', '=', 'item_stocks.item_id')
+            ->select('items.*', 'item_stocks.qty')
+            ->whereRaw('item_stocks.qty < items.minimum_stock');
     }
 }

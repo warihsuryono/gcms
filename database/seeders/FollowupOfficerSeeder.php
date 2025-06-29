@@ -18,5 +18,6 @@ class FollowupOfficerSeeder extends Seeder
         FollowupOfficer::create(['action' => 'item-receipt-approve', 'user_id' => 6]);
         FollowupOfficer::create(['action' => 'stock-opname-approve', 'user_id' => 6]);
         FollowupOfficer::create(['action' => 'stock-keeper', 'user_id' => 6]);
+        FollowupOfficer::create(['action' => 'stock-keeper-leader', 'user_id' => 4]);
     }
 }

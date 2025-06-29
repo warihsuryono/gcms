@@ -92,6 +92,7 @@ class ItemResource extends Resource
             'create' => Pages\CreateItem::route('/create'),
             'edit' => Pages\EditItem::route('/{record}/edit'),
             'view' => Pages\ViewItem::route('/{record}'),
+            'understock' => Pages\UnderstockItem::route('/understock/{record}'),
         ];
     }
 }

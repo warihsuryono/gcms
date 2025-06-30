@@ -141,8 +141,8 @@ class PurchaseOrderResource extends Resource
                 SelectFilter::make('use_by')->relationship('useBy', 'name')->searchable()->preload(),
                 SelectFilter::make('created_by')->relationship('createdBy', 'name')->searchable()->preload(),
                 TernaryFilter::make('is_sent'),
-                TernaryFilter::make('is_closed'),
-                TernaryFilter::make('is_approved')->default(fn() => Request::get('is_open') ? 0 : ''),
+                TernaryFilter::make('is_closed')->default(fn() => Request::get('is_open') ? 0 : ''),
+                TernaryFilter::make('is_approved'),
             ])
             ->modifyQueryUsing(function (Builder $query) {
                 if (

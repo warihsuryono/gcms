@@ -53,7 +53,7 @@ class DashboardWidget extends BaseWidget
         }
 
         if ($is_allowed_open_purchase_order || Auth::user()->privilege->id == 1) {
-            $open_purchase_order = count(PurchaseOrder::where('is_approved', 0)->get());
+            $open_purchase_order = count(PurchaseOrder::where('is_closed', 0)->get());
             $purchase_orders_this_month = count(PurchaseOrder::where('doc_at', 'like', date('Y-m-') . '%')->get());
             $widgets = array_merge($widgets, [
                 Stat::make('Open Purchase Orders', $open_purchase_order)

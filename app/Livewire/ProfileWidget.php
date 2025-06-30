@@ -27,8 +27,7 @@ class ProfileWidget extends Widget
 
     public function goToProfile()
     {
-        if (Auth::user()->employee || Auth::user()->customer) return redirect()->route('filament.' . env('PANEL_PATH') . '.resources.profiles.edit', Auth::user()->id);
-        Notification::make()->title('Warning!')->body('Please contact your Admin')->icon('heroicon-o-exclamation-triangle')->danger()->send();
+        return redirect()->route('filament.' . env('PANEL_PATH') . '.resources.profiles.edit', Auth::user()->id);
     }
 
     public function goToTapAttendance()

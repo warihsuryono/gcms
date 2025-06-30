@@ -32,13 +32,9 @@ class ProfileResource extends Resource
                     Select::make('privilege_id')->options(Privilege::all()->pluck('name', 'id'))
                         ->relationship('privilege', 'name')
                         ->disabled(true),
-                    TextInput::make('msisdn')->label('Mobile Phone')->prefix('+62')->tel()->required(),
-                    FileUpload::make('signature')
-                        ->directory('signatures')
-                        ->image()->imageEditor(),
-                    FileUpload::make('photo')
-                        ->directory('photos')
-                        ->image()->imageEditor(),
+                    TextInput::make('msisdn')->label('Mobile Phone')->tel()->required(),
+                    // FileUpload::make('signature')->directory('signatures')->image()->imageEditor(),
+                    // FileUpload::make('photo')->directory('photos')->image()->imageEditor(),
                 ]),
                 Section::make('User New Password')->schema([
                     TextInput::make('new_password')->nullable()->password()->rule(Password::default()),

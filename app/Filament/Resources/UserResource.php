@@ -56,13 +56,9 @@ class UserResource extends Resource
                         ->dehydrateStateUsing(fn($state) => Hash::make($state))
                         ->visible(fn($livewire) => $livewire instanceof CreateUser)
                         ->rule(Password::default()),
-                    TextInput::make('msisdn')->label('Mobile Phone')->prefix('+62')->tel()->required(),
-                    FileUpload::make('signature')
-                        ->directory('signatures')
-                        ->image()->imageEditor(),
-                    FileUpload::make('photo')
-                        ->directory('photos')
-                        ->image()->imageEditor(),
+                    TextInput::make('msisdn')->label('Mobile Phone')->tel()->required(),
+                    // FileUpload::make('signature')->directory('signatures')->image()->imageEditor(),
+                    // FileUpload::make('photo')->directory('photos')->image()->imageEditor(),
                 ]),
                 Section::make('User New Password')->schema([
                     TextInput::make('new_password')->nullable()->password()->rule(Password::default()),
@@ -77,7 +73,7 @@ class UserResource extends Resource
         if (Auth::user()->id == 1) array_push($actions, Impersonate::make());
         return $table
             ->columns([
-                ImageColumn::make('photo'),
+                // ImageColumn::make('photo'),
                 TextColumn::make('name')->searchable(),
                 TextColumn::make('email')->searchable(),
                 TextColumn::make('privilege.name')->searchable(),

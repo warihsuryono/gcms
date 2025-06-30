@@ -22,6 +22,7 @@ class ViewPurchaseOrder extends ViewRecord
     public $is_approve_officer = false;
     public $is_send_officer = false;
     public $is_close_officer = false;
+    public $is_stock_keeper = false;
 
 
     public function getHeaderActions(): array
@@ -46,9 +47,11 @@ class ViewPurchaseOrder extends ViewRecord
             if (Auth::user()->privilege->id == 1) {
                 $this->is_send_officer = true;
                 $this->is_close_officer = true;
+                $this->is_stock_keeper = true;
             }
             if (@FollowupOfficer::where(['user_id' => Auth::user()->id, 'action' => 'purchase-order-send'])->first()->id > 0) $this->is_send_officer = true;
             if (@FollowupOfficer::where(['user_id' => Auth::user()->id, 'action' => 'purchase-order-close'])->first()->id > 0) $this->is_close_officer = true;
+            if (@FollowupOfficer::where(['user_id' => Auth::user()->id, 'action' => 'stock-keeper'])->first()->id > 0) $this->is_stock_keeper = true;
         }
 
         if ($this->record->is_approved == 0 && $this->is_approve_officer)
@@ -63,7 +66,7 @@ class ViewPurchaseOrder extends ViewRecord
                     ->color('success')
             ]);
 
-        if ($this->record->is_approved == 1 && $this->record->is_sent == 0 && $this->is_send_officer)
+        if ($this->record->is_sent == 0 && $this->is_send_officer)
             $actions = array_merge($actions, [
                 Action::make('send')
                     ->label('Send')
@@ -75,7 +78,7 @@ class ViewPurchaseOrder extends ViewRecord
                     ->color('primary')
             ]);
 
-        if ($this->record->is_approved == 1 && $this->record->is_closed == 0 && $this->is_close_officer)
+        if ($this->record->is_closed == 0 && $this->is_close_officer)
             $actions = array_merge($actions, [
                 Action::make('close')
                     ->label('Close')
@@ -86,6 +89,19 @@ class ViewPurchaseOrder extends ViewRecord
                     ->icon('heroicon-o-x-circle')
                     ->color('danger')
             ]);
+
+        if ($this->record->is_closed == 0 && $this->is_stock_keeper)
+            $actions = array_merge($actions, [
+                Action::make('create_item_receipt')
+                    ->label('Create Item Receipt')
+                    ->requiresConfirmation()
+                    ->modalHeading('Confirm Item Receipt Creation')
+                    ->modalDescription('Are you sure you want to create an item receipt for this purchase order?')
+                    ->action(fn() => redirect()->route('filament.' . env('PANEL_PATH') . '.resources.item-receipts.create', ['purchase_order_id' => $this->record->id]))
+                    ->icon('heroicon-o-arrow-down-tray')
+                    ->color('success')
+            ]);
+
 
         return $actions;
     }

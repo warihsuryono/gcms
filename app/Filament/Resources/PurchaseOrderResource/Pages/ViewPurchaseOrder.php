@@ -8,6 +8,7 @@ use App\Models\PurchaseOrder;
 use App\Models\FollowupOfficer;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use Filament\Actions\Action;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\ViewRecord;
 use App\Http\Controllers\PrivilegeController;
@@ -17,26 +18,76 @@ class ViewPurchaseOrder extends ViewRecord
 {
     protected static string $resource = PurchaseOrderResource::class;
     protected static string $view = 'purchaseorders.view';
+    protected static ?string $title = 'Purchase Order';
+    public $is_approve_officer = false;
+    public $is_send_officer = false;
+    public $is_close_officer = false;
 
-    protected function getViewData(): array
+
+    public function getHeaderActions(): array
     {
+        $actions = [];
         $allowed = false;
         $routename = explode('/', str_replace(env('PANEL_PATH') . '/', '', Route::current()->uri))[0];
         $have_privilege = PrivilegeController::privilege_check(menu::where('url', $routename)->get()->pluck('id'), 4);
-        if ($this->getRecord()->created_by == Auth::user()->id && $have_privilege) $allowed = true; //creator and have privilege
+        if ($this->record->created_by == Auth::user()->id && $have_privilege) $allowed = true; //creator and have privilege
         if (Auth::user()->id == 1) $allowed = true; // superuser
         if (FollowupOfficer::whereLike('action', 'purchase-order-%')->where('user_id', Auth::user()->id)->first()) $allowed = true; //followup officer
-        if (Auth::user()->employee && Auth::user()->employee->leader_user_id == 0) $allowed = true; // Director
 
         if (!$allowed) {
             Notification::make()->title('Sorry, you don`t have the privilege!')->warning()->send();
             redirect(env('PANEL_PATH') . '/' . request()->segment(2));
         }
 
-        return [
-            'im_approve_officer' => FollowupOfficer::where(['action' => 'purchase-request-approve', 'user_id' => Auth::user()->id])->first(),
-            'im_authorize_officer' => FollowupOfficer::where(['action' => 'purchase-request-authorize', 'user_id' => Auth::user()->id])->first(),
-        ];
+        if (Auth::user()->privilege->id == 1) $this->is_approve_officer = true;
+        if (@FollowupOfficer::where(['user_id' => Auth::user()->id, 'action' => 'purchase-order-approve'])->first()->id > 0) $this->is_approve_officer = true;
+
+        if ($this->record->is_approved == 1) {
+            if (Auth::user()->privilege->id == 1) {
+                $this->is_send_officer = true;
+                $this->is_close_officer = true;
+            }
+            if (@FollowupOfficer::where(['user_id' => Auth::user()->id, 'action' => 'purchase-order-send'])->first()->id > 0) $this->is_send_officer = true;
+            if (@FollowupOfficer::where(['user_id' => Auth::user()->id, 'action' => 'purchase-order-close'])->first()->id > 0) $this->is_close_officer = true;
+        }
+
+        if ($this->record->is_approved == 0 && $this->is_approve_officer)
+            $actions = array_merge($actions, [
+                Action::make('approve')
+                    ->label('Approve')
+                    ->requiresConfirmation()
+                    ->modalHeading('Confirm Approval')
+                    ->modalDescription('Are you sure you want to approve this purchase order?')
+                    ->action(fn() => $this->approve($this->record->id))
+                    ->icon('heroicon-o-check')
+                    ->color('success')
+            ]);
+
+        if ($this->record->is_approved == 1 && $this->record->is_sent == 0 && $this->is_send_officer)
+            $actions = array_merge($actions, [
+                Action::make('send')
+                    ->label('Send')
+                    ->requiresConfirmation()
+                    ->modalHeading('Confirm Sending')
+                    ->modalDescription('Are you sure you want to send this purchase order?')
+                    ->action(fn() => $this->send($this->record->id))
+                    ->icon('heroicon-o-paper-airplane')
+                    ->color('primary')
+            ]);
+
+        if ($this->record->is_approved == 1 && $this->record->is_closed == 0 && $this->is_close_officer)
+            $actions = array_merge($actions, [
+                Action::make('close')
+                    ->label('Close')
+                    ->requiresConfirmation()
+                    ->modalHeading('Confirm Closing')
+                    ->modalDescription('Are you sure you want to close this purchase order?')
+                    ->action(fn() => $this->close($this->record->id))
+                    ->icon('heroicon-o-x-circle')
+                    ->color('danger')
+            ]);
+
+        return $actions;
     }
 
     public function approve($id)
@@ -46,18 +97,29 @@ class ViewPurchaseOrder extends ViewRecord
             'approved_at' => now(),
             'approved_by' => Auth::user()->id
         ]);
-        Notification::make()->title('Approved')->success()->send();
+        Notification::make()->title('Purchase Order Approved')->success()->send();
         $this->dispatch('refreshPurchaseOrder');
     }
 
-    public function authorizing($id)
+    public function send($id)
     {
         PurchaseOrder::find($id)->update([
-            'is_authorize' => 1,
-            'authorize_at' => now(),
-            'authorize_by' => Auth::user()->id
+            'is_sent' => 1,
+            'sent_at' => now(),
+            'sent_by' => Auth::user()->id
         ]);
-        Notification::make()->title('Authorized')->success()->send();
+        Notification::make()->title('Purchase Order Sent')->success()->send();
+        $this->dispatch('refreshPurchaseOrder');
+    }
+
+    public function close($id)
+    {
+        PurchaseOrder::find($id)->update([
+            'is_closed' => 1,
+            'closed_at' => now(),
+            'closed_by' => Auth::user()->id
+        ]);
+        Notification::make()->title('Purchase Order Closed')->success()->send();
         $this->dispatch('refreshPurchaseOrder');
     }
 

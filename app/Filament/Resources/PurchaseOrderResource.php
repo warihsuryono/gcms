@@ -124,11 +124,10 @@ class PurchaseOrderResource extends Resource
                 Tables\Columns\TextColumn::make('tax')->numeric()->suffix(' %'),
                 Tables\Columns\TextColumn::make('grandtotal')->state(fn(PurchaseOrder $record) => $record->currency->symbol . ". " . number_format($record->grandtotal, 2)),
                 Tables\Columns\TextColumn::make('notes')->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('is_hold')->state(fn(PurchaseOrder $record) => ($record->is_hold == 1) ? 'Yes' : 'No'),
-                Tables\Columns\TextColumn::make('sent_at')->date('d-m-Y'),
-                Tables\Columns\TextColumn::make('closed_at')->date('d-m-Y'),
-                Tables\Columns\TextColumn::make('approvedBy.name'),
-                Tables\Columns\TextColumn::make('authorizedBy.name'),
+                Tables\Columns\TextColumn::make('approvedBy.name')->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('approved_at')->date('d-m-Y')->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('sent_at')->date('d-m-Y')->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('closed_at')->date('d-m-Y')->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 Filter::make('created_at')
@@ -142,9 +141,7 @@ class PurchaseOrderResource extends Resource
                 SelectFilter::make('created_by')->relationship('createdBy', 'name')->searchable()->preload(),
                 TernaryFilter::make('is_sent'),
                 TernaryFilter::make('is_closed'),
-                TernaryFilter::make('is_hold'),
                 TernaryFilter::make('is_approved'),
-                TernaryFilter::make('is_authorized'),
             ])
             ->modifyQueryUsing(function (Builder $query) {
                 if (

@@ -12,29 +12,25 @@
 
     <div class="flex justify-between">
         <div></div>
-        @if (!$this->getRecord()->is_approved && $im_approve_officer)
-            <x-filament::button class='h-10' wire:click="approve({{ $this->getRecord()->id }})">
-                Approve
-            </x-filament::button>
-        @endif
         @if ($this->getRecord()->is_approved)
             <div>
                 <div>Approved By,</div>
-                <img style='height:100px' src='{{ asset('storage/' . $this->getRecord()->approvedBy->signature) }}' />
+                <br><br>
                 <div>{{ $this->getRecord()->approvedBy->name }}</div>
             </div>
         @endif
-
-        @if (!$this->getRecord()->is_authorize && $im_authorize_officer)
-            <x-filament::button class='h-10' wire:click="authorizing({{ $this->getRecord()->id }})">
-                Authorize
-            </x-filament::button>
-        @endif
-        @if ($this->getRecord()->is_authorize)
+        @if ($this->getRecord()->is_sent)
             <div>
-                <div>Authorized By,</div>
-                <img style='height:100px' src='{{ asset('storage/' . $this->getRecord()->authorizedBy->signature) }}' />
-                <div>{{ $this->getRecord()->authorizedBy->name }}</div>
+                <div>Sent By,</div>
+                <br><br>
+                <div>{{ $this->getRecord()->sentBy->name }}</div>
+            </div>
+        @endif
+        @if ($this->getRecord()->is_closed)
+            <div>
+                <div>Closed By,</div>
+                <br><br>
+                <div>{{ $this->getRecord()->closedBy->name }}</div>
             </div>
         @endif
         <div></div>

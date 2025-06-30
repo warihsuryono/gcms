@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\PurchaseOrderResource\RelationManagers;
 
+use App\Filament\Resources\PurchaseOrderResource\Pages\ViewPurchaseOrder;
 use App\Models\Item;
 use App\Models\Unit;
 use Filament\Tables;
@@ -159,7 +160,8 @@ class DetailsRelationManager extends RelationManager
                         $grandtotal = $after_discount + $tax;
                         $belongs_to->update(['subtotal' => $subtotal, 'grandtotal' => $grandtotal]);
                         $livewire->dispatch('refreshPurchaseOrder');
-                    }),
+                    })
+                    ->visible(fn() => strpos($_SERVER['HTTP_REFERER'], '/edit'))
             ])
             ->paginated(false);
     }

@@ -13,6 +13,7 @@ use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
 use App\Traits\FilamentListActions;
 use Filament\Tables\Filters\Filter;
+use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Auth;
 use Filament\Forms\Components\DatePicker;
 use Filament\Tables\Filters\SelectFilter;
@@ -141,7 +142,7 @@ class PurchaseOrderResource extends Resource
                 SelectFilter::make('created_by')->relationship('createdBy', 'name')->searchable()->preload(),
                 TernaryFilter::make('is_sent'),
                 TernaryFilter::make('is_closed'),
-                TernaryFilter::make('is_approved'),
+                TernaryFilter::make('is_approved')->default(fn() => Request::get('is_open') ? 0 : ''),
             ])
             ->modifyQueryUsing(function (Builder $query) {
                 if (

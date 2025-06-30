@@ -6,6 +6,7 @@ use App\Models\Item;
 use App\Models\ItemStock;
 use App\Models\ItemRequest;
 use App\Models\FollowupOfficer;
+use App\Models\PurchaseOrder;
 use Illuminate\Support\Facades\Auth;
 use Filament\Widgets\StatsOverviewWidget\Stat;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
@@ -17,19 +18,23 @@ class DashboardWidget extends BaseWidget
     {
         $widgets = [];
         $is_allowed_open_item_request = false;
+        $is_allowed_open_purchase_order = false;
         $is_allowed_understock = false;
 
         if (@FollowupOfficer::where(['user_id' => Auth::user()->id, 'action' => 'item-request-issue'])->first()->id > 0) $is_allowed_open_item_request = true;
         if (@FollowupOfficer::where(['user_id' => Auth::user()->id, 'action' => 'stock-keeper'])->first()->id > 0) {
             $is_allowed_open_item_request = true;
+            $is_allowed_open_purchase_order = true;
             $is_allowed_understock = true;
         }
         if (@FollowupOfficer::where(['user_id' => Auth::user()->id, 'action' => 'stock-keeper-leader'])->first()->id > 0) {
             $is_allowed_open_item_request = true;
+            $is_allowed_open_purchase_order = true;
             $$is_allowed_understock = true;
         }
-        if (@FollowupOfficer::where(['user_id' => Auth::user()->id, 'action' => 'purchase-order-authorize'])->first()->id > 0) {
+        if (@FollowupOfficer::where(['user_id' => Auth::user()->id, 'action' => 'purchase-order-approve'])->first()->id > 0) {
             $is_allowed_open_item_request = true;
+            $is_allowed_open_purchase_order = true;
             $is_allowed_understock = true;
         }
 
@@ -43,6 +48,20 @@ class DashboardWidget extends BaseWidget
                     ->extraAttributes([
                         'class' => 'cursor-pointer',
                         'wire:click' => 'goToItemRequests',
+                    ])
+            ]);
+        }
+
+        if ($is_allowed_open_purchase_order || Auth::user()->privilege->id == 1) {
+            $open_purchase_order = count(PurchaseOrder::where('is_approved', 0)->get());
+            $purchase_orders_this_month = count(PurchaseOrder::where('doc_at', 'like', date('Y-m-') . '%')->get());
+            $widgets = array_merge($widgets, [
+                Stat::make('Open Purchase Orders', $open_purchase_order)
+                    ->icon('heroicon-o-cube')
+                    ->description("Total Purchase Order This Month : " . $purchase_orders_this_month)
+                    ->extraAttributes([
+                        'class' => 'cursor-pointer',
+                        'wire:click' => 'goToPurchaseOrders',
                     ])
             ]);
         }
@@ -65,6 +84,11 @@ class DashboardWidget extends BaseWidget
     public function goToItemRequests()
     {
         return redirect()->route('filament.' . env('PANEL_PATH') . '.resources.item-requests.index', ['is_open' => 1]);
+    }
+
+    public function goToPurchaseOrders()
+    {
+        return redirect()->route('filament.' . env('PANEL_PATH') . '.resources.purchase-orders.index', ['is_open' => 1]);
     }
 
     public function goToUnderStock()

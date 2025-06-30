@@ -12,13 +12,13 @@ use App\Traits\FilamentEditFunctions;
 class EditProfile extends EditRecord
 {
     protected $routename = 'profiles';
-    use FilamentEditFunctions;
+    // use FilamentEditFunctions;
     protected static string $resource = ProfileResource::class;
     protected static ?string $title = 'Profile';
 
     public function mutateFormDataBeforeFill(array $data): array
     {
-        if ($data['id'] != Auth::user()->id) redirect(App::make('url')->to(env('PANEL_PATH') . '/profiles'));
+        if ($data['id'] != Auth::user()->id) redirect()->route('filament.' . env('PANEL_PATH') . '.resources.profiles.edit', Auth::user()->id);
         return $data;
     }
 

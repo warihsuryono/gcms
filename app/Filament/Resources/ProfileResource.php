@@ -45,7 +45,7 @@ class ProfileResource extends Resource
 
     public static function table(Table $table): Table
     {
-        redirect(env('PANEL_PATH') . '/profiles/' . Auth::user()->id . '/edit');
+        redirect()->route('filament.' . env('PANEL_PATH') . '.resources.profiles.edit', Auth::user()->id);
         return $table;
     }
 

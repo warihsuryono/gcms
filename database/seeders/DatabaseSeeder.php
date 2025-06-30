@@ -40,6 +40,7 @@ class DatabaseSeeder extends Seeder
             FuelpoweredEquipmentSeeder::class,
             StockSeeder::class,
             ItemRequestSeeder::class,
+            PurchaseOrderSeeder::class,
             // DegreeSeeder::class,
             // MarriageStatusSeeder::class,
             // EmployeeStatusSeeder::class,

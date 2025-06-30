@@ -20,7 +20,7 @@ class EditPurchaseOrder extends EditRecord
         $allowed = false;
         $routename = explode('/', str_replace(env('PANEL_PATH') . '/', '', Route::current()->uri))[0];
         $have_privilege = PrivilegeController::privilege_check(menu::where('url', $routename)->get()->pluck('id'), 2);
-        if ($this->getRecord()->user_id == Auth::user()->id && $have_privilege) $allowed = true; //creator and have privilege
+        if ($this->getRecord()->created_by == Auth::user()->id && $have_privilege) $allowed = true; //creator and have privilege
         if (Auth::user()->id == 1) $allowed = true; // superuser
 
         if (!$allowed) {

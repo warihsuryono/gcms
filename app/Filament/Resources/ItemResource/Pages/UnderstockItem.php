@@ -4,6 +4,7 @@ namespace App\Filament\Resources\ItemResource\Pages;
 
 use App\Models\Item;
 use Filament\Tables\Table;
+use Filament\Actions\Action;
 use App\Models\WarehouseDetail;
 use Filament\Resources\Pages\Page;
 use Filament\Tables\Columns\TextColumn;
@@ -18,6 +19,21 @@ class UnderstockItem extends Page implements HasTable
     protected static string $model = Item::class;
 
     protected static string $view = 'filament.resources.item-resource.pages.understock-item';
+    protected static ?string $title = 'Understock Items';
+
+    public function getHeaderActions(): array
+    {
+        return [
+            Action::make('create_purchase_order')
+                ->label('Create Purchase Order')
+                ->requiresConfirmation()
+                ->modalHeading('Confirm Purchase Order Creation')
+                ->modalDescription('Are you sure you want to create a purchase order for all understock items?')
+                ->action(fn() => $this->create_purchase_order())
+                ->icon('heroicon-o-plus')
+                ->color('success')
+        ];
+    }
 
     public static function table(Table $table): Table
     {
@@ -34,7 +50,6 @@ class UnderstockItem extends Page implements HasTable
                 TextColumn::make('item_stock.qty')->label('Stock'),
                 TextColumn::make('minimum_stock')->numeric(),
                 TextColumn::make('maximum_stock')->numeric(),
-                TextColumn::make('lifetime')->numeric(),
                 TextColumn::make('warehouse_detail_ids')->label('Storage Locations')->formatStateUsing(function ($state, $record) {
                     $warehouse_detail_ids = json_decode($record->warehouse_detail_ids);
                     $warehouse_details = "";
@@ -46,5 +61,10 @@ class UnderstockItem extends Page implements HasTable
             ])
             ->paginated(false)
             ->actions([]);
+    }
+
+    public function create_purchase_order()
+    {
+        redirect()->route('filament.' . env('PANEL_PATH') . '.resources.purchase-orders.create', ['understockitem' => 1]);
     }
 }

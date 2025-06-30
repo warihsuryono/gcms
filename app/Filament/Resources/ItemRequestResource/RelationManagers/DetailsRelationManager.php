@@ -52,7 +52,7 @@ class DetailsRelationManager extends RelationManager
                         TextInput::make('description')->maxLength(255),
                     ])
                     ->afterStateUpdated(function (Get $get, Set $set) {
-                        $set('unit_id', Item::find($get('item_id'))->unit_id);
+                        $set('unit_id', @Item::find($get('item_id'))->unit_id);
                     }),
                 TextInput::make('qty')->stripCharacters(',')->numeric()->required(),
                 Select::make('unit_id')->options(Unit::all()->pluck('name', 'id'))->relationship('unit', 'name')->disabled(),
@@ -74,8 +74,8 @@ class DetailsRelationManager extends RelationManager
                 Tables\Columns\TextColumn::make('item_id')->label('Item')
                     ->formatStateUsing(fn($state) => "[" . Item::find($state)->code . "] -- " . Item::find($state)->name),
                 Tables\Columns\TextColumn::make('qty')->alignRight(),
-                Tables\Columns\TextColumn::make('stock')->default(fn($record) => ItemStock::find($record->item_id)->qty ?? 0)->alignRight()
-                    ->color(fn($record) => (@ItemStock::find($record->item_id)->qty < $record->qty) ? 'danger' : 'primary')
+                Tables\Columns\TextColumn::make('stock')->default(fn($record) => $record->item->item_stock->qty)->alignRight()
+                    ->color(fn($record) => ($record->item->item_stock->qty < $record->qty) ? 'danger' : 'primary')
                     ->visible($is_stock_visible)
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('unit.name'),

@@ -28,9 +28,9 @@ class PurchaseOrder extends Model
         return $this->belongsTo(PaymentType::class, 'payment_type_id');
     }
 
-    public function purchase_request(): BelongsTo
+    public function item_request(): BelongsTo
     {
-        return $this->belongsTo(PurchaseRequest::class, 'purchase_request_id');
+        return $this->belongsTo(ItemRequest::class, 'item_request_id');
     }
 
     public function useBy(): BelongsTo

@@ -5,16 +5,21 @@ namespace App\Filament\Resources\PurchaseOrderResource\RelationManagers;
 use App\Models\Item;
 use App\Models\Unit;
 use Filament\Tables;
+use Filament\Forms\Get;
+use Filament\Forms\Set;
 use Livewire\Component;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Filament\Support\RawJs;
+use App\Models\PurchaseOrder;
 use App\Models\PurchaseOrderDetail;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
+use Filament\Tables\Actions\BulkAction;
 use Filament\Forms\Components\TextInput;
 use Illuminate\Database\Eloquent\Builder;
 use Filament\Tables\Enums\ActionsPosition;
+use Illuminate\Database\Eloquent\Collection;
 use Filament\Resources\RelationManagers\RelationManager;
 
 class DetailsRelationManager extends RelationManager
@@ -25,7 +30,15 @@ class DetailsRelationManager extends RelationManager
     {
         return $form
             ->schema([
-                Select::make('item_id')->options(Item::all()->pluck('name', 'id'))->relationship('item', 'name')->searchable()->preload()
+                Select::make('item_id')->searchable()->preload()->live()
+                    ->options(function () {
+                        return Item::all()->mapWithKeys(function ($item) {
+                            return [$item->id => "[{$item->code}] -- {$item->name}"];
+                        });
+                    })
+                    ->afterStateUpdated(function (Get $get, Set $set) {
+                        $set('unit_id', @Item::find($get('item_id'))->unit_id);
+                    })
                     ->createOptionForm([
                         Select::make('item_specification_id')->relationship('item_specification', 'name')->searchable()->preload()->default(0),
                         Select::make('item_category_id')->relationship('item_category', 'name')->searchable()->preload()->default(0),
@@ -36,13 +49,11 @@ class DetailsRelationManager extends RelationManager
                         Textarea::make('description')->columnSpanFull(),
                         TextInput::make('minimum_stock')->numeric()->default(0),
                         TextInput::make('maximum_stock')->numeric()->default(0),
-                        TextInput::make('lifetime')->numeric()->default(0),
                     ]),
                 TextInput::make('qty')->stripCharacters(',')->numeric(),
-                Select::make('unit_id')->options(Unit::all()->pluck('name', 'id'))->relationship('unit', 'name')->searchable()->preload()
-                    ->createOptionForm([TextInput::make('name')->maxLength(50)]),
+                Select::make('unit_id')->options(Unit::all()->pluck('name', 'id'))->relationship('unit', 'name')->disabled(),
                 TextInput::make('price')->mask(RawJs::make('$money($input)'))->stripCharacters(',')->numeric(),
-                TextInput::make('notes')->required()->maxLength(255),
+                TextInput::make('notes')->maxLength(255),
             ]);
     }
 
@@ -51,7 +62,8 @@ class DetailsRelationManager extends RelationManager
         return $table
             ->recordTitleAttribute('detail')
             ->columns([
-                Tables\Columns\TextColumn::make('item.name'),
+                Tables\Columns\TextColumn::make('item_id')->label('Item')
+                    ->formatStateUsing(fn($state) => "[" . Item::find($state)->code . "] -- " . Item::find($state)->name),
                 Tables\Columns\TextColumn::make('qty'),
                 Tables\Columns\TextColumn::make('unit.name'),
                 Tables\Columns\TextColumn::make('price')
@@ -120,6 +132,35 @@ class DetailsRelationManager extends RelationManager
                         $livewire->dispatch('refreshPurchaseOrder');
                     }),
             ], ActionsPosition::BeforeColumns)
+            ->bulkActions([
+                BulkAction::make('delete')
+                    ->requiresConfirmation()
+                    ->action(fn(Collection $records) => $records->each->delete())
+                    ->label('Delete Selected')
+                    ->icon('heroicon-o-trash')
+                    ->color('danger')
+                    ->after(function (PurchaseOrder $belongs_to, Component $livewire) {
+                        $subtotal = 0;
+                        if (@$belongs_to->details->count() == 0) {
+                            $belongs_to->update(['subtotal' => 0, 'grandtotal' => 0]);
+                            $livewire->dispatch('refreshPurchaseOrder');
+                            return;
+                        }
+                        foreach ($belongs_to->details as $purchaseOrderDetail)
+                            $subtotal += ($purchaseOrderDetail->price * $purchaseOrderDetail->qty);
+
+                        if ($belongs_to->discount_is_percentage)
+                            $discount = $subtotal * $belongs_to->discount / 100;
+                        else
+                            $discount = $belongs_to->discount;
+
+                        $after_discount = $subtotal - $discount;
+                        $tax = $after_discount * $belongs_to->tax / 100;
+                        $grandtotal = $after_discount + $tax;
+                        $belongs_to->update(['subtotal' => $subtotal, 'grandtotal' => $grandtotal]);
+                        $livewire->dispatch('refreshPurchaseOrder');
+                    }),
+            ])
             ->paginated(false);
     }
 }

@@ -58,7 +58,6 @@ class DetailsRelationManager extends RelationManager
                         Textarea::make('description')->columnSpanFull(),
                         TextInput::make('minimum_stock')->numeric()->default(0),
                         TextInput::make('maximum_stock')->numeric()->default(0),
-                        TextInput::make('lifetime')->numeric()->default(0),
                     ]),
                 TextInput::make('notes')->required()->maxLength(255),
                 TextInput::make('qty')->stripCharacters(',')->numeric(),

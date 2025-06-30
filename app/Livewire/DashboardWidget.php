@@ -48,8 +48,6 @@ class DashboardWidget extends BaseWidget
         }
 
         if ($is_allowed_understock || Auth::user()->privilege->id == 1) {
-            // $understock = 0;
-            // foreach (ItemStock::all() as $item_stock) if ($item_stock->qty < $item_stock->item->minimum_stock) $understock++;
             $understock = count(Item::understock_items()->get());
             $widgets = array_merge($widgets, [
                 Stat::make('Number of Understocked Items', $understock . ' items')

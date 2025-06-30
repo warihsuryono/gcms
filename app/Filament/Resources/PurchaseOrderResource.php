@@ -89,7 +89,7 @@ class PurchaseOrderResource extends Resource
                 Forms\Components\Select::make('supplier_id')->relationship('supplier', 'name')->searchable()->preload(),
                 Forms\Components\DatePicker::make('delivery_at'),
                 Forms\Components\Select::make('payment_type_id')->relationship('payment_type', 'name')->searchable()->preload(),
-                Forms\Components\Select::make('purchase_request_id')->relationship('purchase_request', 'doc_no')->searchable()->preload(),
+                Forms\Components\Select::make('item_request_id')->relationship('item_request', 'item_request_no')->searchable()->preload(),
                 Forms\Components\Select::make('use_by')->relationship('useBy', 'name')->required()->searchable()->preload(),
                 Forms\Components\DatePicker::make('use_at'),
                 Forms\Components\TextInput::make('shipment_pic')->maxLength(255)->required(),
@@ -98,7 +98,7 @@ class PurchaseOrderResource extends Resource
                 Forms\Components\Select::make('currency_id')->relationship('currency', 'name')->searchable()->preload()->required(),
                 Forms\Components\Select::make('discount_is_percentage')->options(['1' => 'Yes', '0' => 'No'])->required()->default(1),
                 Forms\Components\TextInput::make('discount')->numeric()->default(0),
-                Forms\Components\TextInput::make('tax')->numeric()->default(10),
+                Forms\Components\TextInput::make('tax')->numeric()->default(10)->suffix(' %'),
                 Placeholder::make('subtotal')->label('Sub Total')->visibleOn('edit')
                     ->content(fn(PurchaseOrder $record) => $record->currency->symbol . '. ' . number_format($record->subtotal, 2)),
                 Placeholder::make('grandtotal')->label('Grand Total')->visibleOn('edit')

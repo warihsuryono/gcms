@@ -30,17 +30,16 @@ class ItemResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('code')->maxLength(255)->unique(),
+                Forms\Components\TextInput::make('code')->maxLength(255)->unique(ignoreRecord: true),
                 Forms\Components\Select::make('item_specification_id')->relationship('item_specification', 'name')->searchable()->preload()->label('Specification'),
                 Forms\Components\Select::make('item_category_id')->relationship('item_category', 'name')->searchable()->preload()->label('Category'),
                 Forms\Components\Select::make('item_type_id')->relationship('item_type', 'name')->searchable()->preload()->label('Type'),
                 Forms\Components\Select::make('item_brand_id')->relationship('item_brand', 'name')->searchable()->preload()->label('Brand'),
-                Forms\Components\TextInput::make('name')->maxLength(255)->unique(),
+                Forms\Components\TextInput::make('name')->maxLength(255)->unique(ignoreRecord: true),
                 Forms\Components\Select::make('unit_id')->relationship('unit', 'name')->searchable()->preload(),
                 Forms\Components\Textarea::make('description')->columnSpanFull(),
                 Forms\Components\TextInput::make('minimum_stock')->numeric()->default(0),
                 Forms\Components\TextInput::make('maximum_stock')->numeric()->default(0),
-                Forms\Components\TextInput::make('lifetime')->numeric()->default(0),
                 Forms\Components\Select::make('warehouse_detail_ids')->label('Storage Locations')->options(WarehouseDetail::all()->pluck('code', 'id'))->searchable()->multiple(),
             ]);
     }
@@ -58,7 +57,6 @@ class ItemResource extends Resource
                 Tables\Columns\TextColumn::make('unit.name'),
                 Tables\Columns\TextColumn::make('minimum_stock')->numeric(),
                 Tables\Columns\TextColumn::make('maximum_stock')->numeric(),
-                Tables\Columns\TextColumn::make('lifetime')->numeric(),
                 Tables\Columns\TextColumn::make('warehouse_detail_ids')->label('Storage Locations')->formatStateUsing(function ($state, $record) {
                     $warehouse_detail_ids = json_decode($record->warehouse_detail_ids);
                     $warehouse_details = "";

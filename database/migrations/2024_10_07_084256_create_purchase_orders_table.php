@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('doc_no', 50)->nullable()->default('')->index();
             $table->date('doc_at')->nullable()->index();
+            $table->unsignedBigInteger('item_request_id')->default(0)->nullable()->index();
             $table->unsignedBigInteger('supplier_id')->default(0)->nullable()->index();
             $table->date('delivery_at')->nullable()->index();
             $table->unsignedBigInteger('payment_type_id')->default(0)->nullable();

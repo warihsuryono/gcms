@@ -3,37 +3,39 @@
 namespace App\Filament\Resources\ItemReceiptResource\RelationManagers;
 
 use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Resources\RelationManagers\RelationManager;
-use Filament\Tables;
-use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
-use App\Models\FollowupOfficer;
 use App\Models\Item;
-use App\Models\ItemReceiptDetail;
 use App\Models\Unit;
+use Filament\Tables;
 use Filament\Forms\Get;
 use Filament\Forms\Set;
 use Livewire\Component;
+use Filament\Forms\Form;
 use App\Models\ItemStock;
+use Filament\Tables\Table;
+use App\Models\FollowupOfficer;
 use App\Models\WarehouseDetail;
+use App\Models\ItemReceiptDetail;
 use App\Models\ItemRequestDetail;
 use Illuminate\Support\Facades\Auth;
+use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Select;
 use App\Tables\Columns\SelectCheckbox;
 use Filament\Forms\Components\TextInput;
+use Illuminate\Database\Eloquent\Builder;
 use Filament\Tables\Enums\ActionsPosition;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Filament\Resources\RelationManagers\RelationManager;
 
 class DetailsRelationManager extends RelationManager
 {
     protected static string $relationship = 'details';
+    protected static ?string $title = 'Detail Items';
 
     public function form(Form $form): Form
     {
         return $form
             ->schema([
-                Select::make('item_id')
+                Select::make('item_id')->label('Item')
                     ->searchable()->preload()->required()->live()
                     ->options(function () {
                         return Item::all()->mapWithKeys(function ($item) {
@@ -43,9 +45,9 @@ class DetailsRelationManager extends RelationManager
                     ->afterStateUpdated(function (Get $get, Set $set) {
                         $set('unit_id', @Item::find($get('item_id'))->unit_id);
                     }),
-                TextInput::make('qty')->stripCharacters(',')->numeric()->required(),
-                Select::make('unit_id')->options(Unit::all()->pluck('name', 'id'))->relationship('unit', 'name')->disabled(),
+                TextInput::make('qty')->stripCharacters(',')->numeric()->required()->suffix(fn(Get $get) => Item::find($get('item_id'))->unit->name ?? ''),
                 TextInput::make('notes')->maxLength(255),
+                Hidden::make('unit_id'),
             ]);
     }
 
@@ -57,7 +59,6 @@ class DetailsRelationManager extends RelationManager
         if (@FollowupOfficer::where(['user_id' => Auth::user()->id, 'action' => 'stock-keeper'])->first()->id > 0) $is_warehouse_visible = true;
 
         return $table
-            ->recordTitleAttribute('item_id')
             ->columns([
                 Tables\Columns\TextColumn::make('item_id')->label('Item')
                     ->formatStateUsing(fn($state) => "[" . Item::find($state)->code . "] -- " . Item::find($state)->name),
@@ -100,7 +101,7 @@ class DetailsRelationManager extends RelationManager
                 //
             ])
             ->headerActions([
-                Tables\Actions\CreateAction::make()
+                Tables\Actions\CreateAction::make()->label('Add Item')->icon('heroicon-o-plus')
                     ->after(function (ItemReceiptDetail $detail, Component $livewire) {
                         $detail->update([
                             'seqno' => $this->getOwnerRecord()->details()->max('seqno') + 1,

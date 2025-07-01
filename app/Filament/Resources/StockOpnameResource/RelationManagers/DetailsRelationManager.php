@@ -5,15 +5,16 @@ namespace App\Filament\Resources\StockOpnameResource\RelationManagers;
 use Dom\Text;
 use Filament\Forms;
 use App\Models\Item;
-use App\Models\ItemStock;
 use App\Models\Unit;
 use Filament\Tables;
 use Filament\Forms\Get;
 use Filament\Forms\Set;
 use Livewire\Component;
 use Filament\Forms\Form;
+use App\Models\ItemStock;
 use Filament\Tables\Table;
 use App\Models\WarehouseDetail;
+use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Select;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
@@ -25,6 +26,7 @@ use Filament\Resources\RelationManagers\RelationManager;
 class DetailsRelationManager extends RelationManager
 {
     protected static string $relationship = 'details';
+    protected static ?string $title = 'Detail Items';
 
     public function form(Form $form): Form
     {
@@ -41,20 +43,19 @@ class DetailsRelationManager extends RelationManager
                         $set('unit_id', @Item::find($get('item_id'))->unit_id);
                         $set('qty', ItemStock::where('item_id', $get('item_id'))->first()->qty ?? 0);
                     }),
-                TextInput::make('qty')->stripCharacters(',')->numeric()->readOnly(),
-                TextInput::make('actual_qty')->stripCharacters(',')->numeric()->required()->label('Actual Qty')
+                TextInput::make('qty')->stripCharacters(',')->numeric()->readOnly()->suffix(fn(Get $get) => Item::find($get('item_id'))->unit->name ?? ''),
+                TextInput::make('actual_qty')->stripCharacters(',')->numeric()->required()->label('Actual Qty')->suffix(fn(Get $get) => Item::find($get('item_id'))->unit->name ?? '')
                     ->afterStateUpdated(function (Get $get, Set $set) {
                         $set('qty', ItemStock::where('item_id', $get('item_id'))->first()->qty ?? 0);
                     }),
-                Select::make('unit_id')->options(Unit::all()->pluck('name', 'id'))->relationship('unit', 'name')->disabled(),
                 TextInput::make('notes')->maxLength(255),
+                Hidden::make('unit_id'),
             ]);
     }
 
     public function table(Table $table): Table
     {
         return $table
-            ->recordTitleAttribute('item_id')
             ->columns([
                 TextColumn::make('index')->label('No.')->rowIndex(),
                 Tables\Columns\TextColumn::make('item_id')->label('Item')->formatStateUsing(fn($state) => "[" . Item::find($state)->code . "] -- " . Item::find($state)->name),
@@ -77,7 +78,7 @@ class DetailsRelationManager extends RelationManager
                 //
             ])
             ->headerActions([
-                Tables\Actions\CreateAction::make(),
+                Tables\Actions\CreateAction::make()->label('Add Item')->icon('heroicon-o-plus'),
             ])
             ->actions([
                 Tables\Actions\EditAction::make()->iconButton()->after(function (Component $livewire) {

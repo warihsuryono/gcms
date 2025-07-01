@@ -95,12 +95,12 @@ class PurchaseOrderResource extends Resource
         return $form
             ->schema([
                 TextInput::make('doc_no')->readOnly()->visibleOn('edit'),
-                DatePicker::make('doc_at'),
+                DatePicker::make('doc_at')->default(now())->required(),
                 Select::make('supplier_id')->relationship('supplier', 'name')->searchable()->preload(),
                 Select::make('payment_type_id')->relationship('payment_type', 'name')->searchable()->preload(),
                 Select::make('item_request_id')->relationship('item_request', 'item_request_no')->searchable()->preload(),
-                Select::make('use_by')->relationship('useBy', 'name')->required()->searchable()->preload(),
-                DatePicker::make('use_at'),
+                Select::make('use_by')->relationship('useBy', 'name')->required()->searchable()->preload()->default(fn() => Auth::user()->id),
+                DatePicker::make('use_at')->default(now()->addDays(7))->required(),
                 FormsSection::make('Shipment Details')->columns(2)->schema([
                     TextInput::make('shipment_company')->maxLength(255),
                     TextInput::make('shipment_pic')->maxLength(255),
@@ -109,7 +109,7 @@ class PurchaseOrderResource extends Resource
                     DatePicker::make('delivery_at')->default(now()->addDays(7)),
                 ]),
                 TextInput::make('notes')->maxLength(255)->required(),
-                Select::make('currency_id')->relationship('currency', 'name')->searchable()->preload()->required(),
+                Select::make('currency_id')->relationship('currency', 'name')->searchable()->preload()->required()->default(1),
                 Select::make('discount_is_percentage')->options(['1' => 'Yes', '0' => 'No'])->required()->default(1),
                 TextInput::make('discount')->numeric()->default(0),
                 TextInput::make('tax')->numeric()->default(10)->suffix(' %'),

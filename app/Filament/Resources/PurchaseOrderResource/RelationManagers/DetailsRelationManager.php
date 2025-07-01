@@ -2,7 +2,6 @@
 
 namespace App\Filament\Resources\PurchaseOrderResource\RelationManagers;
 
-use App\Filament\Resources\PurchaseOrderResource\Pages\ViewPurchaseOrder;
 use App\Models\Item;
 use App\Models\Unit;
 use Filament\Tables;
@@ -14,6 +13,7 @@ use Filament\Tables\Table;
 use Filament\Support\RawJs;
 use App\Models\PurchaseOrder;
 use App\Models\PurchaseOrderDetail;
+use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Tables\Actions\BulkAction;
@@ -22,16 +22,18 @@ use Illuminate\Database\Eloquent\Builder;
 use Filament\Tables\Enums\ActionsPosition;
 use Illuminate\Database\Eloquent\Collection;
 use Filament\Resources\RelationManagers\RelationManager;
+use App\Filament\Resources\PurchaseOrderResource\Pages\ViewPurchaseOrder;
 
 class DetailsRelationManager extends RelationManager
 {
     protected static string $relationship = 'details';
+    protected static ?string $title = 'Detail Items';
 
     public function form(Form $form): Form
     {
         return $form
             ->schema([
-                Select::make('item_id')->searchable()->preload()->live()
+                Select::make('item_id')->searchable()->preload()->live()->label('Item')
                     ->options(function () {
                         return Item::all()->mapWithKeys(function ($item) {
                             return [$item->id => "[{$item->code}] -- {$item->name}"];
@@ -51,17 +53,16 @@ class DetailsRelationManager extends RelationManager
                         TextInput::make('minimum_stock')->numeric()->default(0),
                         TextInput::make('maximum_stock')->numeric()->default(0),
                     ]),
-                TextInput::make('qty')->stripCharacters(',')->numeric(),
-                Select::make('unit_id')->options(Unit::all()->pluck('name', 'id'))->relationship('unit', 'name')->disabled(),
+                TextInput::make('qty')->stripCharacters(',')->numeric()->suffix(fn(Get $get) => Item::find($get('item_id'))->unit->name ?? ''),
                 TextInput::make('price')->mask(RawJs::make('$money($input)'))->stripCharacters(',')->numeric(),
                 TextInput::make('notes')->maxLength(255),
+                Hidden::make('unit_id'),
             ]);
     }
 
     public function table(Table $table): Table
     {
         return $table
-            ->recordTitleAttribute('detail')
             ->columns([
                 Tables\Columns\TextColumn::make('item_id')->label('Item')
                     ->formatStateUsing(fn($state) => "[" . Item::find($state)->code . "] -- " . Item::find($state)->name),
@@ -78,7 +79,7 @@ class DetailsRelationManager extends RelationManager
                 //
             ])
             ->headerActions([
-                Tables\Actions\CreateAction::make()
+                Tables\Actions\CreateAction::make()->label('Add Item')->icon('heroicon-o-plus')
                     ->after(function (PurchaseOrderDetail $detail, Component $livewire) {
                         $detail->update(['seqno' => $this->getOwnerRecord()->details()->max('seqno') + 1]);
                         $subtotal = 0;

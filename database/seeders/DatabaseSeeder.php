@@ -41,6 +41,7 @@ class DatabaseSeeder extends Seeder
             StockSeeder::class,
             ItemRequestSeeder::class,
             PurchaseOrderSeeder::class,
+            StockOpnameSeeder::class,
             // DegreeSeeder::class,
             // MarriageStatusSeeder::class,
             // EmployeeStatusSeeder::class,

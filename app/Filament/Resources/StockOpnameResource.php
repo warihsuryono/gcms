@@ -18,8 +18,9 @@ use Filament\Tables\Enums\ActionsPosition;
 use Filament\Tables\Filters\TernaryFilter;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\StockOpnameResource\Pages;
+use App\Filament\Resources\StockOpnameResource\Pages\CreateStockOpname;
 use App\Filament\Resources\StockOpnameResource\RelationManagers;
-
+use Filament\Forms\Components\Textarea;
 
 class StockOpnameResource extends Resource
 {
@@ -33,9 +34,9 @@ class StockOpnameResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\DatePicker::make('stock_opname_at'),
+                Forms\Components\DatePicker::make('stock_opname_at')->default(fn($livewire) => $livewire instanceof CreateStockOpname ? now() : null),
                 Forms\Components\Select::make('warehouse_id')->relationship('warehouse', 'name')->default(0),
-                RichEditor::make('notes')->columnSpanFull()->toolbarButtons(['bold', 'italic', 'underline', 'link', 'bulletList', 'numberedList', 'blockquote', 'codeBlock', 'undo', 'redo']),
+                Textarea::make('notes')->columnSpanFull(),
 
             ]);
     }

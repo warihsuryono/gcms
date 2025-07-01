@@ -68,53 +68,35 @@ class ViewStockOpname extends ViewRecord
 
     public function approve()
     {
-        ////////////////iniiiiiiihhhhh
         $nowdatetime = now();
-        foreach ($this->record->details as $item_receipt_detail) {
-            $item_stock = ItemStock::where('item_id', $item_receipt_detail->item_id)->first();
-            $item_stock->update(['qty' => $item_stock->qty + $item_receipt_detail->qty]);
+        foreach ($this->record->details as $stock_opname_detail) {
+            $item_stock = ItemStock::where('item_id', $stock_opname_detail->item_id)->first();
+            if ($item_stock->qty > $stock_opname_detail->actual_qty) {
+                $in_out = 'out';
+                $qty = $item_stock->qty - $stock_opname_detail->actual_qty;
+            } else {
+                $in_out = 'in';
+                $qty = $stock_opname_detail->actual_qty - $item_stock->qty;
+            }
+            $item_stock->update(['qty' => $stock_opname_detail->actual_qty]);
             ItemMovement::create([
                 'movement_at' => $nowdatetime,
-                'in_out' => 'in',
-                'item_movement_type_id' => 3,
-                'doc_no' => $this->record->item_receipt_no,
-                'item_receipt_detail_id' => $item_receipt_detail->id,
-                'item_id' => $item_receipt_detail->item_id,
-                'qty' => $item_receipt_detail->qty,
-                'unit_id' => $item_receipt_detail->unit_id,
-                'notes' => $item_receipt_detail->notes
+                'in_out' => $in_out,
+                'item_movement_type_id' => 4,
+                'doc_no' => 'Stock Opname #' . $this->record->id,
+                'item_receipt_detail_id' => '',
+                'item_id' => $stock_opname_detail->item_id,
+                'qty' => $qty,
+                'unit_id' => $stock_opname_detail->unit_id,
+                'notes' => $stock_opname_detail->notes
             ]);
         }
         $this->record->update(['is_approved' => 1, 'approved_at' => $nowdatetime, 'approved_by' => Auth::user()->id]);
 
-        $is_po_fulfilled = true;
-        $qty_received = [];
-        $item_receipts = ItemReceipt::where('purchase_order_id', $this->record->purchase_order_id)->where('is_approved', 1)->get();
-        if ($item_receipts->count() > 0) {
-            foreach ($item_receipts as $receipt) {
-                foreach ($receipt->details as $detail) {
-                    if (!isset($qty_received[$detail->item_id])) $qty_received[$detail->item_id] = 0;
-                    $qty_received[$detail->item_id] += $detail->qty;
-                }
-            }
-        }
-
-        foreach ($this->record->purchase_order->details as $purchase_order_detail) {
-            if (@$qty_received[$purchase_order_detail->item_id] < $purchase_order_detail->qty) {
-                $is_po_fulfilled = false;
-                break;
-            }
-        }
-
-        if ($is_po_fulfilled) {
-            $this->record->purchase_order->update(['is_closed' => 1, 'closed_at' => $nowdatetime, 'closed_by' => Auth::user()->id]);
-            Notification::make()->title('Purchase Order Fulfilled!')->success()->send();
-        }
-
-        Notification::make()->title('Item Receipt Approved!')->success()->send();
-        $this->dispatch('refreshItemReceipt');
+        Notification::make()->title('Stock Opname Approved!')->success()->send();
+        $this->dispatch('refreshStockOpname');
     }
 
-    #[On('refreshItemReceipt')]
+    #[On('refreshStockOpname')]
     public function refresh(): void {}
 }

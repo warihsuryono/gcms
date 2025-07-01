@@ -2,8 +2,10 @@
 
 namespace App\Filament\Resources\StockOpnameResource\RelationManagers;
 
+use Dom\Text;
 use Filament\Forms;
 use App\Models\Item;
+use App\Models\ItemStock;
 use App\Models\Unit;
 use Filament\Tables;
 use Filament\Forms\Get;
@@ -13,6 +15,7 @@ use Filament\Forms\Form;
 use Filament\Tables\Table;
 use App\Models\WarehouseDetail;
 use Filament\Forms\Components\Select;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
 use Illuminate\Database\Eloquent\Builder;
 use Filament\Tables\Enums\ActionsPosition;
@@ -27,7 +30,7 @@ class DetailsRelationManager extends RelationManager
     {
         return $form
             ->schema([
-                Select::make('item_id')
+                Select::make('item_id')->label('Item')
                     ->searchable()->preload()->required()->live()
                     ->options(function () {
                         return Item::all()->mapWithKeys(function ($item) {
@@ -36,9 +39,13 @@ class DetailsRelationManager extends RelationManager
                     })
                     ->afterStateUpdated(function (Get $get, Set $set) {
                         $set('unit_id', @Item::find($get('item_id'))->unit_id);
+                        $set('qty', ItemStock::where('item_id', $get('item_id'))->first()->qty ?? 0);
                     }),
-                TextInput::make('qty')->stripCharacters(',')->numeric()->required(),
-                TextInput::make('actual_qty')->stripCharacters(',')->numeric()->required(),
+                TextInput::make('qty')->stripCharacters(',')->numeric()->readOnly(),
+                TextInput::make('actual_qty')->stripCharacters(',')->numeric()->required()->label('Actual Qty')
+                    ->afterStateUpdated(function (Get $get, Set $set) {
+                        $set('qty', ItemStock::where('item_id', $get('item_id'))->first()->qty ?? 0);
+                    }),
                 Select::make('unit_id')->options(Unit::all()->pluck('name', 'id'))->relationship('unit', 'name')->disabled(),
                 TextInput::make('notes')->maxLength(255),
             ]);
@@ -49,6 +56,7 @@ class DetailsRelationManager extends RelationManager
         return $table
             ->recordTitleAttribute('item_id')
             ->columns([
+                TextColumn::make('index')->label('No.')->rowIndex(),
                 Tables\Columns\TextColumn::make('item_id')->label('Item')->formatStateUsing(fn($state) => "[" . Item::find($state)->code . "] -- " . Item::find($state)->name),
                 Tables\Columns\TextColumn::make('qty')->alignRight(),
                 Tables\Columns\TextColumn::make('actual_qty')->alignRight()->label('Actual Qty'),
@@ -63,7 +71,7 @@ class DetailsRelationManager extends RelationManager
                         }
                         return substr($warehouse_details, 0, -2);
                     } else return '';
-                }),
+                })->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 //

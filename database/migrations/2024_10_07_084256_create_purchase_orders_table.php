@@ -17,12 +17,14 @@ return new class extends Migration
             $table->date('doc_at')->nullable()->index();
             $table->unsignedBigInteger('item_request_id')->default(0)->nullable()->index();
             $table->unsignedBigInteger('supplier_id')->default(0)->nullable()->index();
-            $table->date('delivery_at')->nullable()->index();
             $table->unsignedBigInteger('payment_type_id')->default(0)->nullable();
             $table->unsignedBigInteger('use_by')->default(0)->nullable()->index();
             $table->date('use_at')->nullable()->index();
-            $table->string('shipment_pic')->nullable()->default('');
+            $table->string('shipment_company')->nullable();
+            $table->string('shipment_pic')->nullable();
+            $table->string('shipment_phone')->nullable();
             $table->text('shipment_address')->nullable();
+            $table->date('delivery_at')->nullable();
             $table->unsignedBigInteger('currency_id')->default(0)->nullable();
             $table->smallInteger('discount_is_percentage')->nullable()->default(0);
             $table->double('discount')->nullable()->default(0);

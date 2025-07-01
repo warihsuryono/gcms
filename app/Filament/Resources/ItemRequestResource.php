@@ -89,7 +89,6 @@ class ItemRequestResource extends Resource
                 if (
                     Auth::user()->id > 1 //not superuser
                     && !FollowupOfficer::whereLike('action', 'item-request-%')->where('user_id', Auth::user()->id)->first() //not followup officer
-                    && (Auth::user()->employee && Auth::user()->employee->leader_user_id > 0) //not board of directors
                 ) { //show only creator
                     $query->where('created_by', Auth::user()->id);
                     return $query;

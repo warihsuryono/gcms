@@ -42,7 +42,7 @@ class DashboardWidget extends BaseWidget
             $open_item_requests = count(ItemRequest::where('is_issued', 0)->get());
             $item_requests_this_month = count(ItemRequest::where('item_request_at', 'like', date('Y-m-') . '%')->get());
             $widgets = array_merge($widgets, [
-                Stat::make('Open Item Requests', $open_item_requests)
+                Stat::make('Outstanding Item Requests', $open_item_requests)
                     ->icon('heroicon-o-cube')
                     ->description("Total Item Request This Month : " . $item_requests_this_month)
                     ->extraAttributes([
@@ -56,8 +56,8 @@ class DashboardWidget extends BaseWidget
             $open_purchase_order = count(PurchaseOrder::where('is_closed', 0)->get());
             $purchase_orders_this_month = count(PurchaseOrder::where('doc_at', 'like', date('Y-m-') . '%')->get());
             $widgets = array_merge($widgets, [
-                Stat::make('Open Purchase Orders', $open_purchase_order)
-                    ->icon('heroicon-o-cube')
+                Stat::make('Outstanding Purchase Orders', $open_purchase_order)
+                    ->icon('heroicon-o-shopping-cart')
                     ->description("Total Purchase Order This Month : " . $purchase_orders_this_month)
                     ->extraAttributes([
                         'class' => 'cursor-pointer',

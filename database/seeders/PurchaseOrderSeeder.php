@@ -17,13 +17,15 @@ class PurchaseOrderSeeder extends Seeder
             'doc_no' => 'PO/VI/2025/001',
             'doc_at' => NOW(),
             'item_request_id' => 0,
-            'supplier_id' => 0,
-            'delivery_at' => now()->addDays(7),
+            'supplier_id' => 1,
             'payment_type_id' => 7,
             'use_by' => 6,
             'use_at' => now()->addDays(7),
-            'shipment_pic' => '',
-            'shipment_address' => '',
+            'shipment_company' => 'PT. Pandu Logistics',
+            'shipment_pic' => 'John Doe',
+            'shipment_phone' => '08123456789',
+            'shipment_address' => 'Jl. Raya Industri No. 123, Jakarta, Indonesia',
+            'delivery_at' => now()->addDays(7),
             'currency_id' => 1,
             'discount_is_percentage' => 0,
             'discount' => 0,
@@ -34,7 +36,9 @@ class PurchaseOrderSeeder extends Seeder
             'notes' => 'Purchase Order created from understock item list',
             'is_approved' => 1,
             'approved_at' => now(),
-            'approved_by' => 6
+            'approved_by' => 6,
+            'created_by' => 6,
+            'created_at' => now(),
         ]);
         PurchaseOrderDetail::create(['purchase_order_id' => 1, 'seqno' => 0, 'item_id' => 2, 'qty' => 100, 'unit_id' => 4, 'price' => 13500, 'purchase_request_detail_id' => 0]);
         PurchaseOrderDetail::create(['purchase_order_id' => 1, 'seqno' => 1, 'item_id' => 10, 'qty' => 95, 'unit_id' => 10, 'price' => 10000, 'purchase_request_detail_id' => 0]);

@@ -13,12 +13,17 @@ use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
 use App\Traits\FilamentListActions;
 use Filament\Tables\Filters\Filter;
-use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Auth;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Textarea;
+use Illuminate\Support\Facades\Request;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\DatePicker;
 use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Builder;
 use Filament\Forms\Components\Placeholder;
+use Filament\Infolists\Components\Section;
+use Filament\Forms\Components\Section as FormsSection;
 use Filament\Tables\Enums\ActionsPosition;
 use Filament\Tables\Filters\TernaryFilter;
 use App\Filament\Resources\PurchaseOrderResource\Pages;
@@ -50,12 +55,16 @@ class PurchaseOrderResource extends Resource
                 Infolists\Components\TextEntry::make('doc_no')->label('Document No'),
                 Infolists\Components\TextEntry::make('doc_at')->label('Document Date')->date('d-m-Y'),
                 Infolists\Components\TextEntry::make('supplier.name'),
-                Infolists\Components\TextEntry::make('delivery_at')->date('d-m-Y'),
                 Infolists\Components\TextEntry::make('payment_type.name'),
                 Infolists\Components\TextEntry::make('useBy.name'),
                 Infolists\Components\TextEntry::make('use_at')->label('Use Date')->date('d-m-Y'),
-                Infolists\Components\TextEntry::make('shipment_pic'),
-                Infolists\Components\TextEntry::make('shipment_address'),
+                Section::make('Shipment Details')->columns(2)->schema([
+                    Infolists\Components\TextEntry::make('shipment_company'),
+                    Infolists\Components\TextEntry::make('shipment_pic'),
+                    Infolists\Components\TextEntry::make('shipment_phone'),
+                    Infolists\Components\TextEntry::make('shipment_address'),
+                    Infolists\Components\TextEntry::make('delivery_at')->label('Delivery Date')->date('d-m-Y'),
+                ]),
                 Infolists\Components\TextEntry::make('notes'),
                 Infolists\Components\TextEntry::make('currency.name'),
                 Infolists\Components\TextEntry::make('Sub Total')->state(fn(PurchaseOrder $record) => $record->currency->symbol . '. ' . number_format($subtotal, 2)),
@@ -85,21 +94,25 @@ class PurchaseOrderResource extends Resource
         }
         return $form
             ->schema([
-                Forms\Components\TextInput::make('doc_no')->readOnly()->visibleOn('edit'),
-                Forms\Components\DatePicker::make('doc_at'),
-                Forms\Components\Select::make('supplier_id')->relationship('supplier', 'name')->searchable()->preload(),
-                Forms\Components\DatePicker::make('delivery_at'),
-                Forms\Components\Select::make('payment_type_id')->relationship('payment_type', 'name')->searchable()->preload(),
-                Forms\Components\Select::make('item_request_id')->relationship('item_request', 'item_request_no')->searchable()->preload(),
-                Forms\Components\Select::make('use_by')->relationship('useBy', 'name')->required()->searchable()->preload(),
-                Forms\Components\DatePicker::make('use_at'),
-                Forms\Components\TextInput::make('shipment_pic')->maxLength(255)->required(),
-                Forms\Components\Textarea::make('shipment_address')->columnSpanFull(),
-                Forms\Components\TextInput::make('notes')->maxLength(255)->required(),
-                Forms\Components\Select::make('currency_id')->relationship('currency', 'name')->searchable()->preload()->required(),
-                Forms\Components\Select::make('discount_is_percentage')->options(['1' => 'Yes', '0' => 'No'])->required()->default(1),
-                Forms\Components\TextInput::make('discount')->numeric()->default(0),
-                Forms\Components\TextInput::make('tax')->numeric()->default(10)->suffix(' %'),
+                TextInput::make('doc_no')->readOnly()->visibleOn('edit'),
+                DatePicker::make('doc_at'),
+                Select::make('supplier_id')->relationship('supplier', 'name')->searchable()->preload(),
+                Select::make('payment_type_id')->relationship('payment_type', 'name')->searchable()->preload(),
+                Select::make('item_request_id')->relationship('item_request', 'item_request_no')->searchable()->preload(),
+                Select::make('use_by')->relationship('useBy', 'name')->required()->searchable()->preload(),
+                DatePicker::make('use_at'),
+                FormsSection::make('Shipment Details')->columns(2)->schema([
+                    TextInput::make('shipment_company')->maxLength(255),
+                    TextInput::make('shipment_pic')->maxLength(255),
+                    TextInput::make('shipment_phone')->maxLength(255),
+                    Textarea::make('shipment_address')->maxLength(255),
+                    DatePicker::make('delivery_at')->default(now()->addDays(7)),
+                ]),
+                TextInput::make('notes')->maxLength(255)->required(),
+                Select::make('currency_id')->relationship('currency', 'name')->searchable()->preload()->required(),
+                Select::make('discount_is_percentage')->options(['1' => 'Yes', '0' => 'No'])->required()->default(1),
+                TextInput::make('discount')->numeric()->default(0),
+                TextInput::make('tax')->numeric()->default(10)->suffix(' %'),
                 Placeholder::make('subtotal')->label('Sub Total')->visibleOn('edit')
                     ->content(fn(PurchaseOrder $record) => $record->currency->symbol . '. ' . number_format($record->subtotal, 2)),
                 Placeholder::make('grandtotal')->label('Grand Total')->visibleOn('edit')
@@ -115,12 +128,12 @@ class PurchaseOrderResource extends Resource
                 Tables\Columns\TextColumn::make('doc_no')->searchable(),
                 Tables\Columns\TextColumn::make('doc_at')->date('d-m-Y'),
                 Tables\Columns\TextColumn::make('supplier.name'),
-                Tables\Columns\TextColumn::make('delivery_at')->date('d-m-Y'),
                 Tables\Columns\TextColumn::make('payment_type.name')->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('purchase_request.doc_no'),
                 Tables\Columns\TextColumn::make('useBy.name'),
                 Tables\Columns\TextColumn::make('use_at')->date('d-m-Y'),
-                Tables\Columns\TextColumn::make('shipment_pic'),
+                Tables\Columns\TextColumn::make('shipment_company'),
+                Tables\Columns\TextColumn::make('delivery_at')->date('d-m-Y'),
                 Tables\Columns\TextColumn::make('currency.name'),
                 Tables\Columns\TextColumn::make('tax')->numeric()->suffix(' %'),
                 Tables\Columns\TextColumn::make('grandtotal')->state(fn(PurchaseOrder $record) => $record->currency->symbol . ". " . number_format($record->grandtotal, 2)),

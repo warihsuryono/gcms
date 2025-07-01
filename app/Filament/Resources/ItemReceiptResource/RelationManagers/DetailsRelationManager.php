@@ -68,6 +68,21 @@ class DetailsRelationManager extends RelationManager
                         return 0;
                     }),
                 Tables\Columns\TextColumn::make('qty')->alignRight(),
+                Tables\Columns\TextColumn::make('qty_outstanding')->alignRight()->label('Outstanding Qty')
+                    ->default(function ($record) {
+                        $po_detail = ItemReceiptDetail::find($record->id);
+                        if ($po_detail) {
+                            $item_receipts = ItemReceiptDetail::where('purchase_order_detail_id', $po_detail->purchase_order_detail_id)->get();
+                            $settled_qty = 0;
+                            foreach ($item_receipts as $receipt) {
+                                if ($receipt->item_id == $po_detail->item_id) {
+                                    $settled_qty += $receipt->qty;
+                                }
+                            }
+                            return $po_detail->qty_po - $settled_qty;
+                        }
+                        return 0;
+                    }),
                 Tables\Columns\TextColumn::make('unit.name'),
                 Tables\Columns\TextColumn::make('notes'),
                 Tables\Columns\TextColumn::make('warehouse_detail_ids')->label('Storage Locations')->default(function ($record) {
@@ -95,8 +110,7 @@ class DetailsRelationManager extends RelationManager
                     }),
             ])
             ->actions([
-                Tables\Actions\EditAction::make()->iconButton()->after(function (Component $livewire, $record) {
-                    $record->update(['qty_outstanding' => $record->qty_po - $record->qty]);
+                Tables\Actions\EditAction::make()->iconButton()->after(function (Component $livewire) {
                     $livewire->dispatch('refreshItemReceipt');
                 }),
                 Tables\Actions\DeleteAction::make()->iconButton()->after(function (Component $livewire) {

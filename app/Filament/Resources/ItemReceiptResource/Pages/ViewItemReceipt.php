@@ -14,6 +14,7 @@ use Filament\Notifications\Notification;
 use Filament\Resources\Pages\ViewRecord;
 use App\Http\Controllers\PrivilegeController;
 use App\Filament\Resources\ItemReceiptResource;
+use App\Models\ItemReceipt;
 
 class ViewItemReceipt extends ViewRecord
 {
@@ -81,6 +82,31 @@ class ViewItemReceipt extends ViewRecord
             ]);
         }
         $this->record->update(['is_approved' => 1, 'approved_at' => $nowdatetime, 'approved_by' => Auth::user()->id]);
+
+        $is_po_fulfilled = true;
+        $qty_received = [];
+        $item_receipts = ItemReceipt::where('purchase_order_id', $this->record->purchase_order_id)->where('is_approved', 1)->get();
+        if ($item_receipts->count() > 0) {
+            foreach ($item_receipts as $receipt) {
+                foreach ($receipt->details as $detail) {
+                    if (!isset($qty_received[$detail->item_id])) $qty_received[$detail->item_id] = 0;
+                    $qty_received[$detail->item_id] += $detail->qty;
+                }
+            }
+        }
+
+        foreach ($this->record->purchase_order->details as $purchase_order_detail) {
+            if (@$qty_received[$purchase_order_detail->item_id] < $purchase_order_detail->qty) {
+                $is_po_fulfilled = false;
+                break;
+            }
+        }
+
+        if ($is_po_fulfilled) {
+            $this->record->purchase_order->update(['is_closed' => 1, 'closed_at' => $nowdatetime, 'closed_by' => Auth::user()->id]);
+            Notification::make()->title('Purchase Order Fulfilled!')->success()->send();
+        }
+
         Notification::make()->title('Item Receipt Approved!')->success()->send();
         $this->dispatch('refreshItemReceipt');
     }

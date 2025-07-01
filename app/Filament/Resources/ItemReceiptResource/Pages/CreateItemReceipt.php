@@ -52,6 +52,11 @@ class CreateItemReceipt extends CreateRecord
                 'description' => $purchase_order->description,
             ]);
             foreach ($purchase_order->details as $purchase_order_detail) {
+                $settled_qty = 0;
+                $item_receipts = ItemReceipt::where('purchase_order_id', $purchase_order_id)->where('is_approved', 1)->get();
+                if ($item_receipts->count() > 0) foreach ($item_receipts as $receipt) $settled_qty += @$receipt->details->where('item_id', $purchase_order_detail->item_id)->first()->qty;
+
+                $qty = $purchase_order_detail->qty - $settled_qty;
                 ItemReceiptDetail::create([
                     'item_receipt_id' => $item_receipt->id,
                     'seqno' => $purchase_order_detail->seqno,
@@ -59,13 +64,12 @@ class CreateItemReceipt extends CreateRecord
                     'item_id' => $purchase_order_detail->item_id,
                     'unit_id' => $purchase_order_detail->unit_id,
                     'qty_po' => $purchase_order_detail->qty,
-                    'qty' => $purchase_order_detail->qty,
+                    'qty' => $qty,
+                    'qty_outstanding' => $qty,
                     'notes' => $purchase_order_detail->notes,
                 ]);
             }
             redirect()->route('filament.' . env('PANEL_PATH') . '.resources.item-receipts.edit', $item_receipt->id);
-        } else {
-            redirect()->route('filament.' . env('PANEL_PATH') . '.resources.item-receipts.index');
         }
     }
 
@@ -85,6 +89,11 @@ class CreateItemReceipt extends CreateRecord
         $purchase_order = PurchaseOrder::find($this->record->purchase_order_id);
         if (!$purchase_order) redirect()->route('filament.' . env('PANEL_PATH') . '.resources.item-receipts.edit', $this->record->id);
         foreach ($purchase_order->details as $purchase_order_detail) {
+            $settled_qty = 0;
+            $item_receipts = ItemReceipt::where('purchase_order_id', $this->record->purchase_order_id)->where('is_approved', 1)->get();
+            if ($item_receipts->count() > 0) foreach ($item_receipts as $receipt) $settled_qty += @$receipt->details->where('item_id', $purchase_order_detail->item_id)->first()->qty;
+
+            $qty = $purchase_order_detail->qty - $settled_qty;
             ItemReceiptDetail::create([
                 'item_receipt_id' => $this->record->id,
                 'seqno' => $purchase_order_detail->seqno,
@@ -92,7 +101,8 @@ class CreateItemReceipt extends CreateRecord
                 'item_id' => $purchase_order_detail->item_id,
                 'unit_id' => $purchase_order_detail->unit_id,
                 'qty_po' => $purchase_order_detail->qty,
-                'qty' => $purchase_order_detail->qty,
+                'qty' => $qty,
+                'qty_outstanding' => $qty,
                 'notes' => $purchase_order_detail->notes,
             ]);
         }

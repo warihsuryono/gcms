@@ -15,6 +15,7 @@ use Filament\Resources\Pages\ViewRecord;
 use App\Http\Controllers\PrivilegeController;
 use App\Filament\Resources\ItemReceiptResource;
 use App\Models\ItemReceipt;
+use App\Models\PurchaseOrder;
 
 class ViewItemReceipt extends ViewRecord
 {
@@ -41,7 +42,7 @@ class ViewItemReceipt extends ViewRecord
         }
 
         if (Auth::user()->privilege->id == 1) $this->is_approve_officer = true;
-        if (@FollowupOfficer::where(['user_id' => Auth::user()->id, 'action' => 'purchase-order-approve'])->first()->id > 0) $this->is_approve_officer = true;
+        if (@FollowupOfficer::where(['user_id' => Auth::user()->id, 'action' => 'item-receipt-approve'])->first()->id > 0) $this->is_approve_officer = true;
 
         if ($this->record->is_approved == 1) {
             if (Auth::user()->privilege->id == 1) $this->is_stock_keeper = true;
@@ -60,7 +61,27 @@ class ViewItemReceipt extends ViewRecord
                     ->color('success')
             ]);
 
+        if (($this->is_approve_officer || $this->is_stock_keeper) && $this->record->purchase_order->is_closed == 0)
+            $actions = array_merge($actions, [
+                Action::make('purchase_order_close')
+                    ->label('Close Purchase Order')
+                    ->requiresConfirmation()
+                    ->modalHeading('Confirm Close Purchase Order')
+                    ->modalDescription('Are you sure you want to close this purchase order? This will mark the purchase order as closed and cannot be undone.')
+                    ->action(fn() => $this->purchase_order_close())
+                    ->icon('heroicon-o-check-circle')
+                    ->color('success')
+            ]);
+
+
         return $actions;
+    }
+
+    public function purchase_order_close()
+    {
+        PurchaseOrder::where('id', $this->record->purchase_order_id)->update(['is_closed' => 1, 'closed_at' => now(), 'closed_by' => Auth::user()->id]);
+        Notification::make()->title('Purchase Order Closed!')->success()->send();
+        $this->dispatch('refreshItemReceipt');
     }
 
     public function approve()

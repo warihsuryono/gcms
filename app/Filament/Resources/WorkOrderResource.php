@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Exports\WorkOrderExporter;
 use id;
 use Filament\Forms;
 use Filament\Tables;
@@ -17,6 +18,7 @@ use Filament\Forms\Components\Tabs\Tab;
 use Illuminate\Support\Facades\Request;
 use Filament\Tables\Actions\ActionGroup;
 use Filament\Forms\Components\RichEditor;
+use Filament\Tables\Actions\ExportAction;
 use Filament\Tables\Columns\SelectColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Builder;
@@ -118,6 +120,15 @@ class WorkOrderResource extends Resource
                 50,
                 100,
                 'all',
+            ])
+            ->headerActions([
+                ExportAction::make()
+                    ->exporter(WorkOrderExporter::class)
+                    ->label('Export')
+                    ->icon('heroicon-o-arrow-down-tray')
+                    ->color("success")
+                    ->filename('work-orders-' . time())
+                    ->columnMapping(false)
             ]);
     }
 

@@ -32,12 +32,6 @@ return new class extends Migration
             $table->softDeletes();
             $table->timestamps();
         });
-
-        $seqno = DB::table('menus')->where(['parent_id' => 6])->orderby('seqno', 'desc')->first()->seqno;
-
-        DB::table('menus')->insert([
-            ['seqno' => ($seqno + 1), 'parent_id' => 6, 'name' => 'Attendance', 'url' => 'attendances', 'middleware' => 'auth'],
-        ]);
     }
 
     /**

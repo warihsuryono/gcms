@@ -14,7 +14,7 @@ class ChartWorkOrders extends Page
     public function getBreadcrumbs(): array
     {
         return [
-            'Work Orders',
+            route('filament.' . env('PANEL_PATH') . '.resources.work-orders.report') => 'Work Orders Report',
             'Chart'
         ];
     }

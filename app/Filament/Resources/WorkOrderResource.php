@@ -2,7 +2,6 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Exports\WorkOrderExporter;
 use id;
 use Filament\Forms;
 use Filament\Tables;
@@ -14,15 +13,18 @@ use App\Models\WorkOrderStatus;
 use Filament\Resources\Resource;
 use App\Traits\FilamentListActions;
 use Filament\Tables\Actions\Action;
+use Filament\Tables\Filters\Filter;
 use Filament\Forms\Components\Tabs\Tab;
 use Illuminate\Support\Facades\Request;
 use Filament\Tables\Actions\ActionGroup;
+use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\RichEditor;
 use Filament\Tables\Actions\ExportAction;
 use Filament\Tables\Columns\SelectColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Builder;
 use Filament\Tables\Enums\ActionsPosition;
+use App\Filament\Exports\WorkOrderExporter;
 use App\Filament\Resources\WorkOrderResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\WorkOrderResource\RelationManagers;
@@ -113,6 +115,13 @@ class WorkOrderResource extends Resource
                 Tables\Columns\TextColumn::make('works')->searchable()->html(),
             ])
             ->filters([
+                Filter::make('work_start')
+                    ->form([DatePicker::make('work_start_from')->default(now()->firstOfMonth()), DatePicker::make('work_start_until')->default(now()->lastOfMonth())])
+                    ->query(function (Builder $query, array $data): Builder {
+                        return $query
+                            ->when($data['work_start_from'], fn(Builder $query, $date): Builder => $query->whereDate('work_start', '>=', $date))
+                            ->when($data['work_start_until'], fn(Builder $query, $date): Builder => $query->whereDate('work_start', '<=', $date));
+                    })->columns(2),
                 SelectFilter::make('work_order_status_id')->relationship('work_order_status', 'name')
             ])
             ->paginated([
@@ -144,9 +153,9 @@ class WorkOrderResource extends Resource
         return [
             'index' => Pages\ListWorkOrders::route('/'),
             'create' => Pages\CreateWorkOrder::route('/create'),
-            // 'edit' => Pages\EditWorkOrder::route('/{record}/edit'),
+            'report' => Pages\ReportWorkOrders::route('/report'),
+            'chart' => Pages\ChartWorkOrders::route('/chart'),
             'view' => Pages\ViewWorkOrder::route('/{record}'),
-            'chart' => Pages\ChartWorkOrders::route('/chart/{record}'),
         ];
     }
 }

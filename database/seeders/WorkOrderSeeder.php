@@ -31,13 +31,13 @@ class WorkOrderSeeder extends Seeder
         • bahan:lokal 10.18.18<br>
         ']);
 
-        WorkOrder::create(['work_start' => date("Y-m-d") . ' 02:00:00', 'division_id' => 2, 'field_ids' => '["10"]', 'works' => '
+        WorkOrder::create(['work_start' => date("Y-m-d", strtotime('-1 day')) . ' 02:00:00', 'division_id' => 2, 'field_ids' => '["10"]', 'works' => '
         • Lanjut bongkar kanstin dan pasang kembali kanstin<br>
         • di naikan kanstin rata - rata 0,4 cm di pinggir carpath<br>
         • di samping Ferway kalo dari tee box sebelah kanan
         ']);
 
-        WorkOrder::create(['work_start' => date("Y-m-d") . ' 09:00:00', 'division_id' => 1, 'field_ids' => '[]', 'works' => '
+        WorkOrder::create(['work_start' => date("Y-m-d", strtotime('-1 day')) . ' 09:00:00', 'division_id' => 1, 'field_ids' => '[]', 'works' => '
         • potong semua rumput green + praktis green plus  ( 6 unit sibahura )<br>
         • cuci alat kalau sudah selesai bekerja<br>
         • pupuk semua rumput green<br>
@@ -55,5 +55,17 @@ class WorkOrderSeeder extends Seeder
         WorkOrder::create(['work_start' => date("Y-m-d") . ' 14:00:00', 'division_id' => 1, 'field_ids' => '["11","12","13","14","15","16","17"]', 'works' => 'reking bungker ( sempro )']);
         WorkOrder::create(['work_start' => date("Y-m-d") . ' 15:00:00', 'division_id' => 1, 'field_ids' => '[]', 'works' => 'blower kelipingan rumput yang sudah selesai dipotong']);
         WorkOrder::create(['work_start' => date("Y-m-d") . ' 16:00:00', 'division_id' => 1, 'field_ids' => '["10"]', 'works' => 'potong rumput bungker ']);
+
+        WorkOrder::create(['work_start' => date("Y-m-d", strtotime('-1 day')) . ' 09:00:00', 'division_id' => 1, 'field_ids' => '["3","4","5","6","7","8","9","10"]', 'works' => 'potong  rumput farway ( lf 570 + lf 250 )']);
+        WorkOrder::create(['work_start' => date("Y-m-d", strtotime('-2 day')) . ' 07:00:00', 'division_id' => 2, 'field_ids' => '[]', 'works' => 'Lanjut pasang bata merah di gedung training center']);
+        WorkOrder::create(['work_start' => date("Y-m-d", strtotime('-2 day')) . ' 10:00:00', 'division_id' => 1, 'field_ids' => '["9","10","11"]', 'works' => 'potong rumput tee box ( gp 400 + ecplise 322 )']);
+        WorkOrder::create(['work_start' => date("Y-m-d", strtotime('-3 day')) . ' 11:00:00', 'division_id' => 1, 'field_ids' => '["6","7","8","9","10"]', 'works' => 'potong rumput apron ( gp 400 2 unit )']);
+        WorkOrder::create(['work_start' => date("Y-m-d", strtotime('-3 day')) . ' 08:00:00', 'division_id' => 2, 'field_ids' => '[]', 'works' => 'Bongkar jendela musholah di tutup pake bata merah']);
+        WorkOrder::create(['work_start' => date("Y-m-d", strtotime('-3 day')) . ' 12:00:00', 'division_id' => 1, 'field_ids' => '["5","6","7","8","9","10"]', 'works' => 'potong rumput apron mini ( ecplise 322 + 322 4H )']);
+        WorkOrder::create(['work_start' => date("Y-m-d", strtotime('-3 day')) . ' 13:00:00', 'division_id' => 1, 'field_ids' => '["10","11","12","13","14","15","16","17","18"]', 'works' => 'potong rumput rugh ( AR 522 )']);
+        WorkOrder::create(['work_start' => date("Y-m-d", strtotime('-3 day')) . ' 08:00:00', 'division_id' => 2, 'field_ids' => '[]', 'works' => 'Cor kolom dan latai di gedung training center']);
+        WorkOrder::create(['work_start' => date("Y-m-d", strtotime('-4 day')) . ' 14:00:00', 'division_id' => 1, 'field_ids' => '["11","12","13","14","15","16","17"]', 'works' => 'reking bungker ( sempro )']);
+        WorkOrder::create(['work_start' => date("Y-m-d", strtotime('-4 day')) . ' 15:00:00', 'division_id' => 1, 'field_ids' => '[]', 'works' => 'blower kelipingan rumput yang sudah selesai dipotong']);
+        WorkOrder::create(['work_start' => date("Y-m-d", strtotime('-5 day')) . ' 16:00:00', 'division_id' => 1, 'field_ids' => '["10"]', 'works' => 'potong rumput bungker ']);
     }
 }

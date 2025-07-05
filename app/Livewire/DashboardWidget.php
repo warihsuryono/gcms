@@ -93,6 +93,6 @@ class DashboardWidget extends BaseWidget
 
     public function goToUnderStock()
     {
-        return redirect()->route('filament.' . env('PANEL_PATH') . '.resources.items.understock', 1);
+        return redirect()->route('filament.' . env('PANEL_PATH') . '.resources.items.understock');
     }
 }

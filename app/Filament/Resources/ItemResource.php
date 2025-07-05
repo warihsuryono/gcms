@@ -88,9 +88,10 @@ class ItemResource extends Resource
         return [
             'index' => Pages\ListItems::route('/'),
             'create' => Pages\CreateItem::route('/create'),
+            'understock' => Pages\UnderstockItem::route('/understock'),
+            'control' => Pages\ControlItems::route('/control'),
             'edit' => Pages\EditItem::route('/{record}/edit'),
             'view' => Pages\ViewItem::route('/{record}'),
-            'understock' => Pages\UnderstockItem::route('/understock/{record}'),
         ];
     }
 }

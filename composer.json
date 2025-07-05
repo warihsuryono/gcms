@@ -12,6 +12,7 @@
         "laravel/framework": "^11.9",
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.9",
+        "leandrocfe/filament-apex-charts": "^3.2",
         "stechstudio/filament-impersonate": "^3.15",
         "wandersonwhcr/romans": "^1.5"
     },

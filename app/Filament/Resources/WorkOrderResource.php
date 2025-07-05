@@ -146,6 +146,7 @@ class WorkOrderResource extends Resource
             'create' => Pages\CreateWorkOrder::route('/create'),
             // 'edit' => Pages\EditWorkOrder::route('/{record}/edit'),
             'view' => Pages\ViewWorkOrder::route('/{record}'),
+            'chart' => Pages\ChartWorkOrders::route('/chart/{record}'),
         ];
     }
 }

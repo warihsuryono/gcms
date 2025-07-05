@@ -32,6 +32,7 @@ use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
+use Leandrocfe\FilamentApexCharts\FilamentApexChartsPlugin;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 
 class XPanelProvider extends PanelProvider
@@ -85,6 +86,9 @@ class XPanelProvider extends PanelProvider
         });
 
         $panel
+            ->plugins([
+                FilamentApexChartsPlugin::make()
+            ])
             ->default()
             ->id(env('PANEL_PATH'))
             ->path(env('PANEL_PATH'))

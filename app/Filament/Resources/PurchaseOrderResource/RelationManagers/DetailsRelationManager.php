@@ -54,7 +54,7 @@ class DetailsRelationManager extends RelationManager
                         TextInput::make('maximum_stock')->numeric()->default(0),
                     ]),
                 TextInput::make('qty')->stripCharacters(',')->numeric()->suffix(fn(Get $get) => Item::find($get('item_id'))->unit->name ?? ''),
-                TextInput::make('price')->mask(RawJs::make('$money($input)'))->stripCharacters(',')->numeric(),
+                // TextInput::make('price')->mask(RawJs::make('$money($input)'))->stripCharacters(',')->numeric(),
                 TextInput::make('notes')->maxLength(255),
                 Hidden::make('unit_id'),
             ]);
@@ -68,8 +68,8 @@ class DetailsRelationManager extends RelationManager
                     ->formatStateUsing(fn($state) => "[" . Item::find($state)->code . "] -- " . Item::find($state)->name),
                 Tables\Columns\TextColumn::make('qty'),
                 Tables\Columns\TextColumn::make('unit.name'),
-                Tables\Columns\TextColumn::make('price')
-                    ->state(fn(PurchaseOrderDetail $purchaseOrderDetail) => $purchaseOrderDetail->belongs_to->currency->symbol . '. ' . number_format($purchaseOrderDetail->price, 2)),
+                // Tables\Columns\TextColumn::make('price')
+                //     ->state(fn(PurchaseOrderDetail $purchaseOrderDetail) => $purchaseOrderDetail->belongs_to->currency->symbol . '. ' . number_format($purchaseOrderDetail->price, 2)),
                 Tables\Columns\TextColumn::make('notes'),
             ])
             ->modifyQueryUsing(function (Builder $query) {
@@ -82,55 +82,16 @@ class DetailsRelationManager extends RelationManager
                 Tables\Actions\CreateAction::make()->label('Add Item')->icon('heroicon-o-plus')
                     ->after(function (PurchaseOrderDetail $detail, Component $livewire) {
                         $detail->update(['seqno' => $this->getOwnerRecord()->details()->max('seqno') + 1]);
-                        $subtotal = 0;
-                        foreach ($detail->belongs_to->details as $purchaseOrderDetail)
-                            $subtotal += ($purchaseOrderDetail->price * $purchaseOrderDetail->qty);
-
-                        if ($detail->belongs_to->discount_is_percentage)
-                            $discount = $subtotal * $detail->belongs_to->discount / 100;
-                        else
-                            $discount = $detail->belongs_to->discount;
-
-                        $after_discount = $subtotal - $discount;
-                        $tax = $after_discount * $detail->belongs_to->tax / 100;
-                        $grandtotal = $after_discount + $tax;
-                        $detail->belongs_to->update(['subtotal' => $subtotal, 'grandtotal' => $grandtotal]);
                         $livewire->dispatch('refreshPurchaseOrder');
                     }),
             ])
             ->actions([
                 Tables\Actions\EditAction::make()->iconButton()
                     ->after(function (PurchaseOrderDetail $detail, Component $livewire) {
-                        $subtotal = 0;
-                        foreach ($detail->belongs_to->details as $purchaseOrderDetail)
-                            $subtotal += ($purchaseOrderDetail->price * $purchaseOrderDetail->qty);
-
-                        if ($detail->belongs_to->discount_is_percentage)
-                            $discount = $subtotal * $detail->belongs_to->discount / 100;
-                        else
-                            $discount = $detail->belongs_to->discount;
-
-                        $after_discount = $subtotal - $discount;
-                        $tax = $after_discount * $detail->belongs_to->tax / 100;
-                        $grandtotal = $after_discount + $tax;
-                        $detail->belongs_to->update(['subtotal' => $subtotal, 'grandtotal' => $grandtotal]);
                         $livewire->dispatch('refreshPurchaseOrder');
                     }),
                 Tables\Actions\DeleteAction::make()->iconButton()
                     ->after(function (PurchaseOrderDetail $detail, Component $livewire) {
-                        $subtotal = 0;
-                        foreach ($detail->belongs_to->details as $purchaseOrderDetail)
-                            $subtotal += ($purchaseOrderDetail->price * $purchaseOrderDetail->qty);
-
-                        if ($detail->belongs_to->discount_is_percentage)
-                            $discount = $subtotal * $detail->belongs_to->discount / 100;
-                        else
-                            $discount = $detail->belongs_to->discount;
-
-                        $after_discount = $subtotal - $discount;
-                        $tax = $after_discount * $detail->belongs_to->tax / 100;
-                        $grandtotal = $after_discount + $tax;
-                        $detail->belongs_to->update(['subtotal' => $subtotal, 'grandtotal' => $grandtotal]);
                         $livewire->dispatch('refreshPurchaseOrder');
                     }),
             ], ActionsPosition::BeforeColumns)
@@ -141,27 +102,6 @@ class DetailsRelationManager extends RelationManager
                     ->label('Delete Selected')
                     ->icon('heroicon-o-trash')
                     ->color('danger')
-                    ->after(function (PurchaseOrder $belongs_to, Component $livewire) {
-                        $subtotal = 0;
-                        if (@$belongs_to->details->count() == 0) {
-                            $belongs_to->update(['subtotal' => 0, 'grandtotal' => 0]);
-                            $livewire->dispatch('refreshPurchaseOrder');
-                            return;
-                        }
-                        foreach ($belongs_to->details as $purchaseOrderDetail)
-                            $subtotal += ($purchaseOrderDetail->price * $purchaseOrderDetail->qty);
-
-                        if ($belongs_to->discount_is_percentage)
-                            $discount = $subtotal * $belongs_to->discount / 100;
-                        else
-                            $discount = $belongs_to->discount;
-
-                        $after_discount = $subtotal - $discount;
-                        $tax = $after_discount * $belongs_to->tax / 100;
-                        $grandtotal = $after_discount + $tax;
-                        $belongs_to->update(['subtotal' => $subtotal, 'grandtotal' => $grandtotal]);
-                        $livewire->dispatch('refreshPurchaseOrder');
-                    })
                     ->visible(fn() => strpos($_SERVER['HTTP_REFERER'], '/edit'))
             ])
             ->paginated(false);

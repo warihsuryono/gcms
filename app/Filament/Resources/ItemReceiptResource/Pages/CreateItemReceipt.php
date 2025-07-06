@@ -43,12 +43,12 @@ class CreateItemReceipt extends CreateRecord
                 'item_receipt_no' => $data['item_receipt_no'],
                 'item_receipt_at' => now(),
                 'purchase_order_id' => $purchase_order_id,
-                'supplier_id' => $purchase_order->supplier_id,
-                'shipment_company' => $purchase_order->shipment_company,
-                'shipment_pic' => $purchase_order->shipment_pic,
-                'shipment_phone' => $purchase_order->shipment_phone,
-                'shipment_address' => $purchase_order->shipment_address,
-                'shipment_at' => $purchase_order->delivery_at,
+                // 'supplier_id' => $purchase_order->supplier_id,
+                // 'shipment_company' => $purchase_order->shipment_company,
+                // 'shipment_pic' => $purchase_order->shipment_pic,
+                // 'shipment_phone' => $purchase_order->shipment_phone,
+                // 'shipment_address' => $purchase_order->shipment_address,
+                // 'shipment_at' => $purchase_order->delivery_at,
                 'description' => $purchase_order->description,
             ]);
             foreach ($purchase_order->details as $purchase_order_detail) {

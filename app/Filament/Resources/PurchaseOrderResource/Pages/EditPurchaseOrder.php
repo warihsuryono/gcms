@@ -15,6 +15,16 @@ class EditPurchaseOrder extends EditRecord
 {
     protected static string $resource = PurchaseOrderResource::class;
 
+
+    protected static ?string $title = 'Edit Purchase Requests';
+    public function getBreadcrumbs(): array
+    {
+        return [
+            route('filament.' . env('PANEL_PATH') . '.resources.purchase-orders.index') => 'Purchase Requests',
+            'Edit'
+        ];
+    }
+
     protected function beforeFill(): void
     {
         $allowed = false;

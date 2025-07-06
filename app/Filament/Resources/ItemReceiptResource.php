@@ -45,32 +45,21 @@ class ItemReceiptResource extends Resource
                 Forms\Components\TextInput::make('item_receipt_no')->readOnly()->visibleOn('edit'),
                 Forms\Components\DatePicker::make('item_receipt_at')->default(now())->required()->label('Receipt At'),
                 Select::make('purchase_order_id')
-                    ->searchable()->preload()->required()->live()->label('Purchase Order')
+                    ->searchable()->preload()->required()->live()->label('Purchase Request')
                     ->options(function () {
                         return PurchaseOrder::where('is_closed', 0)->get()->mapWithKeys(function ($purchase_order) {
                             return [$purchase_order->id => "[" . $purchase_order->doc_no . "] -- " . date('d F Y', strtotime($purchase_order->doc_at))];
                         });
-                    })
-                    ->afterStateUpdated(function (Get $get, Set $set, $livewire) {
-                        if ($livewire instanceof CreateItemReceipt) {
-                            $set('supplier_id', @PurchaseOrder::find($get('purchase_order_id'))->supplier_id);
-                            $set('shipment_company', @PurchaseOrder::find($get('purchase_order_id'))->shipment_company);
-                            $set('shipment_pic', @PurchaseOrder::find($get('purchase_order_id'))->shipment_pic);
-                            $set('shipment_phone', @PurchaseOrder::find($get('purchase_order_id'))->shipment_phone);
-                            $set('shipment_address', @PurchaseOrder::find($get('purchase_order_id'))->shipment_address);
-                            $set('shipment_at', @PurchaseOrder::find($get('purchase_order_id'))->delivery_at);
-                            $set('description', @PurchaseOrder::find($get('purchase_order_id'))->description);
-                        }
                     }),
-                Forms\Components\Select::make('supplier_id')->relationship('supplier', 'name'),
-                Section::make('Shipment Details')->columns(2)
-                    ->schema([
-                        TextInput::make('shipment_company')->maxLength(255),
-                        TextInput::make('shipment_pic')->maxLength(255),
-                        TextInput::make('shipment_phone')->tel()->maxLength(255),
-                        Textarea::make('shipment_address')->columnSpanFull(),
-                        DatePicker::make('shipment_at'),
-                    ]),
+                // Forms\Components\Select::make('supplier_id')->relationship('supplier', 'name'),
+                // Section::make('Shipment Details')->columns(2)
+                //     ->schema([
+                //         TextInput::make('shipment_company')->maxLength(255),
+                //         TextInput::make('shipment_pic')->maxLength(255),
+                //         TextInput::make('shipment_phone')->tel()->maxLength(255),
+                //         Textarea::make('shipment_address')->columnSpanFull(),
+                //         DatePicker::make('shipment_at'),
+                //     ]),
                 RichEditor::make('description')->columnSpanFull()->toolbarButtons(['bold', 'italic', 'underline', 'link', 'bulletList', 'numberedList', 'blockquote', 'codeBlock', 'undo', 'redo']),
             ]);
     }
@@ -81,10 +70,10 @@ class ItemReceiptResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('item_receipt_no')->searchable()->label('Receipt No'),
                 Tables\Columns\TextColumn::make('item_receipt_at'),
-                Tables\Columns\TextColumn::make('purchase_order.code'),
-                Tables\Columns\TextColumn::make('supplier.name'),
-                Tables\Columns\TextColumn::make('shipment_company'),
-                Tables\Columns\TextColumn::make('shipment_pic'),
+                Tables\Columns\TextColumn::make('purchase_order.code')->label('Purchase Request No'),
+                // Tables\Columns\TextColumn::make('supplier.name'),
+                // Tables\Columns\TextColumn::make('shipment_company'),
+                // Tables\Columns\TextColumn::make('shipment_pic'),
                 Tables\Columns\TextColumn::make('approvedBy.name')->label('Approved By'),
             ])
             ->filters([

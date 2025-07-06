@@ -18,12 +18,19 @@ class ViewPurchaseOrder extends ViewRecord
 {
     protected static string $resource = PurchaseOrderResource::class;
     protected static string $view = 'purchaseorders.view';
-    protected static ?string $title = 'Purchase Order';
     public $is_approve_officer = false;
     public $is_send_officer = false;
     public $is_close_officer = false;
     public $is_stock_keeper = false;
 
+    protected static ?string $title = 'Purchase Requests';
+    public function getBreadcrumbs(): array
+    {
+        return [
+            route('filament.' . env('PANEL_PATH') . '.resources.purchase-orders.index') => 'Purchase Requests',
+            'View'
+        ];
+    }
 
     public function getHeaderActions(): array
     {

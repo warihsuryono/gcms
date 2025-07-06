@@ -22,6 +22,15 @@ class CreatePurchaseOrder extends CreateRecord
     protected $is_understockitem = false;
     protected $item_request_id = 0;
 
+    protected static ?string $title = 'Create Purchase Requests';
+    public function getBreadcrumbs(): array
+    {
+        return [
+            route('filament.' . env('PANEL_PATH') . '.resources.purchase-orders.index') => 'Purchase Requests',
+            'Create'
+        ];
+    }
+
     public function __construct()
     {
         $this->IntToRoman = new IntToRoman();
@@ -37,7 +46,7 @@ class CreatePurchaseOrder extends CreateRecord
     protected function beforeFill(): void
     {
         $data['doc_no'] = "";
-        $doc_no = "PO/" . $this->IntToRoman->filter(date("m")) . "/" . date("Y") . "/";
+        $doc_no = "PR/" . $this->IntToRoman->filter(date("m")) . "/" . date("Y") . "/";
         $last_doc = PurchaseOrder::whereLike('doc_no', $doc_no . "%")->orderBy('doc_no', 'desc')->first();
         if (!$last_doc) $data['doc_no'] = $doc_no . "001";
         else $data['doc_no'] = $doc_no . str_pad((str_replace($doc_no, "", $last_doc->doc_no) * 1) + 1, 3, '0', STR_PAD_LEFT);
@@ -102,7 +111,7 @@ class CreatePurchaseOrder extends CreateRecord
     protected function mutateFormDataBeforeCreate(array $data): array
     {
         $data['doc_no'] = "";
-        $doc_no = "PO/" . $this->IntToRoman->filter(date("m")) . "/" . date("Y") . "/";
+        $doc_no = "PR/" . $this->IntToRoman->filter(date("m")) . "/" . date("Y") . "/";
         $last_doc = PurchaseOrder::whereLike('doc_no', $doc_no . "%")->orderBy('doc_no', 'desc')->first();
         if (!$last_doc) $data['doc_no'] = $doc_no . "001";
         else $data['doc_no'] = $doc_no . str_pad((str_replace($doc_no, "", $last_doc->doc_no) * 1) + 1, 3, '0', STR_PAD_LEFT);

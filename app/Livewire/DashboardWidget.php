@@ -56,9 +56,9 @@ class DashboardWidget extends BaseWidget
             $open_purchase_order = count(PurchaseOrder::where('is_closed', 0)->get());
             $purchase_orders_this_month = count(PurchaseOrder::where('doc_at', 'like', date('Y-m-') . '%')->get());
             $widgets = array_merge($widgets, [
-                Stat::make('Outstanding Purchase Orders', $open_purchase_order)
+                Stat::make('Outstanding Purchase Request', $open_purchase_order)
                     ->icon('heroicon-o-shopping-cart')
-                    ->description("Total Purchase Order This Month : " . $purchase_orders_this_month)
+                    ->description("Total Purchase Requests This Month : " . $purchase_orders_this_month)
                     ->extraAttributes([
                         'class' => 'cursor-pointer',
                         'wire:click' => 'goToPurchaseOrders',

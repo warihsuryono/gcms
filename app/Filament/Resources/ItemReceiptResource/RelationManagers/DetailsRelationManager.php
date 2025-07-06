@@ -62,7 +62,7 @@ class DetailsRelationManager extends RelationManager
             ->columns([
                 Tables\Columns\TextColumn::make('item_id')->label('Item')
                     ->formatStateUsing(fn($state) => "[" . Item::find($state)->code . "] -- " . Item::find($state)->name),
-                Tables\Columns\TextColumn::make('qty_po')->alignRight()->label('PO Qty')
+                Tables\Columns\TextColumn::make('qty_po')->alignRight()->label('PR Qty')
                     ->default(function ($record) {
                         $po_detail = ItemReceiptDetail::find($record->id);
                         if ($po_detail) return $po_detail->qty_po;

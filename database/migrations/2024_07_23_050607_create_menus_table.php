@@ -71,7 +71,7 @@ return new class extends Migration
         DB::table('menus')->insert([
             // ['id' => 31, 'seqno' => 1, 'parent_id' => 5, 'name' => 'Purchase Requests', 'url' => 'purchase-requests', 'icon' => '', 'route' => '', 'middleware' => ''],
             ['id' => 33, 'seqno' => 1, 'parent_id' => 5, 'name' => 'Item Requests', 'url' => 'item-requests', 'icon' => '', 'route' => '', 'middleware' => ''],
-            ['id' => 32, 'seqno' => 2, 'parent_id' => 5, 'name' => 'Purchase Orders', 'url' => 'purchase-orders', 'icon' => '', 'route' => '', 'middleware' => ''],
+            ['id' => 32, 'seqno' => 2, 'parent_id' => 5, 'name' => 'Purchase Requests', 'url' => 'purchase-orders', 'icon' => '', 'route' => '', 'middleware' => ''],
             ['id' => 34, 'seqno' => 3, 'parent_id' => 5, 'name' => 'Item Receipts', 'url' => 'item-receipts', 'icon' => '', 'route' => '', 'middleware' => ''],
             ['id' => 35, 'seqno' => 4, 'parent_id' => 5, 'name' => 'Item Controls', 'url' => 'items/control', 'icon' => '', 'route' => '', 'middleware' => ''],
             ['id' => 36, 'seqno' => 5, 'parent_id' => 5, 'name' => 'Stock Opname', 'url' => 'stock-opnames', 'icon' => '', 'route' => '', 'middleware' => ''],
@@ -80,8 +80,8 @@ return new class extends Migration
         DB::table('menus')->insert([
             ['id' => 37, 'seqno' => 1, 'parent_id' => 6, 'name' => 'Fuel Consumptions', 'url' => 'fuel-consumptions/report', 'icon' => '', 'route' => '', 'middleware' => ''],
             ['id' => 38, 'seqno' => 2, 'parent_id' => 6, 'name' => 'Work Orders', 'url' => 'work-orders/report', 'icon' => '', 'route' => '', 'middleware' => ''],
-            ['id' => 39, 'seqno' => 3, 'parent_id' => 6, 'name' => 'Item Requests', 'url' => 'item-requests/report', 'icon' => '', 'route' => '', 'middleware' => ''],
-            ['id' => 40, 'seqno' => 4, 'parent_id' => 6, 'name' => 'Purchase Orders', 'url' => 'purchase-orders/report', 'icon' => '', 'route' => '', 'middleware' => ''],
+            // ['id' => 39, 'seqno' => 3, 'parent_id' => 6, 'name' => 'Item Requests', 'url' => 'item-requests/report', 'icon' => '', 'route' => '', 'middleware' => ''],
+            // ['id' => 40, 'seqno' => 4, 'parent_id' => 6, 'name' => 'Purchase Orders', 'url' => 'purchase-orders/report', 'icon' => '', 'route' => '', 'middleware' => ''],
             ['id' => 41, 'seqno' => 5, 'parent_id' => 6, 'name' => 'Item Stocks', 'url' => 'items/stock-report', 'icon' => '', 'route' => '', 'middleware' => ''],
             ['id' => 42, 'seqno' => 6, 'parent_id' => 6, 'name' => 'Item Movements', 'url' => 'items/movement-report', 'icon' => '', 'route' => '', 'middleware' => ''],
         ]);

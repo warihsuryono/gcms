@@ -17,7 +17,7 @@ class users extends Seeder
         User::create(['id' => 3, 'privilege_id' => 3, 'email' => 'bod@gcms.co.id', 'name' => 'Board of Director', 'msisdn' => '+62-', 'password' => '$2y$12$.lK978LeVq9lRWnwWIMILeQj2/Xh43nB.9Xda94ngtK4HDAsteOj6']);
         User::create(['id' => 4, 'privilege_id' => 4, 'email' => 'manager@gcms.co.id', 'name' => 'Manager', 'msisdn' => '+62-', 'password' => '$2y$12$.lK978LeVq9lRWnwWIMILeQj2/Xh43nB.9Xda94ngtK4HDAsteOj6']);
         User::create(['id' => 5, 'privilege_id' => 5, 'email' => 'superintendent@gcms.co.id', 'name' => 'Superintendent', 'msisdn' => '+62-', 'password' => '$2y$12$.lK978LeVq9lRWnwWIMILeQj2/Xh43nB.9Xda94ngtK4HDAsteOj6']);
-        User::create(['id' => 6, 'privilege_id' => 6, 'email' => 'stock_keeper@gcms.co.id', 'name' => 'Stock Keeper', 'msisdn' => '+62-', 'password' => '$2y$12$.lK978LeVq9lRWnwWIMILeQj2/Xh43nB.9Xda94ngtK4HDAsteOj6']);
+        User::create(['id' => 6, 'privilege_id' => 6, 'email' => 'store_keeper@gcms.co.id', 'name' => 'Store Keeper', 'msisdn' => '+62-', 'password' => '$2y$12$.lK978LeVq9lRWnwWIMILeQj2/Xh43nB.9Xda94ngtK4HDAsteOj6']);
         User::create(['id' => 7, 'privilege_id' => 7, 'email' => 'staff@gcms.co.id', 'name' => 'Staff', 'msisdn' => '+62-', 'password' => '$2y$12$.lK978LeVq9lRWnwWIMILeQj2/Xh43nB.9Xda94ngtK4HDAsteOj6']);
     }
 }

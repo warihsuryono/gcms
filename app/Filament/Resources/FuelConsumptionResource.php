@@ -81,6 +81,7 @@ class FuelConsumptionResource extends Resource
         return [
             'index' => Pages\ListFuelConsumptions::route('/'),
             'create' => Pages\CreateFuelConsumption::route('/create'),
+            'chart' => Pages\ChartFuelConsumptions::route('/chart'),
             'edit' => Pages\EditFuelConsumption::route('/{record}/edit'),
         ];
     }

@@ -124,6 +124,7 @@ class WorkOrderResource extends Resource
                     })->columns(2),
                 SelectFilter::make('work_order_status_id')->relationship('work_order_status', 'name')
             ])
+            ->modifyQueryUsing(fn(Builder $query) => $query->orderBy('id', 'DESC'))
             ->paginated([
                 25,
                 50,

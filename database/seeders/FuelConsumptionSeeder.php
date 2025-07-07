@@ -12,8 +12,17 @@ class FuelConsumptionSeeder extends Seeder
      */
     public function run(): void
     {
-        FuelConsumption::create(['consumption_at' => '2024-01-01', 'item_type_id' => 1, 'fuelpowered_equipment_id' => 1, 'quantity' => 3545.73, 'unit_id' => 4]);
-        FuelConsumption::create(['consumption_at' => '2024-02-01', 'item_type_id' => 1, 'fuelpowered_equipment_id' => 2, 'quantity' => 2614.09, 'unit_id' => 4]);
+        FuelConsumption::create(['consumption_at' => '2024-01-01', 'item_type_id' => 1, 'fuelpowered_equipment_id' => 1, 'quantity' => 145.73, 'unit_id' => 4]);
+        FuelConsumption::create(['consumption_at' => '2024-01-02', 'item_type_id' => 1, 'fuelpowered_equipment_id' => 1, 'quantity' => 225.32, 'unit_id' => 4]);
+        FuelConsumption::create(['consumption_at' => '2024-01-03', 'item_type_id' => 1, 'fuelpowered_equipment_id' => 1, 'quantity' => 345.43, 'unit_id' => 4]);
+        FuelConsumption::create(['consumption_at' => '2024-01-04', 'item_type_id' => 1, 'fuelpowered_equipment_id' => 1, 'quantity' => 235.54, 'unit_id' => 4]);
+        FuelConsumption::create(['consumption_at' => '2024-01-05', 'item_type_id' => 1, 'fuelpowered_equipment_id' => 1, 'quantity' => 345.23, 'unit_id' => 4]);
+        FuelConsumption::create(['consumption_at' => '2024-01-06', 'item_type_id' => 1, 'fuelpowered_equipment_id' => 1, 'quantity' => 435.65, 'unit_id' => 4]);
+        FuelConsumption::create(['consumption_at' => '2024-01-07', 'item_type_id' => 1, 'fuelpowered_equipment_id' => 1, 'quantity' => 335.23, 'unit_id' => 4]);
+        FuelConsumption::create(['consumption_at' => '2024-01-08', 'item_type_id' => 1, 'fuelpowered_equipment_id' => 1, 'quantity' => 245.54, 'unit_id' => 4]);
+        FuelConsumption::create(['consumption_at' => '2024-01-09', 'item_type_id' => 1, 'fuelpowered_equipment_id' => 1, 'quantity' => 122.76, 'unit_id' => 4]);
+        FuelConsumption::create(['consumption_at' => '2024-01-10', 'item_type_id' => 1, 'fuelpowered_equipment_id' => 1, 'quantity' => 312.23, 'unit_id' => 4]);
+        FuelConsumption::create(['consumption_at' => '2024-02-12', 'item_type_id' => 1, 'fuelpowered_equipment_id' => 2, 'quantity' => 2614.09, 'unit_id' => 4]);
         FuelConsumption::create(['consumption_at' => '2024-03-01', 'item_type_id' => 1, 'fuelpowered_equipment_id' => 3, 'quantity' => 2209.60, 'unit_id' => 4]);
         FuelConsumption::create(['consumption_at' => '2024-04-01', 'item_type_id' => 1, 'fuelpowered_equipment_id' => 4, 'quantity' => 2364.99, 'unit_id' => 4]);
         FuelConsumption::create(['consumption_at' => '2024-05-01', 'item_type_id' => 1, 'fuelpowered_equipment_id' => 3, 'quantity' => 4243.88, 'unit_id' => 4]);

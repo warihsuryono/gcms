@@ -23,7 +23,7 @@ class StockOpnameSeeder extends Seeder
         ]);
         StockOpnameDetail::create(['stock_opname_id' => 2, 'item_id' => 1, 'unit_id' => 4, 'qty' => 100, 'actual_qty' => 90, 'notes' => 'evaporation']);
         StockOpnameDetail::create(['stock_opname_id' => 2, 'item_id' => 2, 'unit_id' => 4, 'qty' => 90, 'actual_qty' => 88, 'notes' => 'evaporation']);
-        StockOpnameDetail::create(['stock_opname_id' => 2, 'item_id' => 3, 'unit_id' => 10, 'qty' => 10, 'actual_qty' => 9, 'notes' => 'Repack for FERT-02']);
-        StockOpnameDetail::create(['stock_opname_id' => 2, 'item_id' => 4, 'unit_id' => 10, 'qty' => 20, 'actual_qty' => 28, 'notes' => 'Repack from FERT-01']);
+        StockOpnameDetail::create(['stock_opname_id' => 2, 'item_id' => 5, 'unit_id' => 10, 'qty' => 10, 'actual_qty' => 9, 'notes' => 'Repack for FERT-02']);
+        StockOpnameDetail::create(['stock_opname_id' => 2, 'item_id' => 6, 'unit_id' => 10, 'qty' => 20, 'actual_qty' => 30, 'notes' => 'Repack from FERT-01']);
     }
 }

@@ -14,13 +14,8 @@ class ItemRequestSeeder extends Seeder
      */
     public function run(): void
     {
-        ItemRequest::create(['item_request_no' => 'IR/VI/2025/001', 'item_request_at' => NOW(), 'user_id' => 7, 'work_order_id' => 2, 'description' => '
-        • pupuk semprot semua rumput green<br>
-        • bahan : ditnahe m 45<br>
-        • alat : SDI<br>
-        ', 'created_by' => 7]);
-        ItemRequestDetail::create(['item_request_id' => 1, 'seqno' => 1, 'item_movement_type_id' => 1, 'item_id' => 13, 'unit_id' => 10, 'qty' => 6]);
-        ItemRequestDetail::create(['item_request_id' => 1, 'seqno' => 2, 'item_movement_type_id' => 1, 'item_id' => 12, 'unit_id' => 10, 'qty' => 2]);
-        ItemRequestDetail::create(['item_request_id' => 1, 'seqno' => 3, 'item_movement_type_id' => 1, 'item_id' => 2, 'unit_id' => 4, 'qty' => 2]);
+        ItemRequest::create(['item_request_no' => 'IR/VI/2025/001', 'item_request_at' => NOW(), 'user_id' => 7, 'work_order_id' => 1, 'description' => '• potong semua rumput green ( Shibaura 6 unit )<br>• pupuk semprot semua rumput green<br>• Finising pasir di tee box hitam<br>• potong rumput Fairway ( lf 570 )<br>• cuci alat kalau sudah selesai bekerja', 'created_by' => 7]);
+        ItemRequestDetail::create(['item_request_id' => 1, 'seqno' => 3, 'item_movement_type_id' => 2, 'item_id' => 3, 'unit_id' => 2, 'qty' => 1]);
+        ItemRequestDetail::create(['item_request_id' => 1, 'seqno' => 1, 'item_movement_type_id' => 1, 'item_id' => 6, 'unit_id' => 10, 'qty' => 5]);
     }
 }

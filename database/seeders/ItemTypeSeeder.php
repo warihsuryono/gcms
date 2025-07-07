@@ -16,6 +16,7 @@ class ItemTypeSeeder extends Seeder
         ItemType::create(['name' => 'Gasoline']);
         ItemType::create(['name' => 'Diesel']);
         ItemType::create(['name' => 'Fertilizer']);
+        ItemType::create(['name' => 'Tractor']);
         ItemType::create(['name' => 'Stationery']);
         ItemType::create(['name' => 'Amenities']);
         ItemType::create(['name' => 'Desk']);

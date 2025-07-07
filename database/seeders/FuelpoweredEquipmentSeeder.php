@@ -13,6 +13,8 @@ class FuelpoweredEquipmentSeeder extends Seeder
      */
     public function run(): void
     {
+        FuelpoweredEquipment::create(['item_type_id' => 1, 'name' => 'Tractor - Shibaura CM374']);
+        FuelpoweredEquipment::create(['item_type_id' => 1, 'name' => 'Tractor - Shibaura SG280']);
         FuelpoweredEquipment::create(['item_type_id' => 2, 'name' => 'Tractor - KIOTI']);
         FuelpoweredEquipment::create(['item_type_id' => 2, 'name' => 'Tractor - AGROLUX']);
         FuelpoweredEquipment::create(['item_type_id' => 2, 'name' => 'Dump Truck - B9627UVZ']);

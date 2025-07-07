@@ -12,7 +12,7 @@ class WorkOrderSeeder extends Seeder
      */
     public function run(): void
     {
-        WorkOrder::create(['work_start' => date("Y-m-d") . ' 02:00:00', 'division_id' => 1, 'field_ids' => '[]', 'works' => '• potong semua rumput green ( Shibaura 6 unit )<br>• Raking Bunker<br>• Finising pasir di tee box hitam<br>• potong rumput Fairway ( lf 570 )<br>• cuci alat kalau sudah selesai bekerja<br>']);
+        WorkOrder::create(['work_start' => date("Y-m-d") . ' 02:00:00', 'division_id' => 1, 'field_ids' => '[]', 'works' => '• potong semua rumput green ( Shibaura 6 unit )<br>• pupuk semprot semua rumput green<br>• Finising pasir di tee box hitam<br>• potong rumput Fairway ( lf 570 )<br>• cuci alat kalau sudah selesai bekerja<br>']);
         WorkOrder::create(['work_start' => date("Y-m-d") . ' 05:00:00', 'division_id' => 1, 'field_ids' => '[]', 'works' => '• pupuk semprot semua rumput green<br>• bahan : ditnahe m 45<br>• alat : SDI<br>']);
         WorkOrder::create(['work_start' => date("Y-m-d") . ' 08:00:00', 'division_id' => 1, 'field_ids' => '["1","2","4","6"]', 'works' => '• pupuk rumput tee box<br>• bahan:lokal 10.18.18<br>']);
         WorkOrder::create(['work_start' => date("Y-m-d", strtotime('-1 day')) . ' 02:00:00', 'division_id' => 2, 'field_ids' => '["10"]', 'works' => '• Lanjut bongkar kanstin dan pasang kembali kanstin<br>• di naikan kanstin rata - rata 0,4 cm di pinggir car path di samping Fairway kalo dari tee box sebelah kanan']);

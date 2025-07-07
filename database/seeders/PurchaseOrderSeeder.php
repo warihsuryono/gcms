@@ -41,8 +41,8 @@ class PurchaseOrderSeeder extends Seeder
             'created_at' => now(),
         ]);
         PurchaseOrderDetail::create(['purchase_order_id' => 1, 'seqno' => 0, 'item_id' => 2, 'qty' => 100, 'unit_id' => 4, 'price' => 13500, 'purchase_request_detail_id' => 0]);
-        PurchaseOrderDetail::create(['purchase_order_id' => 1, 'seqno' => 1, 'item_id' => 10, 'qty' => 95, 'unit_id' => 10, 'price' => 10000, 'purchase_request_detail_id' => 0]);
-        PurchaseOrderDetail::create(['purchase_order_id' => 1, 'seqno' => 2, 'item_id' => 12, 'qty' => 98, 'unit_id' => 10, 'price' => 12500, 'purchase_request_detail_id' => 0]);
-        PurchaseOrderDetail::create(['purchase_order_id' => 1, 'seqno' => 3, 'item_id' => 13, 'qty' => 99, 'unit_id' => 10, 'price' => 15200, 'purchase_request_detail_id' => 0]);
+        PurchaseOrderDetail::create(['purchase_order_id' => 1, 'seqno' => 1, 'item_id' => 5, 'qty' => 30, 'unit_id' => 10, 'price' => 10000, 'purchase_request_detail_id' => 0]);
+        PurchaseOrderDetail::create(['purchase_order_id' => 1, 'seqno' => 2, 'item_id' => 6, 'qty' => 20, 'unit_id' => 10, 'price' => 12500, 'purchase_request_detail_id' => 0]);
+        PurchaseOrderDetail::create(['purchase_order_id' => 1, 'seqno' => 3, 'item_id' => 7, 'qty' => 10, 'unit_id' => 10, 'price' => 15200, 'purchase_request_detail_id' => 0]);
     }
 }

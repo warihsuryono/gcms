@@ -26,12 +26,12 @@ class ViewItemRequest extends ViewRecord
 
         if ($this->is_stock_visible)
             $actions = array_merge($actions, [
-                Action::make('create_purchase_order')
-                    ->label('Create Purchase Order')
+                Action::make('create_purchase_request')
+                    ->label('Create Purchase Request')
                     ->requiresConfirmation()
-                    ->modalHeading('Confirm Purchase Order Creation')
-                    ->modalDescription('Are you sure you want to create a purchase order for all understock items?')
-                    ->action(fn() => $this->create_purchase_order())
+                    ->modalHeading('Confirm Purchase Request Creation')
+                    ->modalDescription('Are you sure you want to create a purchase request for all understock items?')
+                    ->action(fn() => $this->create_purchase_request())
                     ->icon('heroicon-o-plus')
                     ->color('success')
             ]);
@@ -51,7 +51,7 @@ class ViewItemRequest extends ViewRecord
         if ($this->is_can_received && $this->record->is_received == 0)
             $actions = array_merge($actions, [
                 Action::make('item_request_received')
-                    ->label('item_request_received')
+                    ->label('Item Request Received')
                     ->requiresConfirmation()
                     ->modalHeading('Confirm Item Request Received')
                     ->modalDescription('Are you sure you want to mark this item request as received?')
@@ -80,7 +80,7 @@ class ViewItemRequest extends ViewRecord
             redirect()->route('filament.' . env('PANEL_PATH') . '.resources.work-orders.view', $this->record->work_order_id);
     }
 
-    public function create_purchase_order()
+    public function create_purchase_request()
     {
         redirect()->route('filament.' . env('PANEL_PATH') . '.resources.purchase-orders.create', ['item_request_id' => $this->record->id]);
     }

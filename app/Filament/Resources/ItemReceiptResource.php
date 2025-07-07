@@ -60,7 +60,7 @@ class ItemReceiptResource extends Resource
                 //         Textarea::make('shipment_address')->columnSpanFull(),
                 //         DatePicker::make('shipment_at'),
                 //     ]),
-                RichEditor::make('description')->columnSpanFull()->toolbarButtons(['bold', 'italic', 'underline', 'link', 'bulletList', 'numberedList', 'blockquote', 'codeBlock', 'undo', 'redo']),
+                RichEditor::make('description')->columnSpanFull()->toolbarButtons(['numberedList', 'undo', 'redo']),
             ]);
     }
 

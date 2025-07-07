@@ -43,7 +43,7 @@ class ItemRequestResource extends Resource
                 Forms\Components\DatePicker::make('item_request_at')->default(now())->required()->label('Request At'),
                 Forms\Components\Select::make('user_id')->options(User::all()->pluck('name', 'id'))->relationship('user', 'name')->default(Auth::user()->id)->disabled(),
                 Forms\Components\RichEditor::make('description')->columnSpanFull()->default(fn() => Request::get('work_order_id') > 0 ? WorkOrder::find(Request::get('work_order_id'))->works : '')
-                    ->toolbarButtons(['bold', 'italic', 'underline', 'link', 'bulletList', 'numberedList', 'blockquote', 'codeBlock', 'undo', 'redo']),
+                    ->toolbarButtons(['numberedList', 'undo', 'redo']),
                 Forms\Components\Hidden::make('work_order_id')->default(fn() => Request::get('work_order_id') > 0 ? Request::get('work_order_id') : 0),
 
             ]);

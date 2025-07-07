@@ -47,7 +47,7 @@ class WorkOrderResource extends Resource
                     fn() => Request::get('work_order_id') > 0 ? WorkOrder::find(Request::get('work_order_id'))->division_id : null
                 ),
                 Forms\Components\Select::make('field_ids')->label('Fields')->options(Field::all()->pluck('name', 'id'))->searchable()->preload()->multiple(),
-                RichEditor::make('works')->columnSpanFull()->required()->toolbarButtons(['numberedList', 'undo', 'redo'])
+                RichEditor::make('works')->columnSpanFull()->required()->toolbarButtons(['undo', 'redo'])
                     ->helperText('Describe the work to be done.'),
                 Forms\Components\Select::make('work_order_status_id')->relationship('work_order_status', 'name', fn($query) => $query->orderBy('id'))->default('1')->required()->reactive(),
                 Forms\Components\Toggle::make('is_next_work_order')->default(0)->label('Proceed with the next work order?')->visible(fn($get) => $get('work_order_status_id') > 2),

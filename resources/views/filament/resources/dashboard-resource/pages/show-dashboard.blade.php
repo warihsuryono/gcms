@@ -13,25 +13,28 @@
         style="position:absolute;width:160px;top:{{ $dashboard->widget_1_top }}px;left:{{ $dashboard->widget_1_left }}px"
         alt="Widget-1">
     <div class="p-2">
-        <img src="/storage/{{ $dashboard->logo }}" style="position:relative;width:120px;top:-30px;" alt="Logo">
-        <h3 class="text-xl font-bold" style="position:relative;top:-30px;">{{ $dashboard->tagline }}</h3>
+        <div style="position: relative; width: 100%;">
+            <div style="position:relative;width:120px;top:-30px;left: 50%; transform: translateX(-50%);">
+                <img src="/storage/{{ $dashboard->logo }}">
+            </div>
+            <h3 class="text-center text-xl font-bold" style="position:relative;top:-30px;">{{ $dashboard->tagline }}</h3>
+        </div>
         <div class="flex items-center justify-between">
             <h1 class="font-bold">Work Orders</h1>
         </div>
         <div id="scrollable-table-container"
-            class="relative shadow-md sm:rounded-lg h-full overflow-y-auto overflow-x-auto" style="max-height: 340px">
-            <table
-                class="table table-auto scroll-smooth text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                <thead
-                    class="sticky top-0 text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+            class="relative shadow-md sm:rounded-lg h-full overflow-y-auto overflow-x-auto"
+            style="max-height: 380px;max-width:900px;">
+            <table class="table table-auto scroll-smooth text-sm text-left rtl:text-right text-black opacity-70">
+                <thead class="sticky top-0 text-xs text-black uppercase bg-white border-b-2">
                     <tr>
-                        <th scope="col" class="px-6 py-3">No</th>
-                        <th scope="col" class="px-6 py-3 flex" nowrap>Division <x-heroicon-o-funnel
+                        <th scope="col" class="px-2 py-2">No</th>
+                        <th scope="col" class="px-2 py-2 flex" nowrap>Division <x-heroicon-o-funnel
                                 class="w-4 h-4 text-gray-500" onclick="openModal()" /></th>
-                        <th scope="col" class="px-6 py-3">Date</th>
-                        <th scope="col" class="px-6 py-3">Time</th>
-                        <th scope="col" class="px-6 py-3">Field</th>
-                        <th scope="col" class="px-6 py-3">Works</th>
+                        <th scope="col" class="px-2 py-2">Date</th>
+                        <th scope="col" class="px-2 py-2">Time</th>
+                        <th scope="col" class="px-2 py-2">Field</th>
+                        <th scope="col" class="px-2 py-2">Works</th>
                     </tr>
                 </thead>
                 <tbody id="work-order-list">
@@ -47,25 +50,25 @@
 
                             $fields = rtrim($fields, ', ');
                         @endphp
-                        <tr class="odd:bg-white even:bg-gray-50 border-b border-gray-200">
-                            <td class="px-6 py-4">{{ $loop->iteration }}</td>
-                            <td nowrap class="px-6 py-4">{{ $work_order->division->name }}</td>
-                            <td nowrap class="px-6 py-4">{{ date('d M Y', strtotime($work_order->work_start)) }}</td>
-                            <td nowrap class="px-6 py-4">{{ date('H:i', strtotime($work_order->work_start)) }} -
+                        <tr class="odd:bg-white even:bg-gray-400 border-b border-gray-200">
+                            <td class="px-2 py-2">{{ $loop->iteration }}</td>
+                            <td nowrap class="px-2 py-2">{{ $work_order->division->name }}</td>
+                            <td nowrap class="px-2 py-2">{{ date('d M Y', strtotime($work_order->work_start)) }}</td>
+                            <td nowrap class="px-2 py-2">{{ date('H:i', strtotime($work_order->work_start)) }} -
                                 {{ $work_order->work_end > $work_order->work_start ? date('H:i', strtotime($work_order->work_end)) : 'Done' }}
                             </td>
-                            <td class="px-6 py-4">{!! $fields !!}</td>
-                            <td class="px-6 py-4">{!! $work_order->works !!}</td>
+                            <td class="px-2 py-2">{!! $fields !!}</td>
+                            <td class="px-2 py-2">{!! $work_order->works !!}</td>
                         </tr>
                     @endforeach
                     @for ($i = $work_orders->count() + 1; $i <= 10 - count($work_orders); $i++)
                         <tr class="odd:bg-white even:bg-gray-50 border-b border-gray-200">
-                            <td class="px-6 py-4"></td>
-                            <td class="px-6 py-4"></td>
-                            <td class="px-6 py-4"></td>
-                            <td class="px-6 py-4"></td>
-                            <td class="px-6 py-4"></td>
-                            <td class="px-6 py-4"></td>
+                            <td class="px-2 py-2"></td>
+                            <td class="px-2 py-2"></td>
+                            <td class="px-2 py-2"></td>
+                            <td class="px-2 py-2"></td>
+                            <td class="px-2 py-2"></td>
+                            <td class="px-2 py-2"></td>
                         </tr>
                     @endfor
                 </tbody>
@@ -78,8 +81,8 @@
             <div class="w-full font-bold pt-1">
                 <marquee direction="left" scrollamount="5" behavior="scroll">{{ $dashboard->running_text_1 }}</marquee>
             </div>
-            <div class="text-white font-bold text-lg w-32 mr-2 ml-2 bg-blue-600" wire:poll.500ms>
-                <span>{{ date('H:i:s') }}</span>
+            <div class="text-white font-bold text-lg w-32 mr-2 ml-2 bg-blue-600">
+                <span id="clock"></span>
             </div>
         </div>
     </div>
@@ -133,9 +136,22 @@
             scroll++;
             if (scroll == 0) delay = 3000;
             else delay = 50;
-
             setTimeout(animateScroll, delay);
         }
+
+        function clock_tick() {
+            const now = new Date();
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+
+            const currentTime = `${hours}:${minutes}:${seconds}`;
+
+            $("#clock").html(currentTime);
+            setTimeout(clock_tick, 1000);
+        }
+
         animateScroll();
+        clock_tick();
     });
 </script>

@@ -6,9 +6,7 @@ use Exception;
 use Filament\Pages;
 use Filament\Panel;
 use App\Models\menu;
-use Filament\Widgets;
 use App\Models\Privilege;
-use Pest\Plugins\Profile;
 use Filament\PanelProvider;
 use App\Livewire\ProfileWidget;
 use App\Livewire\DashboardWidget;
@@ -18,12 +16,9 @@ use Filament\View\PanelsRenderHook;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Filament\Navigation\NavigationItem;
-use Illuminate\Support\Facades\Session;
 use Filament\Navigation\NavigationGroup;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Navigation\NavigationBuilder;
-use Illuminate\Support\Facades\Exceptions;
-use App\Filament\Pages\StoreAcademyMaterial;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Routing\Middleware\SubstituteBindings;
@@ -122,7 +117,7 @@ class XPanelProvider extends PanelProvider
             )
             ->renderHook(
                 PanelsRenderHook::FOOTER,
-                fn() => view('footer')
+                fn() => (request()->server()['REDIRECT_URL'] != "/workspace/dashboards/show") ? view('footer') : ''
             )
             ->renderHook(
                 PanelsRenderHook::CONTENT_END,

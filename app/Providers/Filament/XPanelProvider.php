@@ -117,7 +117,7 @@ class XPanelProvider extends PanelProvider
             )
             ->renderHook(
                 PanelsRenderHook::FOOTER,
-                fn() => (request()->server()['REDIRECT_URL'] != "/workspace/dashboards/show") ? view('footer') : ''
+                fn() => (@request()->server()['REDIRECT_URL'] != "/workspace/dashboards/show") ? view('footer') : ''
             )
             ->renderHook(
                 PanelsRenderHook::CONTENT_END,

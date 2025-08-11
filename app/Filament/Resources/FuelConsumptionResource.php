@@ -49,8 +49,8 @@ class FuelConsumptionResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('consumption_at')->date()->sortable(),
-                Tables\Columns\TextColumn::make('item_type.name')->label('Fuel Type'),
-                Tables\Columns\TextColumn::make('fuelpowered_equipment.name')->label('Fuel Powered Equipment'),
+                Tables\Columns\TextColumn::make('item_type.name')->label('Fuel Type')->label('Type'),
+                Tables\Columns\TextColumn::make('fuelpowered_equipment.name')->label('Fuel Powered Equipment')->label('Equipment'),
                 Tables\Columns\TextColumn::make('quantity')->numeric()->sortable()->label('Quantity (Liters)')->alignRight(),
             ])
             ->filters([

@@ -122,7 +122,7 @@ class WorkOrderResource extends Resource
                             ->when($data['work_start_from'], fn(Builder $query, $date): Builder => $query->whereDate('work_start', '>=', $date))
                             ->when($data['work_start_until'], fn(Builder $query, $date): Builder => $query->whereDate('work_start', '<=', $date));
                     })->columns(2),
-                SelectFilter::make('work_order_status_id')->relationship('work_order_status', 'name')
+                SelectFilter::make('work_order_status_id')->label('Status')->relationship('work_order_status', 'name')
             ])
             ->modifyQueryUsing(fn(Builder $query) => $query->orderBy('id', 'DESC'))
             ->paginated([

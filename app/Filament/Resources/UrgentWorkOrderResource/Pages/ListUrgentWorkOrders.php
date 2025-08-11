@@ -3,17 +3,11 @@
 namespace App\Filament\Resources\UrgentWorkOrderResource\Pages;
 
 use App\Filament\Resources\UrgentWorkOrderResource;
-use Filament\Actions;
+use App\Traits\FilamentListFunctions;
 use Filament\Resources\Pages\ListRecords;
 
 class ListUrgentWorkOrders extends ListRecords
 {
+    use FilamentListFunctions;
     protected static string $resource = UrgentWorkOrderResource::class;
-
-    protected function getHeaderActions(): array
-    {
-        return [
-            Actions\CreateAction::make(),
-        ];
-    }
 }

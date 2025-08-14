@@ -7,13 +7,17 @@ use Filament\Tables;
 use App\Models\Field;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
+use App\Forms\Components\Map;
 use App\Models\UrgentWorkOrder;
 use Filament\Resources\Resource;
 use App\Traits\FilamentListActions;
 use Filament\Tables\Filters\Filter;
+use Filament\Forms\Components\Section;
 use Illuminate\Support\Facades\Request;
+use Filament\Forms\Components\TextInput;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\RichEditor;
 use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Builder;
@@ -34,11 +38,21 @@ class UrgentWorkOrderResource extends Resource
     {
         return $form
             ->schema([
+                TextInput::make('code')->visibleOn(['edit', 'view'])->disabled(),
+                Map::make('map')->columnSpanFull(),
                 Forms\Components\DateTimePicker::make('work_at')->required()->default(now()),
                 Forms\Components\Select::make('division_id')->relationship('division', 'name')->searchable()->preload()->required(),
                 Forms\Components\Select::make('field_id')->label('Fields')->options(Field::all()->pluck('name', 'id'))->searchable()->preload(),
                 RichEditor::make('works')->columnSpanFull()->required()->toolbarButtons(['undo', 'redo'])->helperText('Describe the work to be done.'),
                 Forms\Components\Select::make('work_order_status_id')->relationship('work_order_status', 'name', fn($query) => $query->orderBy('id'))->default('1')->required()->reactive(),
+                Section::make('Photos')->schema([
+                    FileUpload::make('photo_1')->directory('photos')->image()->label('Photo 1')->disabled()->visible(fn($record) => $record->photo_1),
+                    FileUpload::make('photo_2')->directory('photos')->image()->label('Photo 2')->disabled()->visible(fn($record) => $record->photo_2),
+                    FileUpload::make('photo_3')->directory('photos')->image()->label('Photo 3')->disabled()->visible(fn($record) => $record->photo_3),
+                    FileUpload::make('photo_4')->directory('photos')->image()->label('Photo 4')->disabled()->visible(fn($record) => $record->photo_4),
+                    FileUpload::make('photo_5')->directory('photos')->image()->label('Photo 5')->disabled()->visible(fn($record) => $record->photo_5),
+                ])->columns(2)->columnSpanFull(),
+
             ]);
     }
 
@@ -98,6 +112,7 @@ class UrgentWorkOrderResource extends Resource
             'create' => Pages\CreateUrgentWorkOrder::route('/create'),
             'new' => Pages\NewUrgentWorkOrder::route('/new'),
             'edit' => Pages\EditUrgentWorkOrder::route('/{record}/edit'),
+            'view' => Pages\ViewUrgentWorkOrder::route('/{record}'),
         ];
     }
 }

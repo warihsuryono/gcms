@@ -39,4 +39,9 @@ class ProfileWidget extends Widget
     {
         return redirect()->route('filament.' . env('PANEL_PATH') . '.resources.presence-schedules.index');
     }
+
+    public function goToNewUrgentWorkOrder()
+    {
+        return redirect()->route('filament.' . env('PANEL_PATH') . '.resources.urgent-work-orders.new');
+    }
 }

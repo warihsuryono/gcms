@@ -12,10 +12,12 @@ use Filament\Resources\Resource;
 use App\Traits\FilamentListActions;
 use Filament\Tables\Filters\Filter;
 use Illuminate\Support\Facades\Request;
+use Filament\Tables\Columns\ImageColumn;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\RichEditor;
 use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Builder;
+use Filament\Tables\Enums\ActionsPosition;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\UrgentWorkOrderResource\Pages;
 use App\Filament\Resources\UrgentWorkOrderResource\RelationManagers;
@@ -48,14 +50,14 @@ class UrgentWorkOrderResource extends Resource
                 Tables\Columns\TextColumn::make('work_at'),
                 Tables\Columns\TextColumn::make('division.name'),
                 Tables\Columns\TextColumn::make('field.name'),
-                Tables\Columns\TextColumn::make('lat')->label('Latitude'),
-                Tables\Columns\TextColumn::make('lon')->label('Longitude'),
+                Tables\Columns\TextColumn::make('lat')->label('Latitude')->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('lon')->label('Longitude')->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('work_order_status.name')->label('Status'),
-                Tables\Columns\TextColumn::make('photo_1'),
-                Tables\Columns\TextColumn::make('photo_2'),
-                Tables\Columns\TextColumn::make('photo_3'),
-                Tables\Columns\TextColumn::make('photo_4'),
-                Tables\Columns\TextColumn::make('photo_5'),
+                ImageColumn::make('photo_1'),
+                ImageColumn::make('photo_2')->toggleable(isToggledHiddenByDefault: true),
+                ImageColumn::make('photo_3')->toggleable(isToggledHiddenByDefault: true),
+                ImageColumn::make('photo_4')->toggleable(isToggledHiddenByDefault: true),
+                ImageColumn::make('photo_5')->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('pic'),
                 Tables\Columns\TextColumn::make('createdBy.name')->label('Created By'),
                 Tables\Columns\TextColumn::make('created_at')->label('Created At'),
@@ -72,6 +74,7 @@ class UrgentWorkOrderResource extends Resource
                     })->columns(2),
                 SelectFilter::make('work_order_status_id')->label('Status')->relationship('work_order_status', 'name')
             ])
+            ->actions(self::actions(self::$routename), ActionsPosition::BeforeColumns)
             ->modifyQueryUsing(fn(Builder $query) => $query->orderBy('id', 'DESC'))
             ->paginated([
                 25,
@@ -93,6 +96,7 @@ class UrgentWorkOrderResource extends Resource
         return [
             'index' => Pages\ListUrgentWorkOrders::route('/'),
             'create' => Pages\CreateUrgentWorkOrder::route('/create'),
+            'new' => Pages\NewUrgentWorkOrder::route('/new'),
             'edit' => Pages\EditUrgentWorkOrder::route('/{record}/edit'),
         ];
     }

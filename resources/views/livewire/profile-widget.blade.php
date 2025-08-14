@@ -25,6 +25,9 @@
                         My Profile
                     </x-filament::button>
                 @endif
+                <x-filament::button class="mb-2" color="danger" wire:click='goToNewUrgentWorkOrder'>
+                    Urgent Work Order
+                </x-filament::button>
             </div>
         </div>
     </x-filament::section>

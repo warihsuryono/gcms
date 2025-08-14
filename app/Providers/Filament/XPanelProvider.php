@@ -87,6 +87,7 @@ class XPanelProvider extends PanelProvider
             ->default()
             ->id(env('PANEL_PATH'))
             ->path(env('PANEL_PATH'))
+            ->darkMode(false)
             ->favicon(request()->segment(0) . '/img/favicon.png')
             ->brandLogo(request()->segment(0) . '/img/logo.png')
             ->brandLogoHeight('50px')

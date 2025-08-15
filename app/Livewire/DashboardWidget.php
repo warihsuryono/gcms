@@ -7,6 +7,7 @@ use App\Models\ItemStock;
 use App\Models\ItemRequest;
 use App\Models\FollowupOfficer;
 use App\Models\PurchaseOrder;
+use App\Models\UrgentWorkOrder;
 use Illuminate\Support\Facades\Auth;
 use Filament\Widgets\StatsOverviewWidget\Stat;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
@@ -14,6 +15,12 @@ use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 class DashboardWidget extends BaseWidget
 {
     protected static ?string $pollingInterval = '60s';
+
+    protected function getColumns(): int
+    {
+        return 2;
+    }
+
     protected function getStats(): array
     {
         $widgets = [];
@@ -37,6 +44,16 @@ class DashboardWidget extends BaseWidget
             $is_allowed_open_purchase_order = true;
             $is_allowed_understock = true;
         }
+
+        $urgent_work_orders = count(UrgentWorkOrder::where('work_order_status_id', '<', 3)->get());
+        $widgets = array_merge($widgets, [
+            Stat::make('Number of Urgent Work Orders', $urgent_work_orders . ' items')
+                ->icon('heroicon-o-cog')
+                ->extraAttributes([
+                    'class' => 'cursor-pointer',
+                    'wire:click' => 'goToUrgentWorkOrders',
+                ])
+        ]);
 
         if ($is_allowed_open_item_request || Auth::user()->privilege->id == 1) {
             $open_item_requests = count(ItemRequest::where('is_issued', 0)->get());
@@ -94,5 +111,10 @@ class DashboardWidget extends BaseWidget
     public function goToUnderStock()
     {
         return redirect()->route('filament.' . env('PANEL_PATH') . '.resources.items.understock');
+    }
+
+    public function goToUrgentWorkOrders()
+    {
+        return redirect()->route('filament.' . env('PANEL_PATH') . '.resources.urgent-work-orders.index');
     }
 }

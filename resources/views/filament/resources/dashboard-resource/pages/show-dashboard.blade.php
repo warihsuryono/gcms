@@ -38,6 +38,16 @@
                     </tr>
                 </thead>
                 <tbody id="work-order-list">
+                    @foreach ($urgent_work_orders as $work_order)
+                        <tr class="odd:bg-red-700 even:bg-red-400 border-b border-gray-200">
+                            <td class="px-2 py-2">{{ $loop->iteration }}</td>
+                            <td nowrap class="px-2 py-2">{{ $work_order->division->name }}</td>
+                            <td nowrap class="px-2 py-2">{{ date('d M Y', strtotime($work_order->work_at)) }}</td>
+                            <td nowrap class="px-2 py-2">Done</td>
+                            <td nowrap class="px-2 py-2">{{ $work_order->field->name }}</td>
+                            <td class="px-2 py-2">{!! $work_order->works !!}</td>
+                        </tr>
+                    @endforeach
                     @foreach ($work_orders as $work_order)
                         @php
                             $fields = '';

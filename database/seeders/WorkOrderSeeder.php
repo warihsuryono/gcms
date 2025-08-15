@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\UrgentWorkOrder;
 use App\Models\WorkOrder;
 use Illuminate\Database\Seeder;
 
@@ -40,7 +41,6 @@ class WorkOrderSeeder extends Seeder
         WorkOrder::create(['work_start' => date("Y-m-d", strtotime('-4 day')) . ' 14:00:00', 'division_id' => 1, 'field_ids' => '["11","12","13","14","15","16","17"]', 'works' => 'Raking bungker ( sempro )']);
         WorkOrder::create(['work_start' => date("Y-m-d", strtotime('-4 day')) . ' 15:00:00', 'division_id' => 1, 'field_ids' => '[]', 'works' => 'blower kelipingan rumput yang sudah selesai dipotong']);
         WorkOrder::create(['work_start' => date("Y-m-d", strtotime('-5 day')) . ' 16:00:00', 'division_id' => 1, 'field_ids' => '["10"]', 'works' => 'potong rumput bungker']);
-
 
         WorkOrder::create(['work_start' => date("Y-m-d", strtotime('+1 day')) . ' 09:00:00', 'division_id' => 1, 'field_ids' => '["3","4","5","6","7","8","9","10"]', 'works' => 'potong  rumput Fairway ( lf 570 + lf 250 )']);
         WorkOrder::create(['work_start' => date("Y-m-d", strtotime('+1 day')) . ' 07:00:00', 'division_id' => 2, 'field_ids' => '[]', 'works' => 'Lanjut pasang bata merah di gedung training center']);
@@ -86,5 +86,7 @@ class WorkOrderSeeder extends Seeder
         WorkOrder::create(['work_start' => date("Y-m-d", strtotime('+3 day')) . ' 14:00:00', 'division_id' => 1, 'field_ids' => '["11","12","13","14","15","16","17"]', 'works' => 'Raking bungker ( sempro )']);
         WorkOrder::create(['work_start' => date("Y-m-d", strtotime('+2 day')) . ' 15:00:00', 'division_id' => 1, 'field_ids' => '[]', 'works' => 'blower kelipingan rumput yang sudah selesai dipotong']);
         WorkOrder::create(['work_start' => date("Y-m-d", strtotime('+7 day')) . ' 16:00:00', 'division_id' => 1, 'field_ids' => '["10"]', 'works' => 'potong rumput bungker']);
+        UrgentWorkOrder::create(['code' => 'WO-20230707-001', 'work_at' => date("Y-m-d") . ' 10:00:00', 'division_id' => 1, 'field_id' => '10', 'lon' => '-6.13123', 'lat' => '123.3423', 'works' => 'Rapihkan pohon tumbang', 'work_order_status_id' => 1]);
+        UrgentWorkOrder::create(['code' => 'WO-20230707-002', 'work_at' => date("Y-m-d") . ' 12:00:00', 'division_id' => 2, 'field_id' => '3', 'lon' => '-6.13123', 'lat' => '123.3423', 'works' => 'Bersihkan genanagn air', 'work_order_status_id' => 1]);
     }
 }

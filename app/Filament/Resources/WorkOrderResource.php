@@ -108,7 +108,7 @@ class WorkOrderResource extends Resource
                     $field_ids = json_decode($record->field_ids);
                     $fields = "";
                     foreach ($field_ids as $field_id) {
-                        $fields .= Field::find($field_id)->name . "<br>";
+                        $fields .= @Field::find($field_id)->name . "<br>";
                     }
                     return $fields;
                 })->html(),

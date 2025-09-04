@@ -52,7 +52,7 @@
                         @php
                             $fields = '';
                             foreach (json_decode($work_order->field_ids) as $key => $field_id) {
-                                $fields .= Field::find($field_id)->name . ', ';
+                                $fields .= @Field::find($field_id)->name . ', ';
                                 if ($key % 2 == 0 && $key > 0) {
                                     $fields .= '<br>';
                                 }

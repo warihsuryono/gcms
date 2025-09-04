@@ -44,7 +44,7 @@
                             <td nowrap class="px-2 py-2">{{ $work_order->division->name }}</td>
                             <td nowrap class="px-2 py-2">{{ date('d M Y', strtotime($work_order->work_at)) }}</td>
                             <td nowrap class="px-2 py-2">Done</td>
-                            <td nowrap class="px-2 py-2">{{ $work_order->field->name }}</td>
+                            <td nowrap class="px-2 py-2">{{ @$work_order->field->name }}</td>
                             <td class="px-2 py-2">{!! $work_order->works !!}</td>
                         </tr>
                     @endforeach

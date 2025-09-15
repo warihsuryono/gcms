@@ -39,7 +39,7 @@ class UrgentWorkOrderResource extends Resource
         return $form
             ->schema([
                 TextInput::make('code')->visibleOn(['edit', 'view'])->disabled(),
-                Map::make('map')->columnSpanFull(),
+                Map::make('map')->columnSpanFull()->disabled(),
                 Forms\Components\DateTimePicker::make('work_at')->required()->default(now()),
                 Forms\Components\Select::make('division_id')->relationship('division', 'name')->searchable()->preload()->required(),
                 Forms\Components\Select::make('field_id')->label('Fields')->options(Field::all()->pluck('name', 'id'))->searchable()->preload(),
